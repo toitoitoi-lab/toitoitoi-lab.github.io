@@ -1,0 +1,134 @@
+---
+// 困りごとページの「方法を探す」。選択肢（場面）＋自由記述で、合う方法を探す。
+// 自由記述は、このページだけでなく、ほかの困りごとページの方法も探す。
+import { CONTENT } from '../data/methods';
+import { KOMARI } from '../data/site';
+interface Props { slug: string }
+const { slug } = Astro.props;
+const c = CONTENT[slug];
+const titleOf = (s: string) => KOMARI.find((k) => k.slug === s)?.ja.title ?? s;
+const all = Object.entries(CONTENT).flatMap(([page, pc]) =>
+  pc.methods.map((m) => ({
+    page,
+    pageTitle: titleOf(page),
+    id: m.id,
+    title: m.title,
+    sit: m.situations,
+    kws: m.keywords,
+    hay: [m.title, m.summary, ...m.keywords, ...(m.devices ?? []).map((d) => `${d.name} ${d.how}`)].join(' '),
+  })),
+);
+const labels = Object.fromEntries(c.situations.map((s) => [s.id, s.label]));
+const chips = [...new Set(c.methods.flatMap((m) => m.keywords.slice(0, 2)))].slice(0, 12);
+const data = JSON.stringify({ slug, all, labels });
+---
+<section class="finder" aria-labelledby="finder-title">
+  <h2 id="finder-title">困りごとから方法を探す</h2>
+  <p class="finder-lead">当てはまるものを選ぶか、困っていることを自由に書いてください。合いそうな方法が下に出ます。</p>
+  <form id="finder-form" class="finder-form" autocomplete="off">
+    <fieldset>
+      <legend>当てはまるもの（いくつでも）</legend>
+      <div class="finder-checks">
+        {c.situations.map((s) => (
+          <label class="check"><input type="checkbox" name="sit" value={s.id} /><span>{s.label}</span></label>
+        ))}
+      </div>
+    </fieldset>
+    <div class="finder-text">
+      <label for="finder-q">困っていることを自由に書く</label>
+      <p class="hint" id="finder-hint">例：「黒板を写すのが間に合わない」「音がうるさくて集中できない」</p>
+      <input id="finder-q" name="q" type="search" aria-describedby="finder-hint" />
+      <div class="chips" aria-label="よく使われることば">
+        <span class="chips-label">ことばの索引：</span>
+        {chips.map((k) => <button type="button" class="chip" data-word={k}>{k}</button>)}
+      </div>
+    </div>
+    <div class="finder-actions">
+      <button class="btn btn-solid" type="submit">探す</button>
+      <button class="btn" type="reset" id="finder-reset">選んだものを消す</button>
+    </div>
+  </form>
+
+  <div class="finder-results" id="finder-results" aria-live="polite" aria-atomic="true">
+    <p class="muted">まだ選ばれていません。</p>
+  </div>
+</section>
+
+<script type="application/json" id="finder-data" set:html={data}></script>
+<script is:inline>
+  (function () {
+    var D = JSON.parse(document.getElementById('finder-data').textContent);
+    var form = document.getElementById('finder-form');
+    var out = document.getElementById('finder-results');
+    var q = document.getElementById('finder-q');
+    function norm(s) {
+      return String(s || '').normalize('NFKC').toLowerCase()
+        .replace(/[ァ-ヶ]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0x60); })
+        .replace(/[\s、。,.・「」（）()!?！？]/g, '');
+    }
+    function bigrams(s) { var a = []; for (var i = 0; i < s.length - 1; i++) a.push(s.slice(i, i + 2)); return a; }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    D.all.forEach(function (m) { m.nHay = norm(m.hay); m.nKws = m.kws.map(norm); });
+
+    function score(m, sel, nq) {
+      var s = 0, why = [];
+      if (m.page === D.slug) {
+        var hit = m.sit.filter(function (id) { return sel.indexOf(id) >= 0; });
+        if (hit.length) { s += hit.length * 3; why.push('選んだ場面：' + hit.map(function (id) { return D.labels[id]; }).join('、')); }
+      }
+      if (nq) {
+        var words = [];
+        m.kws.forEach(function (k, i) {
+          var nk = m.nKws[i];
+          if (nk.length >= 1 && (nq.indexOf(nk) >= 0 || (nq.length >= 2 && nk.indexOf(nq) >= 0))) words.push(k);
+        });
+        if (words.length) { s += words.length * 2; why.push('ことば：' + words.slice(0, 4).join('、')); }
+        else {
+          var bg = bigrams(nq), shared = bg.filter(function (b) { return m.nHay.indexOf(b) >= 0; }).length;
+          if (bg.length && shared >= Math.max(2, Math.ceil(bg.length * 0.4))) { s += 1; why.push('書いた内容に近い'); }
+        }
+      }
+      return { s: s, why: why };
+    }
+
+    function render() {
+      var sel = Array.prototype.map.call(form.querySelectorAll('input[name="sit"]:checked'), function (i) { return i.value; });
+      var nq = norm(q.value);
+      if (!sel.length && !nq) { out.innerHTML = '<p class="muted">まだ選ばれていません。</p>'; return; }
+      var here = [], there = [];
+      D.all.forEach(function (m) {
+        var r = score(m, sel, nq);
+        if (r.s > 0) (m.page === D.slug ? here : there).push({ m: m, s: r.s, why: r.why });
+      });
+      here.sort(function (a, b) { return b.s - a.s; });
+      there.sort(function (a, b) { return b.s - a.s; });
+      there = there.filter(function (x) { return x.s >= 2; }).slice(0, 5);
+      var html = '<h3>このページで合いそうな方法（' + here.length + '件）</h3>';
+      if (here.length) {
+        html += '<ol class="hits">' + here.map(function (x) {
+          return '<li><a href="#m-' + x.m.id + '">' + esc(x.m.title) + '</a><span class="why">' + esc(x.why.join(' ／ ')) + '</span></li>';
+        }).join('') + '</ol>';
+      } else {
+        html += '<p class="muted">このページには見つかりませんでした。言葉を変えるか、下の「ほかのページ」を見てください。</p>';
+      }
+      if (there.length) {
+        html += '<h3>ほかの困りごとのページにも（' + there.length + '件）</h3><ol class="hits">' + there.map(function (x) {
+          return '<li><a href="/komari/' + x.m.page + '/#m-' + x.m.id + '">' + esc(x.m.pageTitle) + '：' + esc(x.m.title) + '</a><span class="why">' + esc(x.why.join(' ／ ')) + '</span></li>';
+        }).join('') + '</ol>';
+      }
+      out.innerHTML = html;
+    }
+
+    form.addEventListener('submit', function (e) { e.preventDefault(); render(); });
+    form.addEventListener('change', function (e) { if (e.target && e.target.name === 'sit') render(); });
+    form.addEventListener('reset', function () { setTimeout(render, 0); });
+    Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (b) {
+      b.addEventListener('click', function () {
+        var w = b.getAttribute('data-word');
+        q.value = q.value ? q.value + ' ' + w : w;
+        render();
+      });
+    });
+    var t; q.addEventListener('input', function () { clearTimeout(t); t = setTimeout(render, 400); });
+  })();
+</script>

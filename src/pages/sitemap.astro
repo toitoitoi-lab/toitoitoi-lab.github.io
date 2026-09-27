@@ -50,7 +50,7 @@ const icons: Record<string, string> = {
                     {l.note && <span class="child-note" aria-hidden={l.external ? 'true' : undefined}>{l.note}</span>}
                   </span>
                 </a>
-                {!l.ready && <Soon />}
+                {!l.ready && <Soon label={l.review ? '確認中' : undefined} />}
               </li>
             ))}
           </ul>
