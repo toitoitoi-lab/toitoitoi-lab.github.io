@@ -1,9 +1,9 @@
 ---
-import KomariPage from '../../components/KomariPage.astro';
-import { KOMARI } from '../../data/site';
+import KomariPage from '../../../components/KomariPage.astro';
+import { KOMARI } from '../../../data/site';
 export function getStaticPaths() {
   return KOMARI.map((k) => ({ params: { slug: k.slug }, props: { k } }));
 }
 const { k } = Astro.props;
 ---
-<KomariPage k={k} lang="ja" />
+<KomariPage k={k} lang="en" />

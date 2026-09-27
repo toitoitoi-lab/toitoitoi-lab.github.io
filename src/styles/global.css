@@ -311,3 +311,17 @@ html[data-fold='folded'] .fb-fold .ic-folded { display: inline; }
 @media (max-width: 480px) { .fb-btn { min-width: 56px; padding: 6px 6px; font-size: 0.72rem; } .floatbar { bottom: 10px; right: 10px; } html[data-float='left'] .floatbar { left: 10px; } }
 @media print { .floatbar { display: none; } }
 @media (forced-colors: active) { .floatbar { border-color: CanvasText; } }
+
+/* 操作ボタン：自由に動かす */
+.fb-grip { cursor: grab; touch-action: none; border-right: 2px solid var(--line); border-radius: 14px 0 0 14px; }
+.floatbar.dragging { cursor: grabbing; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); }
+.floatbar.dragging .fb-grip { cursor: grabbing; }
+html[data-float='left'] .fb-grip { border-right: 0; border-left: 2px solid var(--line); border-radius: 0 14px 14px 0; }
+
+/* 運営者の思い */
+.top-message { margin-bottom: 80px; padding: clamp(24px, 4vw, 44px); border-left: 6px solid var(--accent-fill); background: var(--panel); border-radius: 0 20px 20px 0; }
+.top-message h2 { font-size: 1.2rem; color: var(--accent-text); margin-bottom: 12px; }
+.top-message .big { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; line-height: 1.5; margin: 0 0 10px; }
+.top-message p { max-width: 42em; }
+.message { margin: 8px 0 32px; padding: 24px 28px; border-left: 6px solid var(--accent-fill); background: var(--panel); border-radius: 0 16px 16px 0; }
+.message h2 { margin-top: 0 !important; }

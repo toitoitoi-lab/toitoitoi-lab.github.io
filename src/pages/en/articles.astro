@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import Soon from '../../components/Soon.astro';
+---
+<Base title="Articles" lang="en" current="articles">
+  <div class="wrap page prose">
+    <Crumbs lang="en" items={[{ label: 'Home', href: '/en/' }, { label: 'Articles' }]} />
+    <h1>Articles</h1>
+    <Soon lang="en" />
+    <div class="notice"><p><strong>This page is being prepared.</strong> Articles are written in Japanese first. English articles will be added over time. See the <a href="/articles/" lang="ja" hreflang="ja">Japanese articles</a>.</p></div>
+  </div>
+</Base>

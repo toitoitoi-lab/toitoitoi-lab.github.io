@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import { LINKS } from '../../data/site';
+import { MESSAGE } from '../../data/message';
+---
+<Base title="About this site" lang="en" current="about">
+  <div class="wrap page prose">
+    <Crumbs lang="en" items={[{ label: 'Home', href: '/en/' }, { label: 'About this site' }]} />
+    <h1>About this site</h1>
+
+    <section class="message" id="omoi" aria-labelledby="omoi-title">
+      <h2 id="omoi-title">{MESSAGE.en.heading}</h2>
+      {MESSAGE.en.body.map((p) => <p>{p}</p>)}
+    </section>
+
+    <h2>The name</h2>
+    <p><span lang="de">Toi toi toi</span> is a German phrase said to someone about to go on stage, wishing them luck. It carries our encouragement for everyone taking a step into learning.</p>
+
+    <h2>Who runs this site</h2>
+    <p>This site is run personally by a public school teacher in Japan. It does not represent the views of any employer.</p>
+
+    <h2>What we care about</h2>
+    <p>Assistive technology (AT) means using tools to work around difficulties in reading, writing, listening, communicating and operating devices. This site connects three things along that one idea:</p>
+    <ul>
+      <li>For teachers and supporters: how to bring AT into lessons and individual support</li>
+      <li>For learners and families: learning handy device settings so you can use them on your own</li>
+      <li>For builders: code and demos of learning apps</li>
+    </ul>
+
+    <h2>How this site adapts to you</h2>
+    <ul>
+      <li>Use "Display" at the top to choose colors (dark, light, high contrast), letter shapes, text size and spacing. Your choices are saved in this browser.</li>
+      <li>The action buttons at the bottom (Back, Top of page, Home, Display) can be folded, placed on either side, moved freely by dragging or with the arrow keys, or hidden.</li>
+      <li>The <a href="/en/sitemap/">sitemap</a> lists every page as a tree of headings and links.</li>
+      <li>English text uses Andika, a typeface with single-storey a and g and a capital I with serifs.</li>
+      <li>We aim for WCAG 2.2 level AA (JIS X 8341-3:2016 AA); checks are in progress.</li>
+    </ul>
+    <p>The Japanese site is updated first. English pages are added step by step.</p>
+
+    <h2>Where else we share</h2>
+    <ul>
+      <li><a class="inline" href={LINKS.youtube}>YouTube (toi toi toi)</a></li>
+      <li><a class="inline" href={LINKS.note} hreflang="ja">note (Japanese)</a></li>
+      <li><a class="inline" href={LINKS.github}>GitHub (toitoitoi-lab)</a></li>
+    </ul>
+
+    <h2>Copyright</h2>
+    <p>Articles and materials on this site are copyright of the site operator. Terms of use are being prepared on the <a href="/en/rules/">terms of use</a> page.</p>
+  </div>
+</Base>

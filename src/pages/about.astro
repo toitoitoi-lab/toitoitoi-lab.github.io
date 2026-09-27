@@ -2,11 +2,17 @@
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import { LINKS } from '../data/site';
+import { MESSAGE } from '../data/message';
 ---
 <Base title="このサイトについて" current="about">
   <div class="wrap page prose">
     <Crumbs items={[{ label: 'トップ', href: '/' }, { label: 'このサイトについて' }]} />
     <h1>このサイトについて</h1>
+
+    <section class="message" id="omoi" aria-labelledby="omoi-title">
+      <h2 id="omoi-title">{MESSAGE.ja.heading}</h2>
+      {MESSAGE.ja.body.map((p) => <p>{p}</p>)}
+    </section>
 
     <h2>名前について</h2>
     <p><span lang="de">toi toi toi</span>（トイ・トイ・トイ）は、舞台に出る人などを「うまくいきますように」と送り出すときのドイツ語のことばです。学びに一歩ふみ出す人へのエールの気持ちをこめています。</p>

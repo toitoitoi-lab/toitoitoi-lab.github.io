@@ -2,12 +2,19 @@
 // 困りごとページの「方法を探す」。選択肢（場面）＋自由記述で、合う方法を探す。
 // 自由記述は、このページだけでなく、ほかの困りごとページの方法も探す。
 import { CONTENT } from '../data/methods';
+import { CONTENT_EN } from '../data/methods_en';
 import { KOMARI } from '../data/site';
-interface Props { slug: string }
-const { slug } = Astro.props;
-const c = CONTENT[slug];
-const titleOf = (s: string) => KOMARI.find((k) => k.slug === s)?.ja.title ?? s;
-const all = Object.entries(CONTENT).flatMap(([page, pc]) =>
+interface Props { slug: string; lang?: 'ja' | 'en' }
+const { slug, lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const SRC = ja ? CONTENT : CONTENT_EN;
+const c = SRC[slug];
+const base = ja ? '' : '/en';
+const titleOf = (s: string) => {
+  const k = KOMARI.find((x) => x.slug === s);
+  return k ? (ja ? k.ja.title : k.en.title) : s;
+};
+const all = Object.entries(SRC).flatMap(([page, pc]) =>
   pc.methods.map((m) => ({
     page,
     pageTitle: titleOf(page),
@@ -20,14 +27,25 @@ const all = Object.entries(CONTENT).flatMap(([page, pc]) =>
 );
 const labels = Object.fromEntries(c.situations.map((s) => [s.id, s.label]));
 const chips = [...new Set(c.methods.flatMap((m) => m.keywords.slice(0, 2)))].slice(0, 12);
-const data = JSON.stringify({ slug, all, labels });
+const T = ja
+  ? { title: '困りごとから方法を探す', lead: '当てはまるものを選ぶか、困っていることを自由に書いてください。合いそうな方法が下に出ます。',
+      legend: '当てはまるもの（いくつでも）', free: '困っていることを自由に書く', hint: '例：「黒板を写すのが間に合わない」「音がうるさくて集中できない」',
+      chips: 'ことばの索引：', chipsAria: 'よく使われることば', search: '探す', reset: '選んだものを消す', empty: 'まだ選ばれていません。',
+      here: 'このページで合いそうな方法', there: 'ほかの困りごとのページにも', none: 'このページには見つかりませんでした。言葉を変えるか、下の「ほかのページ」を見てください。',
+      count: '件', why1: '選んだ場面：', why2: 'ことば：', why3: '書いた内容に近い', sep: '、' }
+  : { title: 'Find methods for your need', lead: 'Choose what applies, or describe the difficulty in your own words. Matching methods appear below.',
+      legend: 'What applies (choose any)', free: 'Describe the difficulty', hint: 'e.g. "I cannot copy from the board in time", "noise makes it hard to focus"',
+      chips: 'Word index:', chipsAria: 'Common words', search: 'Search', reset: 'Clear', empty: 'Nothing selected yet.',
+      here: 'Methods on this page', there: 'Also on other pages', none: 'Nothing found on this page. Try other words, or see other pages below.',
+      count: '', why1: 'You chose: ', why2: 'Words: ', why3: 'Close to what you wrote', sep: ', ' };
+const data = JSON.stringify({ slug, all, labels, base, lang, T });
 ---
 <section class="finder" aria-labelledby="finder-title">
-  <h2 id="finder-title">困りごとから方法を探す</h2>
-  <p class="finder-lead">当てはまるものを選ぶか、困っていることを自由に書いてください。合いそうな方法が下に出ます。</p>
+  <h2 id="finder-title">{T.title}</h2>
+  <p class="finder-lead">{T.lead}</p>
   <form id="finder-form" class="finder-form" autocomplete="off">
     <fieldset>
-      <legend>当てはまるもの（いくつでも）</legend>
+      <legend>{T.legend}</legend>
       <div class="finder-checks">
         {c.situations.map((s) => (
           <label class="check"><input type="checkbox" name="sit" value={s.id} /><span>{s.label}</span></label>
@@ -35,22 +53,22 @@ const data = JSON.stringify({ slug, all, labels });
       </div>
     </fieldset>
     <div class="finder-text">
-      <label for="finder-q">困っていることを自由に書く</label>
-      <p class="hint" id="finder-hint">例：「黒板を写すのが間に合わない」「音がうるさくて集中できない」</p>
+      <label for="finder-q">{T.free}</label>
+      <p class="hint" id="finder-hint">{T.hint}</p>
       <input id="finder-q" name="q" type="search" aria-describedby="finder-hint" />
-      <div class="chips" aria-label="よく使われることば">
-        <span class="chips-label">ことばの索引：</span>
+      <div class="chips" role="group" aria-label={T.chipsAria}>
+        <span class="chips-label">{T.chips}</span>
         {chips.map((k) => <button type="button" class="chip" data-word={k}>{k}</button>)}
       </div>
     </div>
     <div class="finder-actions">
-      <button class="btn btn-solid" type="submit">探す</button>
-      <button class="btn" type="reset" id="finder-reset">選んだものを消す</button>
+      <button class="btn btn-solid" type="submit">{T.search}</button>
+      <button class="btn" type="reset" id="finder-reset">{T.reset}</button>
     </div>
   </form>
 
   <div class="finder-results" id="finder-results" aria-live="polite" aria-atomic="true">
-    <p class="muted">まだ選ばれていません。</p>
+    <p class="muted">{T.empty}</p>
   </div>
 </section>
 
@@ -58,62 +76,74 @@ const data = JSON.stringify({ slug, all, labels });
 <script is:inline>
   (function () {
     var D = JSON.parse(document.getElementById('finder-data').textContent);
+    var T = D.T, EN = D.lang === 'en';
     var form = document.getElementById('finder-form');
     var out = document.getElementById('finder-results');
     var q = document.getElementById('finder-q');
     function norm(s) {
       return String(s || '').normalize('NFKC').toLowerCase()
         .replace(/[ァ-ヶ]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0x60); })
-        .replace(/[\s、。,.・「」（）()!?！？]/g, '');
+        .replace(/[\s、。,.・「」（）()!?！？'’"-]/g, '');
     }
+    function words(s) { return String(s || '').toLowerCase().match(/[a-z]{3,}/g) || []; }
     function bigrams(s) { var a = []; for (var i = 0; i < s.length - 1; i++) a.push(s.slice(i, i + 2)); return a; }
     function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-    D.all.forEach(function (m) { m.nHay = norm(m.hay); m.nKws = m.kws.map(norm); });
+    var STOP = ['the', 'and', 'can', 'cannot', 'hard', 'for', 'with', 'too', 'not', 'what', 'when', 'from', 'this', 'that', 'into', 'are', 'you', 'your'];
+    D.all.forEach(function (m) { m.nHay = norm(m.hay); m.nKws = m.kws.map(norm); m.wHay = words(m.hay); });
 
-    function score(m, sel, nq) {
-      var s = 0, why = [];
+    function score(m, sel, raw) {
+      var s = 0, why = [], nq = norm(raw);
       if (m.page === D.slug) {
         var hit = m.sit.filter(function (id) { return sel.indexOf(id) >= 0; });
-        if (hit.length) { s += hit.length * 3; why.push('選んだ場面：' + hit.map(function (id) { return D.labels[id]; }).join('、')); }
+        if (hit.length) { s += hit.length * 3; why.push(T.why1 + hit.map(function (id) { return D.labels[id]; }).join(T.sep)); }
       }
       if (nq) {
-        var words = [];
+        var found = [];
+        var lq = String(raw).toLowerCase();
         m.kws.forEach(function (k, i) {
           var nk = m.nKws[i];
-          if (nk.length >= 1 && (nq.indexOf(nk) >= 0 || (nq.length >= 2 && nk.indexOf(nq) >= 0))) words.push(k);
+          if (EN) {
+            var re = new RegExp('(^|[^a-z])' + k.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es|ed|ing)?([^a-z]|$)');
+            if (re.test(lq)) found.push(k);
+          } else if (nk.length >= 2 && (nq.indexOf(nk) >= 0 || (nq.length >= 3 && nk.indexOf(nq) >= 0))) found.push(k);
         });
-        if (words.length) { s += words.length * 2; why.push('ことば：' + words.slice(0, 4).join('、')); }
-        else {
-          var bg = bigrams(nq), shared = bg.filter(function (b) { return m.nHay.indexOf(b) >= 0; }).length;
-          if (bg.length && shared >= Math.max(2, Math.ceil(bg.length * 0.4))) { s += 1; why.push('書いた内容に近い'); }
+        if (found.length) { s += found.length * 2; why.push(T.why2 + found.slice(0, 4).join(T.sep)); }
+        else if (EN) {
+          var qw = words(raw).filter(function (w) { return STOP.indexOf(w) < 0; });
+          var shared = qw.filter(function (w) { return m.wHay.some(function (h) { return h.indexOf(w) === 0 || w.indexOf(h) === 0 && h.length >= 4; }); });
+          if (shared.length >= Math.max(2, Math.ceil(qw.length * 0.5))) { s += 1; why.push(T.why3); }
+        } else {
+          var bg = bigrams(nq), sh = bg.filter(function (b) { return m.nHay.indexOf(b) >= 0; }).length;
+          if (bg.length && sh >= Math.max(2, Math.ceil(bg.length * 0.4))) { s += 1; why.push(T.why3); }
         }
       }
       return { s: s, why: why };
     }
+    function n(x) { return EN ? ' (' + x + ')' : '（' + x + T.count + '）'; }
 
     function render() {
       var sel = Array.prototype.map.call(form.querySelectorAll('input[name="sit"]:checked'), function (i) { return i.value; });
-      var nq = norm(q.value);
-      if (!sel.length && !nq) { out.innerHTML = '<p class="muted">まだ選ばれていません。</p>'; return; }
+      var raw = q.value;
+      if (!sel.length && !norm(raw)) { out.innerHTML = '<p class="muted">' + esc(T.empty) + '</p>'; return; }
       var here = [], there = [];
       D.all.forEach(function (m) {
-        var r = score(m, sel, nq);
+        var r = score(m, sel, raw);
         if (r.s > 0) (m.page === D.slug ? here : there).push({ m: m, s: r.s, why: r.why });
       });
       here.sort(function (a, b) { return b.s - a.s; });
       there.sort(function (a, b) { return b.s - a.s; });
       there = there.filter(function (x) { return x.s >= 2; }).slice(0, 5);
-      var html = '<h3>このページで合いそうな方法（' + here.length + '件）</h3>';
+      var html = '<h3>' + esc(T.here) + n(here.length) + '</h3>';
       if (here.length) {
         html += '<ol class="hits">' + here.map(function (x) {
-          return '<li><a href="#m-' + x.m.id + '">' + esc(x.m.title) + '</a><span class="why">' + esc(x.why.join(' ／ ')) + '</span></li>';
+          return '<li><a href="#m-' + x.m.id + '">' + esc(x.m.title) + '</a><span class="why">' + esc(x.why.join(' / ')) + '</span></li>';
         }).join('') + '</ol>';
       } else {
-        html += '<p class="muted">このページには見つかりませんでした。言葉を変えるか、下の「ほかのページ」を見てください。</p>';
+        html += '<p class="muted">' + esc(T.none) + '</p>';
       }
       if (there.length) {
-        html += '<h3>ほかの困りごとのページにも（' + there.length + '件）</h3><ol class="hits">' + there.map(function (x) {
-          return '<li><a href="/komari/' + x.m.page + '/#m-' + x.m.id + '">' + esc(x.m.pageTitle) + '：' + esc(x.m.title) + '</a><span class="why">' + esc(x.why.join(' ／ ')) + '</span></li>';
+        html += '<h3>' + esc(T.there) + n(there.length) + '</h3><ol class="hits">' + there.map(function (x) {
+          return '<li><a href="' + D.base + '/komari/' + x.m.page + '/#m-' + x.m.id + '">' + esc(x.m.pageTitle) + (EN ? ': ' : '：') + esc(x.m.title) + '</a><span class="why">' + esc(x.why.join(' / ')) + '</span></li>';
         }).join('') + '</ol>';
       }
       out.innerHTML = html;
@@ -129,6 +159,6 @@ const data = JSON.stringify({ slug, all, labels });
         render();
       });
     });
-    var t; q.addEventListener('input', function () { clearTimeout(t); t = setTimeout(render, 400); });
+    var tm; q.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(render, 400); });
   })();
 </script>

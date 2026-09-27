@@ -153,7 +153,7 @@ export const TACHIBA: Tachiba[] = [
 
 // サイトマップ（日本語）。大項目（group）の下に小項目（links）が入る。
 // ready: false のページには「準備中」が付く。
-export type MapLink = { label: string; href: string; ready: boolean; review?: boolean; external?: boolean; note?: string; shapes?: Shape[]; stage?: Stage };
+export type MapLink = { label: string; href: string; ready: boolean; review?: boolean; lang?: string; external?: boolean; note?: string; shapes?: Shape[]; stage?: Stage };
 export type MapGroup = { id: string; heading: string; href: string; desc: string; icon: string; links: MapLink[] };
 
 export const SITEMAP_JA: MapGroup[] = [
@@ -187,6 +187,42 @@ export const SITEMAP_JA: MapGroup[] = [
       { label: 'YouTube', note: '外部サイト', href: LINKS.youtube, ready: true, external: true },
       { label: 'note', note: '外部サイト', href: LINKS.note, ready: true, external: true },
       { label: 'GitHub', note: '外部サイト', href: LINKS.github, ready: true, external: true },
+    ],
+  },
+];
+
+// Sitemap (English). Same structure as SITEMAP_JA.
+export const SITEMAP_EN: MapGroup[] = [
+  {
+    id: 'zentai', heading: 'The whole site', href: '/en/', icon: 'home',
+    desc: 'Entry points, how to use the site, and terms',
+    links: [
+      { label: 'Home', href: '/en/', ready: true },
+      { label: 'About this site', href: '/en/about/', ready: true },
+      { label: 'Terms of use', href: '/en/rules/', ready: false },
+      { label: 'Contact', href: '/en/contact/', ready: false },
+      { label: '日本語サイト（Japanese）', href: '/', ready: true, lang: 'ja' },
+    ],
+  },
+  {
+    id: 'komari', heading: 'Find by need', href: '/en/#komari', icon: 'komari',
+    desc: 'Find tools and how to use them, starting from the difficulty',
+    links: KOMARI.map((k) => ({ label: k.en.title, note: k.en.examples, href: `/en/komari/${k.slug}/`, ready: k.ready, review: k.review, shapes: k.shapes, stage: k.stage })),
+  },
+  {
+    id: 'tachiba', heading: 'Find by who you are', href: '/en/#tachiba', icon: 'tachiba',
+    desc: 'Entry points for teachers, learners and families, and builders',
+    links: TACHIBA.map((t) => ({ label: t.en.title, note: t.en.text, href: `/en/tachiba/${t.slug}/`, ready: t.ready, shapes: t.shapes, stage: t.stage })),
+  },
+  {
+    id: 'hasshin', heading: 'Articles and links', href: '/en/articles/', icon: 'hasshin',
+    desc: 'Articles, talks, and links to YouTube, note and GitHub',
+    links: [
+      { label: 'Articles', href: '/en/articles/', ready: false },
+      { label: 'Talks and workshops', href: '/en/talks/', ready: false },
+      { label: 'YouTube', note: 'External site', href: LINKS.youtube, ready: true, external: true },
+      { label: 'note', note: 'External site (Japanese)', href: LINKS.note, ready: true, external: true },
+      { label: 'GitHub', note: 'External site', href: LINKS.github, ready: true, external: true },
     ],
   },
 ];

@@ -2,12 +2,13 @@
 import Illust from './Illust.astro';
 import Soon from './Soon.astro';
 import { KOMARI, TACHIBA } from '../data/site';
+import { MESSAGE } from '../data/message';
 interface Props { lang: 'ja' | 'en' }
 const { lang } = Astro.props;
 const ja = lang === 'ja';
 const base = ja ? '' : '/en';
-const hrefK = (slug: string) => (ja ? `/komari/${slug}/` : '/en/coming-soon/');
-const hrefT = (slug: string) => (ja ? `/tachiba/${slug}/` : '/en/coming-soon/');
+const hrefK = (slug: string) => `${base}/komari/${slug}/`;
+const hrefT = (slug: string) => `${base}/tachiba/${slug}/`;
 ---
 <div class="wrap">
   <section class="hero" aria-labelledby="hero-title">
@@ -23,7 +24,7 @@ const hrefT = (slug: string) => (ja ? `/tachiba/${slug}/` : '/en/coming-soon/');
       </p>
       <div class="hero-actions">
         <a class="btn btn-solid" href={`${base}/#komari`}>{ja ? '困りごとから探す' : 'Find by need'}</a>
-        <a class="btn" href={ja ? '/about/' : '/en/coming-soon/'}>{ja ? 'このサイトについて' : 'About this site'}</a>
+        <a class="btn" href={`${base}/about/`}>{ja ? 'このサイトについて' : 'About this site'}</a>
       </div>
     </div>
     <aside class="hero-aside" aria-label={ja ? 'このサイトの工夫' : 'How this site adapts'}>
@@ -59,6 +60,13 @@ const hrefT = (slug: string) => (ja ? `/tachiba/${slug}/` : '/en/coming-soon/');
         </li>
       ))}
     </ul>
+  </section>
+
+  <section class="section top-message" aria-labelledby="h-message">
+    <h2 id="h-message">{MESSAGE[lang].heading}</h2>
+    <p class="big">{MESSAGE[lang].lead}</p>
+    <p>{MESSAGE[lang].body[0].replace(MESSAGE[lang].lead, '').trim()}</p>
+    <a class="btn" href={`${base}/about/#omoi`}>{MESSAGE[lang].more}</a>
   </section>
 
   <section class="section" id="tachiba" aria-labelledby="h-tachiba">

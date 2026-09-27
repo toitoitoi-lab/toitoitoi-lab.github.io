@@ -27,21 +27,23 @@ const nav = ja
   : [
       { href: '/en/#komari', label: 'Needs', key: 'komari' },
       { href: '/en/#tachiba', label: 'Who you are', key: 'tachiba' },
-      { href: '/en/coming-soon/', label: 'About', key: 'about' },
+      { href: '/en/articles/', label: 'Articles', key: 'articles' },
+      { href: '/en/talks/', label: 'Talks', key: 'talks' },
+      { href: '/en/about/', label: 'About', key: 'about' },
     ];
 const t = ja
   ? { skipMain: '本文へ移動', skipMap: 'サイトマップへ移動', settings: '表示設定', sitemap: 'サイトマップ', close: '表示設定を閉じる',
       theme: '配色', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
       font: '文字の形', ud: 'すっきり（UDゴシック）', kyo: '学校で習う形（教科書体）',
       size: '文字の大きさ', m: '標準', l: '大', xl: '特大', space: '文字の間隔', normal: '標準', wide: 'ひろめ',
-      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
+      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fFree: '自由に動かす', fbMove: '動かす', fbMoveHelp: 'ドラッグするか、選んで矢印キーで動かせます', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
       other: 'English', otherHref: '/en/', otherLang: 'en', rules: '利用ルール',
       disclaimer: '公立学校の教員が個人の活動として運営しています。所属機関の見解を示すものではありません。' }
   : { skipMain: 'Skip to main content', skipMap: 'Skip to sitemap', settings: 'Display', sitemap: 'Sitemap', close: 'Close display settings',
       theme: 'Colors', dark: 'Dark', light: 'Light', contrast: 'High contrast',
       font: 'Letter shapes', ud: 'Clear (UD Gothic)', kyo: 'As taught at school',
       size: 'Text size', m: 'Standard', l: 'Large', xl: 'Extra large', space: 'Spacing', normal: 'Standard', wide: 'Wide',
-      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
+      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fFree: 'Move freely', fbMove: 'Move', fbMoveHelp: 'Drag it, or focus it and use the arrow keys', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
       other: '日本語', otherHref: '/', otherLang: 'ja', rules: 'Terms of use',
       disclaimer: 'Run personally by a public school teacher. Views here are not those of any employer.' };
 const sitemapHref = ja ? '/sitemap/' : '/en/sitemap/';
@@ -50,7 +52,7 @@ const groups = [
   { name: 'font', legend: t.font, opts: [['ud', t.ud], ['kyo', t.kyo]] },
   { name: 'size', legend: t.size, opts: [['m', t.m], ['l', t.l], ['xl', t.xl]] },
   { name: 'space', legend: t.space, opts: [['normal', t.normal], ['wide', t.wide]] },
-  { name: 'float', legend: t.float, opts: [['right', t.fRight], ['left', t.fLeft], ['hide', t.fHide]] },
+  { name: 'float', legend: t.float, opts: [['right', t.fRight], ['left', t.fLeft], ['free', t.fFree], ['hide', t.fHide]] },
 ];
 ---
 <!doctype html>
@@ -142,7 +144,7 @@ const groups = [
     <div class="wrap">
       <p>© <span lang="en">toi toi toi</span>　{t.disclaimer}</p>
       <ul>
-        <li><a href={ja ? '/rules/' : '/en/coming-soon/'}>{t.rules}</a></li>
+        <li><a href={ja ? '/rules/' : '/en/rules/'}>{t.rules}</a></li>
         <li><a href={sitemapHref}>{t.sitemap}</a></li>
         <li><a href={LINKS.youtube} lang="en">YouTube</a></li>
         <li><a href={LINKS.note} lang="en">note</a></li>
@@ -152,6 +154,10 @@ const groups = [
   </footer>
 
   <nav class="floatbar" id="floatbar" aria-label={t.fbNav}>
+    <button type="button" class="fb-btn fb-grip" id="fb-grip" aria-describedby="fb-grip-help">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"></path></svg><span>{t.fbMove}</span>
+    </button>
+    <span class="visually-hidden" id="fb-grip-help">{t.fbMoveHelp}</span>
     <div class="fb-buttons" id="fb-buttons">
       <button type="button" class="fb-btn" id="fb-back">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg><span>{t.fbBack}</span>
@@ -197,6 +203,7 @@ const groups = [
         var t = e.target; if (!t || !t.name) return;
         d.dataset[t.name] = t.value;
         try { localStorage.setItem('t3-' + t.name, t.value); } catch (err) {}
+        if (t.name === 'float') applyFree();
       });
       // ── 操作ボタン（フローティング） ──
       var fold = document.getElementById('fb-fold');
@@ -220,11 +227,64 @@ const groups = [
         location.href = crumbs.length ? crumbs[crumbs.length - 1].href : (document.documentElement.lang === 'en' ? '/en/' : '/');
       });
       document.getElementById('fb-settings').addEventListener('click', function () { open(true); });
+
+      // ── 操作ボタンを自由に動かす（ドラッグ／矢印キー） ──
+      var bar = document.getElementById('floatbar');
+      var grip = document.getElementById('fb-grip');
+      function clampPos(x, y) {
+        var w = bar.offsetWidth, h = bar.offsetHeight;
+        return [Math.min(Math.max(8, x), window.innerWidth - w - 8), Math.min(Math.max(8, y), window.innerHeight - h - 8)];
+      }
+      function place(x, y, save) {
+        var c = clampPos(x, y);
+        bar.style.left = c[0] + 'px'; bar.style.top = c[1] + 'px'; bar.style.right = 'auto'; bar.style.bottom = 'auto';
+        if (save) { try { localStorage.setItem('t3-fpos', JSON.stringify({ x: c[0] / window.innerWidth, y: c[1] / window.innerHeight })); } catch (e) {} }
+      }
+      function clearPos() { bar.style.left = ''; bar.style.top = ''; bar.style.right = ''; bar.style.bottom = ''; }
+      function applyFree() {
+        if (d.dataset.float !== 'free') { clearPos(); return; }
+        var p = null; try { p = JSON.parse(localStorage.getItem('t3-fpos')); } catch (e) {}
+        if (p) { place(p.x * window.innerWidth, p.y * window.innerHeight, false); }
+        else { var r = bar.getBoundingClientRect(); place(r.left, r.top, true); }
+      }
+      function goFree() {
+        if (d.dataset.float === 'free') return;
+        var r = bar.getBoundingClientRect();
+        d.dataset.float = 'free';
+        try { localStorage.setItem('t3-float', 'free'); } catch (e) {}
+        place(r.left, r.top, true);
+        sync();
+      }
+      var drag = null;
+      grip.addEventListener('pointerdown', function (e) {
+        e.preventDefault(); goFree();
+        var r = bar.getBoundingClientRect();
+        drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+        grip.setPointerCapture(e.pointerId); bar.classList.add('dragging');
+      });
+      grip.addEventListener('pointermove', function (e) { if (drag) place(e.clientX - drag.dx, e.clientY - drag.dy, false); });
+      function endDrag() {
+        if (!drag) return; drag = null; bar.classList.remove('dragging');
+        var r = bar.getBoundingClientRect(); place(r.left, r.top, true);
+      }
+      grip.addEventListener('pointerup', endDrag);
+      grip.addEventListener('pointercancel', endDrag);
+      grip.addEventListener('keydown', function (e) {
+        var step = e.shiftKey ? 64 : 16, dx = 0, dy = 0;
+        if (e.key === 'ArrowLeft') dx = -step; else if (e.key === 'ArrowRight') dx = step;
+        else if (e.key === 'ArrowUp') dy = -step; else if (e.key === 'ArrowDown') dy = step; else return;
+        e.preventDefault(); goFree();
+        var r = bar.getBoundingClientRect(); place(r.left + dx, r.top + dy, true);
+      });
+      window.addEventListener('resize', function () { if (d.dataset.float === 'free') applyFree(); });
+      applyFree();
       document.getElementById('settings-reset').addEventListener('click', function () {
         Object.keys(defaults).forEach(function (k) {
           d.dataset[k] = defaults[k];
           try { localStorage.removeItem('t3-' + k); } catch (err) {}
         });
+        try { localStorage.removeItem('t3-fpos'); } catch (err) {}
+        clearPos();
         sync();
       });
     })();
