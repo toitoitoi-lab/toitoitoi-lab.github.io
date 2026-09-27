@@ -9,12 +9,13 @@
   color-scheme: dark;
 }
 :root[data-theme='light'] {
-  --bg: #F4F1E8; --panel: #FFFCF5; --fg: #16181C; --sub: #454B51; --line: #D6D0BF; --card-line: #E3DDCC;
-  --accent-fill: #D4FF3A; --on-accent: #16181C; --accent-text: #4B5E00; --violet-text: #5A3FD0; --focus: #5A3FD0;
-  --glow: rgba(212, 255, 58, 0.35); --ray: rgba(90, 63, 208, 0.06);
-  --il-cream: #FFFCF5; --il-lime: #7FA600; --il-violet: #8E7BF0; --il-coral: #F07A55; --il-sky: #4DB8E8;
-  --il-ink: #23272F; --il-line: #23272F; --il-check: #4B6B00; --il-code: #5A3FD0;
-  --st-violet: #DCD5F7; --st-sky: #CFE9F5; --st-coral: #F6D9CC;
+  /* 眩しさを抑えた生成り色。背景の明るさはダーク→ライトで急に上がりすぎないようにしている */
+  --bg: #E2DDD0; --panel: #EBE7DC; --fg: #16181C; --sub: #3E444A; --line: #C4BDAB; --card-line: #D2CCBC;
+  --accent-fill: #CDEB45; --on-accent: #16181C; --accent-text: #415200; --violet-text: #4A33B0; --focus: #4A33B0;
+  --glow: rgba(205, 235, 69, 0.18); --ray: rgba(74, 51, 176, 0.05);
+  --il-cream: #F3EFE4; --il-lime: #6E9000; --il-violet: #8472E0; --il-coral: #E0714E; --il-sky: #3FA6D6;
+  --il-ink: #23272F; --il-line: #23272F; --il-check: #415E00; --il-code: #4A33B0;
+  --st-violet: #CDC5EA; --st-sky: #BCD9E6; --st-coral: #E6C8BA;
   color-scheme: light;
 }
 :root[data-theme='contrast'] {
