@@ -37,14 +37,14 @@ const t = ja
       theme: '配色', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
       font: '文字の形', ud: 'すっきり（UDゴシック）', kyo: '学校で習う形（教科書体）',
       size: '文字の大きさ', m: '標準', l: '大', xl: '特大', space: '文字の間隔', normal: '標準', wide: 'ひろめ',
-      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fFree: '自由に動かす', fDock: '画面の下いっぱい（タッチ操作向け）', orient: '操作ボタンの並べ方', oRow: '横に並べる', oCol: '縦に並べる', skipBar: '操作ボタンへ移動', keyHelp: 'キーボードでは、Alt＋Shift＋M（Macは option＋shift＋M）で操作ボタンへ移動します。もう一度押すか Esc で、元の場所にもどります。', fbShown: '操作ボタンを一時的に表示しています', newTab: '（新しいタブで開きます）', fbMove: '動かす', fbMoveHelp: 'ドラッグするか、選んで矢印キーで動かせます', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
+      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fFree: '自由に動かす', fDock: '画面の下いっぱい（タッチ操作向け）', orient: '操作ボタンの並べ方', oRow: '横に並べる', oCol: '縦に並べる', skipBar: '操作ボタンへ移動', keyHelp: 'キーボードでは、Alt＋Shift＋M（Macは option＋shift＋M）で操作ボタンへ移動します。もう一度押すか Esc で、元の場所にもどります。', fbShown: '操作ボタンを一時的に表示しています', newTab: '（新しいタブで開きます）', fbMove: '動かす', fbMoveHelp: 'ドラッグするか、選んで矢印キーで動かせます', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbBottom: '下へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
       other: 'English', otherHref: '/en/', otherLang: 'en', rules: '利用ルール',
       disclaimer: '公立学校の教員が個人の活動として運営しています。所属機関の見解を示すものではありません。' }
   : { skipMain: 'Skip to main content', skipMap: 'Skip to sitemap', settings: 'Display', sitemap: 'Sitemap', close: 'Close display settings',
       theme: 'Colors', dark: 'Dark', light: 'Light', contrast: 'High contrast',
       font: 'Letter shapes', ud: 'Clear (UD Gothic)', kyo: 'As taught at school',
       size: 'Text size', m: 'Standard', l: 'Large', xl: 'Extra large', space: 'Spacing', normal: 'Standard', wide: 'Wide',
-      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fFree: 'Move freely', fDock: 'Full width at the bottom (for touch)', orient: 'Button layout', oRow: 'In a row', oCol: 'In a column', skipBar: 'Skip to action buttons', keyHelp: 'With a keyboard, press Alt+Shift+M (option+shift+M on a Mac) to jump to the action buttons. Press it again, or Esc, to go back to where you were.', fbShown: 'Action buttons shown for now', newTab: ' (opens in a new tab)', fbMove: 'Move', fbMoveHelp: 'Drag it, or focus it and use the arrow keys', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
+      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fFree: 'Move freely', fDock: 'Full width at the bottom (for touch)', orient: 'Button layout', oRow: 'In a row', oCol: 'In a column', skipBar: 'Skip to action buttons', keyHelp: 'With a keyboard, press Alt+Shift+M (option+shift+M on a Mac) to jump to the action buttons. Press it again, or Esc, to go back to where you were.', fbShown: 'Action buttons shown for now', newTab: ' (opens in a new tab)', fbMove: 'Move', fbMoveHelp: 'Drag it, or focus it and use the arrow keys', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbBottom: 'Bottom', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
       other: '日本語', otherHref: '/', otherLang: 'ja', rules: 'Terms of use',
       disclaimer: 'Run personally by a public school teacher. Views here are not those of any employer.' };
 const sitemapHref = ja ? '/sitemap/' : '/en/sitemap/';
@@ -157,7 +157,7 @@ const groups = [
     </aside>
   )}
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="site-footer" tabindex="-1">
     <div class="wrap">
       <p>© <span lang="en">toi toi toi</span>　{t.disclaimer}</p>
       <ul>
@@ -181,6 +181,9 @@ const groups = [
       </button>
       <button type="button" class="fb-btn" id="fb-top">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"></path></svg><span>{t.fbTop}</span>
+      </button>
+      <button type="button" class="fb-btn" id="fb-bottom">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"></path></svg><span>{t.fbBottom}</span>
       </button>
       <a class="fb-btn" href={home}>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7M5 10v10h14V10"></path></svg><span>{t.fbHome}</span>
@@ -236,6 +239,10 @@ const groups = [
       document.getElementById('fb-top').addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
         var logo = document.querySelector('.logo'); if (logo) logo.focus({ preventScroll: true });
+      });
+      document.getElementById('fb-bottom').addEventListener('click', function () {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        var f = document.getElementById('site-footer'); if (f) f.focus({ preventScroll: true });
       });
       document.getElementById('fb-back').addEventListener('click', function () {
         var sameSite = document.referrer && document.referrer.indexOf(location.origin) === 0;
