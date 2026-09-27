@@ -18,7 +18,7 @@ export const MESSAGE = {
   en: {
     heading: 'On opening this site',
     lead: 'There are always children, students and adults whom technology can rescue.',
-    leadLines: ['There are always children, students', 'and adults', ' whom technology can rescue.'],
+    leadLines: ['There are always children, students and adults', 'whom technology can rescue.'],
     second: 'Whether or not someone knows these methods\ncan change the course of their life.',
     date: '2026-09',
     dateLabel: 'September 2026',

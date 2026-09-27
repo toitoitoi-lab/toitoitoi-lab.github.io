@@ -107,7 +107,7 @@ main { position: relative; z-index: 1; display: block; }
 .kicker::before { content: ''; width: 32px; height: 3px; background: var(--accent-fill); }
 .hero h1 { font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 1.18; letter-spacing: 0.01em; }
 .hero h1 em { font-style: normal; color: var(--accent-text); }
-.hero .lead { margin: 0; font-size: 1.2rem; color: var(--sub); max-width: 36em; }
+.hero .lead { word-break: auto-phrase; margin: 0; font-size: 1.2rem; color: var(--sub); max-width: 36em; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
 .hero-actions .btn { min-height: 60px; padding: 0 30px; font-size: 1.1rem; }
 .hero-aside { flex: 0 1 320px; display: flex; flex-direction: column; gap: 14px; }
