@@ -1,0 +1,115 @@
+---
+// 運営者ページ（メニュー・サイトマップには出さない。検索エンジンにも載せない）
+// パスワードの確認と数字の集計は GAS 側で行う。このページには秘密の情報は何も書かない。
+import Base from '../layouts/Base.astro';
+import { BACKEND_URL } from '../data/site';
+---
+<Base title="運営者ページ" noindex>
+  <div class="wrap page kanri" data-backend={BACKEND_URL}>
+    <h1>運営者ページ</h1>
+    {!BACKEND_URL && <div class="notice"><p>サイト用 GAS の URL がまだ設定されていません（src/data/site.ts の BACKEND_URL）。</p></div>}
+
+    <form class="kn-login" id="kn-login" hidden>
+      <label for="kn-pw">パスワード</label>
+      <input id="kn-pw" type="password" autocomplete="current-password" required />
+      <label class="kn-remember"><input type="checkbox" id="kn-remember" checked /><span>このブラウザで、問い合わせのお知らせを表示する<br /><small>操作ボタンに未対応の件数が出ます。自分だけが使う端末でのみ選んでください。このブラウザでの閲覧は数えなくなります。</small></span></label>
+      <p><button type="submit" class="btn btn-solid">見る</button></p>
+      <p class="kn-msg" id="kn-login-msg" role="alert"></p>
+    </form>
+
+    <div class="kn-dash" id="kn-dash" hidden>
+      <section class="kn-card kn-contact" aria-labelledby="kn-h-contact">
+        <h2 id="kn-h-contact">問い合わせ</h2>
+        <p class="kn-big"><span id="kn-open">0</span><small>件 未対応</small></p>
+        <p class="kn-sub">最新の受付：<span id="kn-latest">なし</span>　／　これまでの合計：<span id="kn-total">0</span>件</p>
+        <p><a class="btn btn-solid" id="kn-sheet" href="#" target="_blank" rel="noopener">スプレッドシートで内容を見る<span class="visually-hidden">（新しいタブで開きます）</span></a></p>
+        <p class="kn-sub">対応したら、スプレッドシートの「対応状況」を「対応済み」に変えてください。未対応の数が減ります。</p>
+      </section>
+
+      <section class="kn-card" aria-labelledby="kn-h-views">
+        <h2 id="kn-h-views">閲覧数</h2>
+        <dl class="kn-stats">
+          <div><dt>今日</dt><dd id="kn-v-today">0</dd></div>
+          <div><dt>7日間</dt><dd id="kn-v-week">0</dd></div>
+          <div><dt>30日間</dt><dd id="kn-v-month">0</dd></div>
+          <div><dt>合計</dt><dd id="kn-v-total">0</dd></div>
+        </dl>
+        <p class="kn-sub">ページが開かれた回数です（同じタブで同じページを開き直した分は数えません）。</p>
+        <div class="kn-tables">
+          <table>
+            <caption>この2週間</caption>
+            <thead><tr><th scope="col">日付</th><th scope="col">回数</th></tr></thead>
+            <tbody id="kn-daily"></tbody>
+          </table>
+          <table>
+            <caption>よく見られているページ（30日間）</caption>
+            <thead><tr><th scope="col">ページ</th><th scope="col">回数</th></tr></thead>
+            <tbody id="kn-top"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <p class="kn-actions">
+        <button type="button" class="btn" id="kn-reload">最新にする</button>
+        <button type="button" class="btn" id="kn-logout">ログアウト（お知らせも止める）</button>
+      </p>
+      <p class="kn-sub" id="kn-updated" aria-live="polite"></p>
+    </div>
+  </div>
+</Base>
+
+<script is:inline>
+(function () {
+  var root = document.querySelector('.kanri'), url = root.dataset.backend; if (!url) return;
+  var login = document.getElementById('kn-login'), dash = document.getElementById('kn-dash'), msg = document.getElementById('kn-login-msg');
+  var KEY = 't3-admin';
+  function get(k, s) { try { return (s ? sessionStorage : localStorage).getItem(k); } catch (e) { return null; } }
+  function set(k, v, s) { try { (s ? sessionStorage : localStorage).setItem(k, v); } catch (e) {} }
+  function del(k) { try { localStorage.removeItem(k); sessionStorage.removeItem(k); sessionStorage.removeItem('t3-admin-light'); } catch (e) {} }
+  function token() { return get(KEY) || get(KEY, true); }
+  function post(body) { return fetch(url, { method: 'POST', body: JSON.stringify(body) }).then(function (r) { return r.json(); }); }
+  function txt(id, v) { document.getElementById(id).textContent = String(v); }
+  function rows(id, list, a, b) {
+    var tb = document.getElementById(id); tb.innerHTML = '';
+    list.forEach(function (r) {
+      var tr = document.createElement('tr'), t1 = document.createElement('td'), t2 = document.createElement('td');
+      t1.textContent = r[a]; t2.textContent = r[b]; tr.appendChild(t1); tr.appendChild(t2); tb.appendChild(tr);
+    });
+  }
+  function render(d) {
+    txt('kn-open', d.open); txt('kn-latest', d.latest || 'なし'); txt('kn-total', d.totalContacts);
+    document.getElementById('kn-sheet').href = d.sheetUrl;
+    txt('kn-v-today', d.views.today); txt('kn-v-week', d.views.week); txt('kn-v-month', d.views.month); txt('kn-v-total', d.views.total);
+    rows('kn-daily', d.views.daily.slice().reverse(), 'day', 'n');
+    rows('kn-top', d.views.top, 'page', 'n');
+    txt('kn-updated', '更新：' + new Date().toLocaleString('ja-JP'));
+    set('t3-admin-light', JSON.stringify({ at: Date.now(), open: d.open }), true);
+    login.hidden = true; dash.hidden = false;
+  }
+  function showLogin(text) { dash.hidden = true; login.hidden = false; msg.textContent = text || ''; document.getElementById('kn-pw').focus(); }
+  function load() {
+    var t = token(); if (!t) { showLogin(); return; }
+    post({ action: 'status', token: t }).then(function (j) {
+      if (j.ok) render(j.data); else { if (j.expired) del(KEY); showLogin(j.error); }
+    }).catch(function () { showLogin('GAS につながりませんでした。'); });
+  }
+  login.addEventListener('submit', function (e) {
+    e.preventDefault(); msg.textContent = '確認しています…';
+    var pw = document.getElementById('kn-pw');
+    post({ action: 'login', pw: pw.value }).then(function (j) {
+      pw.value = '';
+      if (!j.ok) { msg.textContent = j.error; pw.focus(); return; }
+      if (document.getElementById('kn-remember').checked) set(KEY, j.token); else set(KEY, j.token, true);
+      render(j.data); var h = dash.querySelector('h2'); h.setAttribute('tabindex', '-1'); h.focus();
+    }).catch(function () { msg.textContent = 'GAS につながりませんでした。'; });
+  });
+  document.getElementById('kn-reload').addEventListener('click', load);
+  document.getElementById('kn-logout').addEventListener('click', function () {
+    var t = token(); del(KEY);
+    if (t) post({ action: 'logout', token: t }).catch(function () {});
+    var m = document.getElementById('fb-mail'); if (m) m.hidden = true;
+    showLogin('ログアウトしました。');
+  });
+  load();
+})();
+</script>

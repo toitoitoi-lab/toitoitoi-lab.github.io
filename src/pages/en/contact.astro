@@ -1,13 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
-import Soon from '../../components/Soon.astro';
+import ContactForm from '../../components/ContactForm.astro';
 ---
 <Base title="Contact" lang="en" current="contact">
-  <div class="wrap page prose">
+  <div class="wrap page prose contact-page">
     <Crumbs lang="en" items={[{ label: 'Home', href: '/en/' }, { label: 'Contact' }]} />
     <h1>Contact</h1>
-    <Soon lang="en" />
-    <div class="notice"><p><strong>This page is being prepared.</strong> A contact form is being prepared.</p></div>
+    <p class="lead-text">Questions about a difficulty, requests for training or talks, prior contact for using articles or materials, and feedback on the site are all welcome.</p>
+    <ContactForm lang="en" />
   </div>
 </Base>

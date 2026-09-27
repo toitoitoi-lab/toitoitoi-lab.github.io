@@ -168,7 +168,7 @@ export const SITEMAP_JA: MapGroup[] = [
       { label: 'トップページ', href: '/', ready: true },
       { label: 'このサイトについて', href: '/about/', ready: true },
       { label: '利用ルール', href: '/rules/', ready: true },
-      { label: 'お問い合わせ', href: '/contact/', ready: false },
+      { label: 'お問い合わせ', href: '/contact/', ready: true },
       { label: '英語版（English）', href: '/en/', ready: true },
     ],
   },
@@ -212,7 +212,7 @@ export const SITEMAP_EN: MapGroup[] = [
       { label: 'Home', href: '/en/', ready: true },
       { label: 'About this site', href: '/en/about/', ready: true },
       { label: 'Terms of use', href: '/en/rules/', ready: true },
-      { label: 'Contact', href: '/en/contact/', ready: false },
+      { label: 'Contact', href: '/en/contact/', ready: true },
       { label: '日本語サイト（Japanese）', href: '/', ready: true, lang: 'ja' },
     ],
   },
@@ -254,3 +254,7 @@ export function fmtDate(iso: string, lang: 'ja' | 'en' = 'ja') {
   const M = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   return `${d} ${M[m - 1]} ${y}`;
 }
+
+// サイト用 GAS（お問い合わせ・閲覧数・運営者ページ）の URL。
+// backend/README.md の手順でデプロイしたあと、…/exec で終わる URL をここに入れる。空のあいだはフォームは「準備中」になる。
+export const BACKEND_URL = '';

@@ -6,11 +6,11 @@ import '@fontsource/biz-udgothic/700.css';
 import '@fontsource/klee-one/400.css';
 import '@fontsource/klee-one/600.css';
 import '../styles/global.css';
-import { LINKS, SITE } from '../data/site';
+import { LINKS, SITE, BACKEND_URL } from '../data/site';
 import { TOGETHER } from '../data/message';
 
-interface Props { title?: string; description?: string; lang?: 'ja' | 'en'; current?: string }
-const { title, description, lang = 'ja', current = '' } = Astro.props;
+interface Props { title?: string; description?: string; lang?: 'ja' | 'en'; current?: string; noindex?: boolean }
+const { title, description, lang = 'ja', current = '', noindex = false } = Astro.props;
 const ja = lang === 'ja';
 const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${ja ? 'AT（支援技術／Assistive Technology）で学びの入口をひらく' : 'Assistive technology for learning'}`;
 const desc = description ?? (ja
@@ -60,12 +60,13 @@ const groups = [
 ];
 ---
 <!doctype html>
-<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal" data-float="right" data-orient="row">
+<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal" data-float="right" data-orient="row" data-backend={BACKEND_URL || undefined}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{pageTitle}</title>
   <meta name="description" content={desc} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="alternate" hreflang="ja" href={`${SITE.url}/`} />
   <link rel="alternate" hreflang="en" href={`${SITE.url}/en/`} />
@@ -194,6 +195,9 @@ const groups = [
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"></path><circle cx="16" cy="7" r="2"></circle><circle cx="10" cy="17" r="2"></circle></svg><span>{t.settings}</span>
       </button>
     </div>
+    <a class="fb-btn fb-mail" id="fb-mail" href="/kanri/" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg><span><span class="fb-mail-n">0</span><span class="visually-hidden">件の未対応の問い合わせ</span></span>
+    </a>
     <button type="button" class="fb-btn fb-fold" id="fb-fold" aria-expanded="true" aria-controls="fb-buttons" data-open={t.fbOpen} data-open-long={t.fbOpenLong} data-fold={t.fbFold}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ic-open" d="M8 12h8"></path><path class="ic-folded" d="M5 7h14M5 12h14M5 17h14"></path></svg><span class="fb-fold-label">{t.fbFold}</span>
     </button>
@@ -357,6 +361,36 @@ const groups = [
         if (!bar.contains(e.relatedTarget)) { bar.classList.remove('summoned'); bar.removeAttribute('aria-description'); }
       });
       applyFree(); setAnchor();
+      // ── 閲覧数と、運営者のブラウザだけに出す「問い合わせ」の印 ──
+      (function () {
+        var url = d.dataset.backend; if (!url) return;
+        var token = null; try { token = localStorage.getItem('t3-admin'); } catch (e) {}
+        if (!token) {
+          // 閲覧数：同じページは、このタブを開いているあいだ1回だけ数える。個人を特定する情報は送らない
+          var key = 't3-seen:' + location.pathname, seen = false;
+          try { seen = sessionStorage.getItem(key) === '1'; sessionStorage.setItem(key, '1'); } catch (e) {}
+          if (!seen && location.pathname.indexOf('/kanri/') < 0) {
+            var body = JSON.stringify({ action: 'hit', path: location.pathname });
+            try { if (!navigator.sendBeacon || !navigator.sendBeacon(url, body)) fetch(url, { method: 'POST', body: body, mode: 'no-cors', keepalive: true }); } catch (e) {}
+          }
+          return;
+        }
+        var mail = document.getElementById('fb-mail');
+        function show(n) {
+          if (!mail) return;
+          mail.hidden = !(n > 0);
+          mail.querySelector('.fb-mail-n').textContent = String(n);
+          mail.setAttribute('aria-label', '未対応の問い合わせ ' + n + '件（運営者ページを開く）');
+        }
+        var cached = null; try { cached = JSON.parse(sessionStorage.getItem('t3-admin-light') || 'null'); } catch (e) {}
+        if (cached && Date.now() - cached.at < 5 * 60 * 1000) { show(cached.open); return; }
+        fetch(url, { method: 'POST', body: JSON.stringify({ action: 'status', token: token, light: true }) })
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            if (j.ok) { show(j.data.open); try { sessionStorage.setItem('t3-admin-light', JSON.stringify({ at: Date.now(), open: j.data.open })); } catch (e) {} }
+            else if (j.expired) { try { localStorage.removeItem('t3-admin'); } catch (e) {} }
+          }).catch(function () {});
+      })();
       document.getElementById('settings-reset').addEventListener('click', function () {
         Object.keys(defaults).forEach(function (k) {
           d.dataset[k] = defaults[k];

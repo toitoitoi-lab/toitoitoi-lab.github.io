@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
-import Soon from '../components/Soon.astro';
+import ContactForm from '../components/ContactForm.astro';
 ---
-<Base title="お問い合わせ" current="contact">
-  <div class="wrap page prose">
+<Base title="お問い合わせ" lang="ja" current="contact">
+  <div class="wrap page prose contact-page">
     <Crumbs items={[{ label: 'トップ', href: '/' }, { label: 'お問い合わせ' }]} />
     <h1>お問い合わせ</h1>
-    <Soon />
-    <div class="notice"><p><strong>このページは準備中です。</strong>お問い合わせフォームを用意しています。</p></div>
+    <p class="lead-text">困りごとの相談、研修・講演のご依頼、記事や教材を使いたいときの事前連絡、サイトへのご意見を受けつけています。「こんなことを聞いてもいいのかな」ということも、どうぞ気軽に。</p>
+    <ContactForm lang="ja" />
   </div>
 </Base>
