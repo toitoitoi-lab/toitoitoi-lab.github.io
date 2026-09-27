@@ -37,14 +37,14 @@ const t = ja
       theme: '配色', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
       font: '文字の形', ud: 'すっきり（UDゴシック）', kyo: '学校で習う形（教科書体）',
       size: '文字の大きさ', m: '標準', l: '大', xl: '特大', space: '文字の間隔', normal: '標準', wide: 'ひろめ',
-      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fFree: '自由に動かす', fbMove: '動かす', fbMoveHelp: 'ドラッグするか、選んで矢印キーで動かせます', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
+      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fFree: '自由に動かす', fDock: '画面の下いっぱい（タッチ操作向け）', orient: '操作ボタンの並べ方', oRow: '横に並べる', oCol: '縦に並べる', skipBar: '操作ボタンへ移動', keyHelp: 'キーボードでは、Alt＋Shift＋M（Macは option＋shift＋M）で操作ボタンへ移動します。もう一度押すか Esc で、元の場所にもどります。', fbShown: '操作ボタンを一時的に表示しています', fbMove: '動かす', fbMoveHelp: 'ドラッグするか、選んで矢印キーで動かせます', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
       other: 'English', otherHref: '/en/', otherLang: 'en', rules: '利用ルール',
       disclaimer: '公立学校の教員が個人の活動として運営しています。所属機関の見解を示すものではありません。' }
   : { skipMain: 'Skip to main content', skipMap: 'Skip to sitemap', settings: 'Display', sitemap: 'Sitemap', close: 'Close display settings',
       theme: 'Colors', dark: 'Dark', light: 'Light', contrast: 'High contrast',
       font: 'Letter shapes', ud: 'Clear (UD Gothic)', kyo: 'As taught at school',
       size: 'Text size', m: 'Standard', l: 'Large', xl: 'Extra large', space: 'Spacing', normal: 'Standard', wide: 'Wide',
-      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fFree: 'Move freely', fbMove: 'Move', fbMoveHelp: 'Drag it, or focus it and use the arrow keys', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
+      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fFree: 'Move freely', fDock: 'Full width at the bottom (for touch)', orient: 'Button layout', oRow: 'In a row', oCol: 'In a column', skipBar: 'Skip to action buttons', keyHelp: 'With a keyboard, press Alt+Shift+M (option+shift+M on a Mac) to jump to the action buttons. Press it again, or Esc, to go back to where you were.', fbShown: 'Action buttons shown for now', fbMove: 'Move', fbMoveHelp: 'Drag it, or focus it and use the arrow keys', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
       other: '日本語', otherHref: '/', otherLang: 'ja', rules: 'Terms of use',
       disclaimer: 'Run personally by a public school teacher. Views here are not those of any employer.' };
 const sitemapHref = ja ? '/sitemap/' : '/en/sitemap/';
@@ -53,11 +53,12 @@ const groups = [
   { name: 'font', legend: t.font, opts: [['ud', t.ud], ['kyo', t.kyo]] },
   { name: 'size', legend: t.size, opts: [['m', t.m], ['l', t.l], ['xl', t.xl]] },
   { name: 'space', legend: t.space, opts: [['normal', t.normal], ['wide', t.wide]] },
-  { name: 'float', legend: t.float, opts: [['right', t.fRight], ['left', t.fLeft], ['free', t.fFree], ['hide', t.fHide]] },
+  { name: 'float', legend: t.float, opts: [['right', t.fRight], ['left', t.fLeft], ['free', t.fFree], ['dock', t.fDock], ['hide', t.fHide]] },
+  { name: 'orient', legend: t.orient, opts: [['row', t.oRow], ['col', t.oCol]] },
 ];
 ---
 <!doctype html>
-<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal" data-float="right">
+<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal" data-float="right" data-orient="row">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -80,6 +81,7 @@ const groups = [
       d.dataset.size = get('size', 'm');
       d.dataset.space = get('space', 'normal');
       d.dataset.float = get('float', 'right');
+      d.dataset.orient = get('orient', 'row');
       d.dataset.fold = get('fold', 'open');
     })();
   </script>
@@ -87,6 +89,7 @@ const groups = [
 <body>
   <a class="skip" href="#main">{t.skipMain}</a>
   <a class="skip" href={sitemapHref}>{t.skipMap}</a>
+  <a class="skip" href="#floatbar" id="skip-bar" aria-keyshortcuts="Alt+Shift+M">{t.skipBar}</a>
   <div class="fx" aria-hidden="true"></div>
 
   <header class="site-header">
@@ -133,6 +136,7 @@ const groups = [
         ))}
         <button class="btn" type="button" id="settings-reset">{t.reset}</button>
         <p class="note">{t.saved}</p>
+        <p class="note">{t.keyHelp}</p>
       </form>
     </section>
   </header>
@@ -166,7 +170,7 @@ const groups = [
     </div>
   </footer>
 
-  <nav class="floatbar" id="floatbar" aria-label={t.fbNav}>
+  <nav class="floatbar" id="floatbar" aria-label={t.fbNav} tabindex="-1" aria-keyshortcuts="Alt+Shift+M" data-shown={t.fbShown}>
     <button type="button" class="fb-btn fb-grip" id="fb-grip" aria-describedby="fb-grip-help">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"></path></svg><span>{t.fbMove}</span>
     </button>
@@ -197,9 +201,9 @@ const groups = [
       var toggle = document.getElementById('settings-toggle');
       var close = document.getElementById('settings-close');
       var form = document.getElementById('settings-form');
-      var defaults = { theme: 'dark', font: 'ud', size: 'm', space: 'normal', float: 'right' };
+      var defaults = { theme: 'dark', font: 'ud', size: 'm', space: 'normal', float: 'right', orient: 'row' };
       function sync() {
-        ['theme', 'font', 'size', 'space', 'float'].forEach(function (k) {
+        ['theme', 'font', 'size', 'space', 'float', 'orient'].forEach(function (k) {
           var el = form.querySelector('input[name="' + k + '"][value="' + d.dataset[k] + '"]');
           if (el) el.checked = true;
         });
@@ -216,7 +220,7 @@ const groups = [
         var t = e.target; if (!t || !t.name) return;
         d.dataset[t.name] = t.value;
         try { localStorage.setItem('t3-' + t.name, t.value); } catch (err) {}
-        if (t.name === 'float') applyFree();
+        if (t.name === 'float' || t.name === 'orient') applyFree();
       });
       // ── 操作ボタン（フローティング） ──
       var fold = document.getElementById('fb-fold');
@@ -270,6 +274,7 @@ const groups = [
       }
       var drag = null;
       grip.addEventListener('pointerdown', function (e) {
+        if (d.dataset.float === 'dock') return;
         e.preventDefault(); goFree();
         var r = bar.getBoundingClientRect();
         drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
@@ -286,10 +291,41 @@ const groups = [
         var step = e.shiftKey ? 64 : 16, dx = 0, dy = 0;
         if (e.key === 'ArrowLeft') dx = -step; else if (e.key === 'ArrowRight') dx = step;
         else if (e.key === 'ArrowUp') dy = -step; else if (e.key === 'ArrowDown') dy = step; else return;
+        if (d.dataset.float === 'dock') return;
         e.preventDefault(); goFree();
         var r = bar.getBoundingClientRect(); place(r.left + dx, r.top + dy, true);
       });
       window.addEventListener('resize', function () { if (d.dataset.float === 'free') applyFree(); });
+
+      // ── キーボードで操作ボタンへ移動（Alt/option＋Shift＋M）。もう一度か Esc で元の場所へ ──
+      var backTo = null;
+      function firstBtn() {
+        var list = bar.querySelectorAll('.fb-btn');
+        for (var i = 0; i < list.length; i++) { if (list[i].offsetParent !== null) return list[i]; }
+        return bar;
+      }
+      function toBar() {
+        if (!bar.contains(document.activeElement)) backTo = document.activeElement;
+        if (d.dataset.float === 'hide') { bar.classList.add('summoned'); bar.setAttribute('aria-description', bar.dataset.shown); }
+        firstBtn().focus();
+      }
+      function leaveBar() {
+        var el = backTo; backTo = null;
+        if (el && el !== document.body && document.contains(el)) el.focus();
+        else { var m = document.getElementById('main'); if (m) m.focus(); }
+      }
+      document.addEventListener('keydown', function (e) {
+        if (e.altKey && e.shiftKey && !e.ctrlKey && !e.metaKey && e.code === 'KeyM') {
+          e.preventDefault();
+          if (bar.contains(document.activeElement)) leaveBar(); else toBar();
+        } else if (e.key === 'Escape' && bar.contains(document.activeElement) && panel.hidden) {
+          leaveBar();
+        }
+      });
+      document.getElementById('skip-bar').addEventListener('click', function (e) { e.preventDefault(); toBar(); });
+      bar.addEventListener('focusout', function (e) {
+        if (!bar.contains(e.relatedTarget)) { bar.classList.remove('summoned'); bar.removeAttribute('aria-description'); }
+      });
       applyFree();
       document.getElementById('settings-reset').addEventListener('click', function () {
         Object.keys(defaults).forEach(function (k) {
