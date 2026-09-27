@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import { LINKS } from '../../data/site';
+---
+<Base title="Sitemap" lang="en" current="sitemap">
+  <div class="wrap page">
+    <Crumbs lang="en" items={[{ label: 'Home', href: '/en/' }, { label: 'Sitemap' }]} />
+    <h1>Sitemap</h1>
+    <p>The English site is being prepared. Most pages are currently in Japanese only.</p>
+    <h2>English pages</h2>
+    <ul class="map-list">
+      <li><a href="/en/">Home</a></li>
+      <li><a href="/en/coming-soon/">Coming soon</a></li>
+    </ul>
+    <h2>Other</h2>
+    <ul class="map-list">
+      <li><a href="/sitemap/" lang="ja" hreflang="ja">サイトマップ（日本語）</a></li>
+      <li><a href={LINKS.youtube}>YouTube (external)</a></li>
+      <li><a href={LINKS.github}>GitHub (external)</a></li>
+    </ul>
+  </div>
+</Base>

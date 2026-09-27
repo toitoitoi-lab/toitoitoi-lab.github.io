@@ -1,0 +1,188 @@
+---
+import '@fontsource/andika/400.css';
+import '@fontsource/andika/700.css';
+import '@fontsource/biz-udgothic/400.css';
+import '@fontsource/biz-udgothic/700.css';
+import '@fontsource/klee-one/400.css';
+import '@fontsource/klee-one/600.css';
+import '../styles/global.css';
+import { LINKS, SITE } from '../data/site';
+
+interface Props { title?: string; description?: string; lang?: 'ja' | 'en'; current?: string }
+const { title, description, lang = 'ja', current = '' } = Astro.props;
+const ja = lang === 'ja';
+const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${ja ? 'AT（支援技術）で学びの入口をひらく' : 'Assistive technology for learning'}`;
+const desc = description ?? (ja
+  ? '読む・書く・聞く・伝える。困りごとに合った道具（AT：支援技術）と、その使い方を紹介します。'
+  : 'Assistive technology for reading, writing, listening and communicating.');
+const home = ja ? '/' : '/en/';
+const nav = ja
+  ? [
+      { href: '/#komari', label: '困りごと', key: 'komari' },
+      { href: '/#tachiba', label: '立場', key: 'tachiba' },
+      { href: '/articles/', label: '記事', key: 'articles' },
+      { href: '/talks/', label: '研修・講演', key: 'talks' },
+      { href: '/about/', label: 'このサイトについて', key: 'about' },
+    ]
+  : [
+      { href: '/en/#komari', label: 'Needs', key: 'komari' },
+      { href: '/en/#tachiba', label: 'Who you are', key: 'tachiba' },
+      { href: '/en/coming-soon/', label: 'About', key: 'about' },
+    ];
+const t = ja
+  ? { skipMain: '本文へ移動', skipMap: 'サイトマップへ移動', settings: '表示設定', sitemap: 'サイトマップ', close: '表示設定を閉じる',
+      theme: '配色', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
+      font: '文字の形', ud: 'すっきり（UDゴシック）', kyo: '学校で習う形（教科書体）',
+      size: '文字の大きさ', m: '標準', l: '大', xl: '特大', space: '文字の間隔', normal: '標準', wide: 'ひろめ',
+      reset: '最初の設定にもどす', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
+      other: 'English', otherHref: '/en/', otherLang: 'en', rules: '利用ルール',
+      disclaimer: '公立学校の教員が個人の活動として運営しています。所属機関の見解を示すものではありません。' }
+  : { skipMain: 'Skip to main content', skipMap: 'Skip to sitemap', settings: 'Display', sitemap: 'Sitemap', close: 'Close display settings',
+      theme: 'Colors', dark: 'Dark', light: 'Light', contrast: 'High contrast',
+      font: 'Letter shapes', ud: 'Clear (UD Gothic)', kyo: 'As taught at school',
+      size: 'Text size', m: 'Standard', l: 'Large', xl: 'Extra large', space: 'Spacing', normal: 'Standard', wide: 'Wide',
+      reset: 'Reset to defaults', saved: 'Your choices are saved in this browser and used on every page.',
+      other: '日本語', otherHref: '/', otherLang: 'ja', rules: 'Terms of use',
+      disclaimer: 'Run personally by a public school teacher. Views here are not those of any employer.' };
+const sitemapHref = ja ? '/sitemap/' : '/en/sitemap/';
+const groups = [
+  { name: 'theme', legend: t.theme, opts: [['dark', t.dark], ['light', t.light], ['contrast', t.contrast]] },
+  { name: 'font', legend: t.font, opts: [['ud', t.ud], ['kyo', t.kyo]] },
+  { name: 'size', legend: t.size, opts: [['m', t.m], ['l', t.l], ['xl', t.xl]] },
+  { name: 'space', legend: t.space, opts: [['normal', t.normal], ['wide', t.wide]] },
+];
+---
+<!doctype html>
+<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={desc} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="alternate" hreflang="ja" href={`${SITE.url}/`} />
+  <link rel="alternate" hreflang="en" href={`${SITE.url}/en/`} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={desc} />
+  <meta property="og:type" content="website" />
+  <script is:inline>
+    (function () {
+      var d = document.documentElement;
+      function get(k, def) { try { return localStorage.getItem('t3-' + k) || def; } catch (e) { return def; } }
+      var auto = 'dark';
+      try { if (matchMedia('(prefers-contrast: more)').matches || matchMedia('(forced-colors: active)').matches) auto = 'contrast'; } catch (e) {}
+      d.dataset.theme = get('theme', auto);
+      d.dataset.font = get('font', 'ud');
+      d.dataset.size = get('size', 'm');
+      d.dataset.space = get('space', 'normal');
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">{t.skipMain}</a>
+  <a class="skip" href={sitemapHref}>{t.skipMap}</a>
+  <div class="fx" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href={home}>
+        <span class="logo-mark" aria-hidden="true">t3</span>
+        <span class="logo-text" lang="en">toi toi toi</span>
+      </a>
+      <nav class="main-nav" aria-label={ja ? 'メイン' : 'Main'}>
+        <ul>
+          {nav.map((n) => <li><a href={n.href} aria-current={current === n.key ? 'page' : undefined}>{n.label}</a></li>)}
+          <li><a href={t.otherHref} lang={t.otherLang} hreflang={t.otherLang}>{t.other}</a></li>
+        </ul>
+      </nav>
+      <div class="header-tools">
+        <button class="btn" type="button" id="settings-toggle" aria-expanded="false" aria-controls="settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"></path><circle cx="16" cy="7" r="2"></circle><circle cx="10" cy="17" r="2"></circle></svg>
+          {t.settings}
+        </button>
+        <a class="btn btn-accent" href={sitemapHref} aria-current={current === 'sitemap' ? 'page' : undefined}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h16"></path></svg>
+          {t.sitemap}
+        </a>
+      </div>
+    </div>
+
+    <section class="settings" id="settings" aria-labelledby="settings-title" hidden>
+      <div class="settings-head">
+        <h2 id="settings-title">{t.settings}</h2>
+        <button class="icon-btn" type="button" id="settings-close" aria-label={t.close}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+      <form id="settings-form">
+        {groups.map((g) => (
+          <fieldset>
+            <legend>{g.legend}</legend>
+            <div class="opts">
+              {g.opts.map(([v, label]) => (
+                <label><input type="radio" name={g.name} value={v} /><span>{label}</span></label>
+              ))}
+            </div>
+          </fieldset>
+        ))}
+        <button class="btn" type="button" id="settings-reset">{t.reset}</button>
+        <p class="note">{t.saved}</p>
+      </form>
+    </section>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>© <span lang="en">toi toi toi</span>　{t.disclaimer}</p>
+      <ul>
+        <li><a href={ja ? '/rules/' : '/en/coming-soon/'}>{t.rules}</a></li>
+        <li><a href={sitemapHref}>{t.sitemap}</a></li>
+        <li><a href={LINKS.youtube} lang="en">YouTube</a></li>
+        <li><a href={LINKS.note} lang="en">note</a></li>
+        <li><a href={LINKS.github} lang="en">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script is:inline>
+    (function () {
+      var d = document.documentElement;
+      var panel = document.getElementById('settings');
+      var toggle = document.getElementById('settings-toggle');
+      var close = document.getElementById('settings-close');
+      var form = document.getElementById('settings-form');
+      var defaults = { theme: 'dark', font: 'ud', size: 'm', space: 'normal' };
+      function sync() {
+        ['theme', 'font', 'size', 'space'].forEach(function (k) {
+          var el = form.querySelector('input[name="' + k + '"][value="' + d.dataset[k] + '"]');
+          if (el) el.checked = true;
+        });
+      }
+      function open(show) {
+        panel.hidden = !show;
+        toggle.setAttribute('aria-expanded', String(show));
+        if (show) { sync(); var c = form.querySelector('input:checked'); if (c) c.focus(); } else { toggle.focus(); }
+      }
+      toggle.addEventListener('click', function () { open(panel.hidden); });
+      close.addEventListener('click', function () { open(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) open(false); });
+      form.addEventListener('change', function (e) {
+        var t = e.target; if (!t || !t.name) return;
+        d.dataset[t.name] = t.value;
+        try { localStorage.setItem('t3-' + t.name, t.value); } catch (err) {}
+      });
+      document.getElementById('settings-reset').addEventListener('click', function () {
+        Object.keys(defaults).forEach(function (k) {
+          d.dataset[k] = defaults[k];
+          try { localStorage.removeItem('t3-' + k); } catch (err) {}
+        });
+        sync();
+      });
+    })();
+  </script>
+</body>
+</html>

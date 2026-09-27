@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Soon from '../components/Soon.astro';
+---
+<Base title="お問い合わせ">
+  <div class="wrap page prose">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: 'お問い合わせ' }]} />
+    <h1>お問い合わせ</h1>
+    <Soon />
+    <div class="notice"><p><strong>このページは準備中です。</strong>お問い合わせフォームを用意しています。</p></div>
+  </div>
+</Base>

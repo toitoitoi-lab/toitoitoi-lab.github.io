@@ -1,0 +1,84 @@
+---
+import Illust from './Illust.astro';
+import Soon from './Soon.astro';
+import { KOMARI, TACHIBA } from '../data/site';
+interface Props { lang: 'ja' | 'en' }
+const { lang } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const hrefK = (slug: string) => (ja ? `/komari/${slug}/` : '/en/coming-soon/');
+const hrefT = (slug: string) => (ja ? `/tachiba/${slug}/` : '/en/coming-soon/');
+---
+<div class="wrap">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-main">
+      <p class="kicker up" lang="en">assistive tech lab</p>
+      {ja
+        ? <h1 id="hero-title">道具ひとつで、<br />学びの<em>入口</em>は<br />ひらく。</h1>
+        : <h1 id="hero-title">One tool can open<br />the <em>door</em> to learning.</h1>}
+      <p class="lead">
+        {ja
+          ? '読む・書く・聞く・伝える。困りごとに合った道具（AT：支援技術）と、その使い方を。先生にも、本人にも、家族にも届くかたちで。'
+          : 'Reading, writing, listening, communicating. Tools that fit each need, and how to use them — for teachers, learners and families.'}
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-solid" href={`${base}/#komari`}>{ja ? '困りごとから探す' : 'Find by need'}</a>
+        <a class="btn" href={ja ? '/about/' : '/en/coming-soon/'}>{ja ? 'このサイトについて' : 'About this site'}</a>
+      </div>
+    </div>
+    <aside class="hero-aside" aria-label={ja ? 'このサイトの工夫' : 'How this site adapts'}>
+      <p class="label up" lang="en">made to be chosen</p>
+      <dl>
+        <div><dt>3</dt><dd>{ja ? '配色を選べる' : 'color themes'}</dd></div>
+        <div><dt>2</dt><dd>{ja ? '文字の形を選べる' : 'letter styles'}</dd></div>
+        <div><dt>3</dt><dd>{ja ? '文字の大きさを選べる' : 'text sizes'}</dd></div>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="section" id="komari" aria-labelledby="h-komari">
+    <div class="section-head">
+      <h2 id="h-komari">{ja ? '困りごとから探す' : 'Find by need'}</h2>
+      <p>{ja ? '近いものを選んでください。どのページにも「先生へ」「本人・家族へ」「つくる」の入口を用意します。' : 'Choose the one closest to you.'}</p>
+    </div>
+    <ul class="grid">
+      {KOMARI.map((k) => (
+        <li>
+          <a class="card" href={hrefK(k.slug)}>
+            <div class={`card-art stage-${k.stage}`}><Illust shapes={k.shapes} /></div>
+            <div class="card-body">
+              <span class="card-title-row">
+                <span class="card-title">{ja ? k.ja.title : k.en.title}</span>
+                {k.ready
+                  ? <svg class="card-arrow" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                  : <Soon lang={lang} />}
+              </span>
+              <span class="card-sub">{ja ? k.ja.examples : k.en.examples}</span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section" id="tachiba" aria-labelledby="h-tachiba">
+    <div class="section-head">
+      <h2 id="h-tachiba">{ja ? '立場から探す' : 'Find by who you are'}</h2>
+    </div>
+    <ul class="grid">
+      {TACHIBA.map((t) => (
+        <li>
+          <a class="card card-row" href={hrefT(t.slug)}>
+            <div class={`art-sm stage-${t.stage}`}><Illust shapes={t.shapes} /></div>
+            <span class={`tag up tone-${t.tagTone}`} lang="en">{t.tag}</span>
+            <span class="card-title-row">
+              <span class="card-title">{ja ? t.ja.title : t.en.title}</span>
+              {!t.ready && <Soon lang={lang} />}
+            </span>
+            <span class="card-sub">{ja ? t.ja.text : t.en.text}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</div>

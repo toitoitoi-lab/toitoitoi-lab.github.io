@@ -1,0 +1,8 @@
+---
+import type { Shape } from '../data/site';
+interface Props { shapes: Shape[] }
+const { shapes } = Astro.props;
+---
+<svg class="il" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+  {shapes.map((s) => <path class={`${s.k} c-${s.c}`} d={s.d} stroke-width={s.w} />)}
+</svg>

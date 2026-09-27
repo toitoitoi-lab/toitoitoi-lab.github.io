@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Soon from '../components/Soon.astro';
+---
+<Base title="研修・講演について" current="talks">
+  <div class="wrap page prose">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '研修・講演について' }]} />
+    <h1>研修・講演について</h1>
+    <Soon />
+    <div class="notice">
+      <p><strong>このページは準備中です。</strong></p>
+      <p>教員研修、児童生徒向けのワークショップ、オンラインでの講演などについて、このページでご案内する予定です。</p>
+    </div>
+  </div>
+</Base>

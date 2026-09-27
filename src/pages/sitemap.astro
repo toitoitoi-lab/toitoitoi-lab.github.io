@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Soon from '../components/Soon.astro';
+import { SITEMAP_JA } from '../data/site';
+---
+<Base title="サイトマップ" current="sitemap">
+  <div class="wrap page">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: 'サイトマップ' }]} />
+    <h1>サイトマップ</h1>
+    <p>このサイトのすべてのページを、見出しとリンクだけで並べています。表示設定はこのページにもそのまま反映されます。</p>
+    {SITEMAP_JA.map((g) => (
+      <section aria-labelledby={`map-${g.heading}`}>
+        <h2 id={`map-${g.heading}`}>{g.heading}</h2>
+        <ul class="map-list">
+          {g.links.map((l) => (
+            <li><a href={l.href}>{l.label}</a>{!l.ready && <Soon />}</li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>

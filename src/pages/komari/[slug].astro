@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import Illust from '../../components/Illust.astro';
+import Soon from '../../components/Soon.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import { KOMARI, TACHIBA } from '../../data/site';
+export function getStaticPaths() {
+  return KOMARI.map((k) => ({ params: { slug: k.slug }, props: { k } }));
+}
+const { k } = Astro.props;
+---
+<Base title={k.ja.title} current="komari" description={`${k.ja.title}の困りごとに合う道具（AT）と使い方：${k.ja.examples}`}>
+  <div class="wrap page">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '困りごとから探す', href: '/#komari' }, { label: k.ja.title }]} />
+    <div class="page-head">
+      <div class={`art-sm stage-${k.stage}`}><Illust shapes={k.shapes} /></div>
+      <div>
+        <h1>{k.ja.title}</h1>
+        {!k.ready && <Soon />}
+      </div>
+    </div>
+    <p>{k.ja.examples}</p>
+    {!k.ready && (
+      <div class="notice">
+        <p><strong>このページは準備中です。</strong>次の内容を順に公開していきます。</p>
+        <ul>
+          {TACHIBA.map((t) => <li>{t.ja.title}：{t.ja.text}</li>)}
+        </ul>
+      </div>
+    )}
+    <p><a href="/#komari">困りごとの一覧にもどる</a></p>
+  </div>
+</Base>

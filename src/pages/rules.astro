@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Soon from '../components/Soon.astro';
+---
+<Base title="利用ルール">
+  <div class="wrap page prose">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '利用ルール' }]} />
+    <h1>利用ルール</h1>
+    <Soon />
+    <div class="notice">
+      <p><strong>このページは準備中です。</strong></p>
+      <p>記事や教材を授業・研修などで使っていただく前に、事前にご連絡いただく形を予定しています。連絡の方法とあわせて、このページでご案内します。</p>
+    </div>
+    <h2>決まっていること</h2>
+    <ul>
+      <li>記事・教材の著作権は運営者に帰属します。</li>
+      <li>GitHub で公開しているプログラムのコードは、各リポジトリに書かれたライセンス（MIT ライセンス）に従って自由に使えます。</li>
+    </ul>
+  </div>
+</Base>

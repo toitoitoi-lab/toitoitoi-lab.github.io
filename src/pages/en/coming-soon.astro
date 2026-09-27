@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import Soon from '../../components/Soon.astro';
+---
+<Base title="Coming soon" lang="en">
+  <div class="wrap page prose">
+    <Crumbs lang="en" items={[{ label: 'Home', href: '/en/' }, { label: 'Coming soon' }]} />
+    <h1>Coming soon</h1>
+    <Soon lang="en" />
+    <div class="notice">
+      <p><strong>This page is being prepared.</strong> English versions will be added step by step. The <a href="/" lang="ja" hreflang="ja">Japanese site</a> is updated first.</p>
+    </div>
+  </div>
+</Base>

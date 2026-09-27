@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const posts = await getCollection('articles', ({ data }) => !data.draft);
+  return posts.map((p) => ({ params: { slug: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+const { Content } = await render(p);
+const d = p.data.date;
+---
+<Base title={p.data.title} description={p.data.summary} current="articles">
+  <article class="wrap page prose">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '記事一覧', href: '/articles/' }, { label: p.data.title }]} />
+    <h1>{p.data.title}</h1>
+    <p><time datetime={d.toISOString().slice(0, 10)}>{`${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`}</time></p>
+    <Content />
+  </article>
+</Base>

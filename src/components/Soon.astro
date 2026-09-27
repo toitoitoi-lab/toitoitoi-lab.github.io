@@ -1,0 +1,5 @@
+---
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+---
+<span class="soon">{lang === 'en' ? 'Coming soon' : '準備中'}</span>
