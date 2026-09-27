@@ -34,14 +34,14 @@ const t = ja
       theme: '配色', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
       font: '文字の形', ud: 'すっきり（UDゴシック）', kyo: '学校で習う形（教科書体）',
       size: '文字の大きさ', m: '標準', l: '大', xl: '特大', space: '文字の間隔', normal: '標準', wide: 'ひろめ',
-      reset: '最初の設定にもどす', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
+      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
       other: 'English', otherHref: '/en/', otherLang: 'en', rules: '利用ルール',
       disclaimer: '公立学校の教員が個人の活動として運営しています。所属機関の見解を示すものではありません。' }
   : { skipMain: 'Skip to main content', skipMap: 'Skip to sitemap', settings: 'Display', sitemap: 'Sitemap', close: 'Close display settings',
       theme: 'Colors', dark: 'Dark', light: 'Light', contrast: 'High contrast',
       font: 'Letter shapes', ud: 'Clear (UD Gothic)', kyo: 'As taught at school',
       size: 'Text size', m: 'Standard', l: 'Large', xl: 'Extra large', space: 'Spacing', normal: 'Standard', wide: 'Wide',
-      reset: 'Reset to defaults', saved: 'Your choices are saved in this browser and used on every page.',
+      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
       other: '日本語', otherHref: '/', otherLang: 'ja', rules: 'Terms of use',
       disclaimer: 'Run personally by a public school teacher. Views here are not those of any employer.' };
 const sitemapHref = ja ? '/sitemap/' : '/en/sitemap/';
@@ -50,10 +50,11 @@ const groups = [
   { name: 'font', legend: t.font, opts: [['ud', t.ud], ['kyo', t.kyo]] },
   { name: 'size', legend: t.size, opts: [['m', t.m], ['l', t.l], ['xl', t.xl]] },
   { name: 'space', legend: t.space, opts: [['normal', t.normal], ['wide', t.wide]] },
+  { name: 'float', legend: t.float, opts: [['right', t.fRight], ['left', t.fLeft], ['hide', t.fHide]] },
 ];
 ---
 <!doctype html>
-<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal">
+<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal" data-float="right">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -75,6 +76,8 @@ const groups = [
       d.dataset.font = get('font', 'ud');
       d.dataset.size = get('size', 'm');
       d.dataset.space = get('space', 'normal');
+      d.dataset.float = get('float', 'right');
+      d.dataset.fold = get('fold', 'open');
     })();
   </script>
 </head>
@@ -148,6 +151,26 @@ const groups = [
     </div>
   </footer>
 
+  <nav class="floatbar" id="floatbar" aria-label={t.fbNav}>
+    <div class="fb-buttons" id="fb-buttons">
+      <button type="button" class="fb-btn" id="fb-back">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg><span>{t.fbBack}</span>
+      </button>
+      <button type="button" class="fb-btn" id="fb-top">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"></path></svg><span>{t.fbTop}</span>
+      </button>
+      <a class="fb-btn" href={home}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7M5 10v10h14V10"></path></svg><span>{t.fbHome}</span>
+      </a>
+      <button type="button" class="fb-btn" id="fb-settings" aria-controls="settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"></path><circle cx="16" cy="7" r="2"></circle><circle cx="10" cy="17" r="2"></circle></svg><span>{t.settings}</span>
+      </button>
+    </div>
+    <button type="button" class="fb-btn fb-fold" id="fb-fold" aria-expanded="true" aria-controls="fb-buttons" data-open={t.fbOpen} data-fold={t.fbFold}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ic-open" d="M8 12h8"></path><path class="ic-folded" d="M5 7h14M5 12h14M5 17h14"></path></svg><span class="fb-fold-label">{t.fbFold}</span>
+    </button>
+  </nav>
+
   <script is:inline>
     (function () {
       var d = document.documentElement;
@@ -155,9 +178,9 @@ const groups = [
       var toggle = document.getElementById('settings-toggle');
       var close = document.getElementById('settings-close');
       var form = document.getElementById('settings-form');
-      var defaults = { theme: 'dark', font: 'ud', size: 'm', space: 'normal' };
+      var defaults = { theme: 'dark', font: 'ud', size: 'm', space: 'normal', float: 'right' };
       function sync() {
-        ['theme', 'font', 'size', 'space'].forEach(function (k) {
+        ['theme', 'font', 'size', 'space', 'float'].forEach(function (k) {
           var el = form.querySelector('input[name="' + k + '"][value="' + d.dataset[k] + '"]');
           if (el) el.checked = true;
         });
@@ -175,6 +198,28 @@ const groups = [
         d.dataset[t.name] = t.value;
         try { localStorage.setItem('t3-' + t.name, t.value); } catch (err) {}
       });
+      // ── 操作ボタン（フローティング） ──
+      var fold = document.getElementById('fb-fold');
+      function setFold(state) {
+        d.dataset.fold = state;
+        var open = state !== 'folded';
+        fold.setAttribute('aria-expanded', String(open));
+        fold.querySelector('.fb-fold-label').textContent = open ? fold.dataset.fold : fold.dataset.open;
+        try { localStorage.setItem('t3-fold', state); } catch (e) {}
+      }
+      setFold(d.dataset.fold === 'folded' ? 'folded' : 'open');
+      fold.addEventListener('click', function () { setFold(d.dataset.fold === 'folded' ? 'open' : 'folded'); });
+      document.getElementById('fb-top').addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        var logo = document.querySelector('.logo'); if (logo) logo.focus({ preventScroll: true });
+      });
+      document.getElementById('fb-back').addEventListener('click', function () {
+        var sameSite = document.referrer && document.referrer.indexOf(location.origin) === 0;
+        if (sameSite && history.length > 1) { history.back(); return; }
+        var crumbs = document.querySelectorAll('.breadcrumb a');
+        location.href = crumbs.length ? crumbs[crumbs.length - 1].href : (document.documentElement.lang === 'en' ? '/en/' : '/');
+      });
+      document.getElementById('fb-settings').addEventListener('click', function () { open(true); });
       document.getElementById('settings-reset').addEventListener('click', function () {
         Object.keys(defaults).forEach(function (k) {
           d.dataset[k] = defaults[k];
