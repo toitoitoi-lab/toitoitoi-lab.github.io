@@ -98,7 +98,7 @@ export const CONTENT_EN: Record<string, Content> = {
       },
     ],
     points: {
-      sensei: 'Listening with text-to-speech is still learning the content. Agree with the student and family how it can be used for tests and assignments, and record it in the individual plan or as a reasonable accommodation so it carries over to the next year.',
+      sensei: 'Listening with text-to-speech is still learning the content. Agree with the student and family how it can be used for tests and assignments, and record it in the student\'s individual support plan (Japanese schools keep one for each learner with special needs) or as a reasonable accommodation so it carries over to the next year.',
       honnin: 'Try just one method first, and keep the one that felt easiest. What feels easy is different for everyone.',
       tsukuru: 'Combine read-aloud with highlighting and let users change the speed; more people will be able to use it.',
     },

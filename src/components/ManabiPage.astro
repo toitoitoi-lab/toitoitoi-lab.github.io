@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import Crumbs from './Crumbs.astro';
 import Soon from './Soon.astro';
 import KotsuList from './KotsuList.astro';
-import { KYOKA } from '../data/manabi';
+import { KYOKA, KYOKA_SYSTEM_EN } from '../data/manabi';
 interface Props { lang?: 'ja' | 'en' }
 const { lang = 'ja' } = Astro.props;
 const ja = lang === 'ja';
@@ -38,13 +38,15 @@ const T = ja
     <section id="kyoka" aria-labelledby="h-kyoka" class="manabi-sec">
       <h2 id="h-kyoka">{T.kyoka}</h2>
       <p>{T.kyokaLead}</p>
+      {!ja && <div class="kyoka-system">{KYOKA_SYSTEM_EN.map((p) => <p>{p}</p>)}</div>}
       <ul class="kyoka-detail">
         {KYOKA.map((k) => (
           <li id={`kyoka-${k.slug}`}>
             <span class={`kyoka-glyph stage-${k.stage}`} aria-hidden="true">{ja ? k.glyph : (k.en.glyph ?? k.glyph)}</span>
             <div>
-              <h3>{ja ? k.ja.title : k.en.title}</h3>
+              <h3>{ja ? k.ja.title : k.en.title}{!ja && k.en.local && <span class="kyoka-local" lang="ja-Latn">{k.en.local}</span>}</h3>
               <p>{ja ? k.ja.text : k.en.text}</p>
+              {!ja && k.en.note && <p class="kyoka-note"><span class="kyoka-note-label">In Japan</span>{k.en.note}</p>}
               {!k.ready && <p class="kyoka-soon"><Soon lang={lang} /> <span>{T.soonApps}</span></p>}
             </div>
           </li>

@@ -167,7 +167,7 @@ export const SITEMAP_JA: MapGroup[] = [
     links: [
       { label: 'トップページ', href: '/', ready: true },
       { label: 'このサイトについて', href: '/about/', ready: true },
-      { label: '利用ルール', href: '/rules/', ready: false },
+      { label: '利用ルール', href: '/rules/', ready: true },
       { label: 'お問い合わせ', href: '/contact/', ready: false },
       { label: '英語版（English）', href: '/en/', ready: true },
     ],
@@ -186,7 +186,7 @@ export const SITEMAP_JA: MapGroup[] = [
     id: 'manabi', heading: '教科と学び方', href: '/manabi/', icon: 'manabi',
     desc: '教科の勉強を助けるアプリと、学びやすくなるコツ',
     links: [
-      { label: '教科から探す', note: '国語・算数/数学・英語・理科・社会・情報', href: '/manabi/#kyoka', ready: false },
+      { label: '教科から探す', note: '国語・算数/数学・外国語（英語）・理科・社会・情報', href: '/manabi/#kyoka', ready: false },
       { label: '学び方のコツ', note: '覚える・集中する・まとめる など', href: '/manabi/#kotsu', ready: false },
     ],
   },
@@ -211,7 +211,7 @@ export const SITEMAP_EN: MapGroup[] = [
     links: [
       { label: 'Home', href: '/en/', ready: true },
       { label: 'About this site', href: '/en/about/', ready: true },
-      { label: 'Terms of use', href: '/en/rules/', ready: false },
+      { label: 'Terms of use', href: '/en/rules/', ready: true },
       { label: 'Contact', href: '/en/contact/', ready: false },
       { label: '日本語サイト（Japanese）', href: '/', ready: true, lang: 'ja' },
     ],
@@ -230,7 +230,7 @@ export const SITEMAP_EN: MapGroup[] = [
     id: 'manabi', heading: 'Subjects & ways of learning', href: '/en/manabi/', icon: 'manabi',
     desc: 'Apps for each subject, and tips that make learning easier',
     links: [
-      { label: 'Find by subject', note: 'Japanese, maths, English, science, social studies, computing', href: '/en/manabi/#kyoka', ready: false },
+      { label: 'Find by subject', note: 'Japanese language, mathematics, foreign language (English), science, social studies, informatics', href: '/en/manabi/#kyoka', ready: false },
       { label: 'Ways of learning', note: 'Remembering, focusing, organising and more', href: '/en/manabi/#kotsu', ready: false },
     ],
   },

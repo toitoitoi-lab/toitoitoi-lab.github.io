@@ -1,13 +1,143 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
-import Soon from '../../components/Soon.astro';
+const updated = '2026-09-28';
 ---
-<Base title="Terms of use" lang="en" current="rules">
-  <div class="wrap page prose">
+<Base title="Terms of use" lang="en" current="rules" description="Rules for using the articles, materials and apps on toi toi toi: copyright, personal information, permission from your workplace, and limits of responsibility.">
+  <div class="wrap page prose rules">
     <Crumbs lang="en" items={[{ label: 'Home', href: '/en/' }, { label: 'Terms of use' }]} />
     <h1>Terms of use</h1>
-    <Soon lang="en" />
-    <div class="notice"><p><strong>This page is being prepared.</strong> The terms of use are being prepared. We plan to ask you to contact us before using articles or materials in lessons or training. Program code on GitHub is available under the MIT License stated in each repository.</p></div>
+    <p class="rules-date">Effective and last updated: <time datetime={updated}>28 September 2026</time></p>
+    <p class="notice-inline">This is a translation for reference. If it differs from the <a href="/rules/" lang="ja">Japanese version</a>, the Japanese version applies.</p>
+
+    <div class="rules-summary">
+      <h2 id="summary">In short</h2>
+      <ul>
+        <li><strong>Use it for learning.</strong> Use in lessons and at home, and quotation with the source shown, are welcome.</li>
+        <li><strong>Never enter or publish information about real students.</strong> Use only fictional data in the apps.</li>
+        <li><strong>At work, follow your workplace's rules.</strong> Where needed, get permission from your head of school or manager.</li>
+        <li><strong>Respect the author's intent.</strong> Do not quote out of context to change the meaning, and do not republish for profit.</li>
+        <li><strong>You decide whether to use something, and you are responsible for the result.</strong></li>
+      </ul>
+      <p>Please read the details below. By using this site, you agree to these terms.</p>
+    </div>
+
+    <nav class="toc" aria-label="On this page">
+      <ol>
+        <li><a href="#r1">About this site</a></li>
+        <li><a href="#r2">Copyright</a></li>
+        <li><a href="#r3">Respecting the author's intent</a></li>
+        <li><a href="#r4">Personal information and privacy</a></li>
+        <li><a href="#r5">Using it at work (permission from your head of school)</a></li>
+        <li><a href="#r6">About the methods and apps introduced</a></li>
+        <li><a href="#r7">What you must not do</a></li>
+        <li><a href="#r8">When to contact us first</a></li>
+        <li><a href="#r9">Limits of responsibility</a></li>
+        <li><a href="#r10">Links</a></li>
+        <li><a href="#r11">Changes and governing law</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="r1">1. About this site</h2>
+    <ul>
+      <li>This site is run by a public school teacher in Japan as a <strong>personal activity</strong>. The content reflects the operator's own views, not those of any school, board of education or other organisation the operator belongs to.</li>
+      <li>"Content" means the articles, materials, images, apps and anything else on this site.</li>
+    </ul>
+
+    <h2 id="r2">2. Copyright</h2>
+    <ul>
+      <li>Copyright in the content belongs to the operator, or to the rights holder shown with it.</li>
+      <li><strong>Personal and family use</strong> (printing to read, using it for study at home) is free.</li>
+      <li><strong>Quotation</strong> is free if it follows Japanese copyright law: only as much as you need, your own text is the main part, the quotation is clearly marked, the source is shown, and nothing is changed. Please cite it as "toi toi toi (page name, URL)".</li>
+      <li><strong>In school lessons</strong>, you may copy content for the students in your class, as far as the lesson needs (within Article 35 of the Japanese Copyright Act). Please show the source.</li>
+      <li><strong>Please <a href="#r8">contact us</a> first</strong> to: hand out or project content at training sessions, talks or outside study groups; republish it on a website, social media, video or in print; use it in paid courses, materials or products; or distribute a heavily reworked version.</li>
+      <li>Names, logos and screenshots of other companies' apps, services and products belong to their owners. Follow each one's own terms when you use them.</li>
+      <li>The <strong>program code</strong> of the apps published on GitHub may be used and changed freely under the <strong>MIT License</strong> stated in each repository. App descriptions, images and the articles on this site are not covered by the MIT License.</li>
+    </ul>
+
+    <h2 id="r3">3. Respecting the author's intent</h2>
+    <p>This site is made so that learners can choose the ways of learning that suit them. Please do not use the content in ways that distort that intent.</p>
+    <ul>
+      <li>Do not take parts out of context to make them mean something different.</li>
+      <li>Do not use it to criticise or attack any person, organisation, disability or characteristic.</li>
+      <li>Do not use it to support claims opposite to this site's view, such as "only digital is right" or "analogue learning is unnecessary".</li>
+      <li>If you rework the content, say that you changed it and that the original is from this site. Do not make it look as if the operator supervised or recommended it.</li>
+    </ul>
+
+    <h2 id="r4">4. Personal information and privacy</h2>
+    <h3>When using the apps or AI</h3>
+    <ul>
+      <li><strong>Never enter personal information about real students or users into the apps or into AI.</strong> This includes names, photos, dates of birth, school names, diagnoses, grades and test results, and any description detailed enough to identify someone.</li>
+      <li>In apps that use AI, such as Sensei Assist, enter <strong>only the traits of a fictional learner</strong>.</li>
+      <li>AI services have age limits and rules about how input is handled (for example, whether it is used to improve the service). Check the latest terms of each service before use.</li>
+      <li>At school or work, follow your organisation's information security policy and any guidelines from your education authority.</li>
+    </ul>
+    <h3>When using articles and materials</h3>
+    <ul>
+      <li>Before sharing students' photos, work or descriptions in a report of your practice, get consent from the student and their family and follow your workplace's procedures.</li>
+    </ul>
+    <h3>Information this site collects</h3>
+    <ul>
+      <li>This site does not use cookies for analytics or advertising.</li>
+      <li>Your display settings (colours, text size and so on) are saved only in your own browser. They are not sent to the operator.</li>
+      <li>This site is hosted on GitHub Pages, provided by GitHub, Inc. Access logs are handled under GitHub's privacy statement.</li>
+      <li>Information you send through the contact page is used only to reply and to respond to your enquiry. It is not given to third parties without your consent, except where the law requires it.</li>
+    </ul>
+
+    <h2 id="r5">5. Using it at work (permission from your head of school)</h2>
+    <p>When teachers or supporters use the content or apps as part of their work, <strong>their workplace's rules come before these terms</strong>. Get permission from your head of school, facility manager or other manager where needed, and follow your workplace's procedures, especially when:</p>
+    <ul>
+      <li>an app must be installed, or an account must be created on an outside service</li>
+      <li>it will be used on students' devices or school devices</li>
+      <li>content will be handed out or introduced to families or people outside the school</li>
+      <li>it will be used in materials for in-school or official training</li>
+      <li>content from this site will be used in official documents such as individual teaching or support plans</li>
+    </ul>
+    <p>The operator is not responsible for problems caused by use without the needed permission or procedures.</p>
+
+    <h2 id="r6">6. About the methods and apps introduced</h2>
+    <ul>
+      <li>The support methods here are <strong>general examples</strong>. What works is different for each person.</li>
+      <li>They <strong>do not replace the judgement of medical, therapeutic, psychological, legal or other professionals</strong>. Decide on support for each person together with the learner, their family and the professionals involved.</li>
+      <li>Features, prices and terms of apps and services can change. Information is correct as of when it was published; please check the provider's latest information before use.</li>
+      <li>AI output can contain mistakes. Always have a person check it before using it.</li>
+    </ul>
+
+    <h2 id="r7">7. What you must not do</h2>
+    <ul>
+      <li>Use that breaks the law or public order and morals</li>
+      <li>Use that infringes others' copyright, portrait rights, privacy or other rights</li>
+      <li>Use that harms the reputation or credibility of the operator or anyone else</li>
+      <li>Using the operator's name or the site's name without permission, so that people think the operator is involved or recommends something</li>
+      <li>Publishing or selling the content, as it is or slightly changed, as your own</li>
+      <li>Putting excessive load on, or gaining unauthorised access to, the site or apps</li>
+    </ul>
+
+    <h2 id="r8">8. When to contact us first</h2>
+    <p>For the uses listed in "2. Copyright", please contact us first through the <a href="/en/contact/">contact page</a>. It helps if you tell us which content you want to use, where (name of the session, audience, number of people) and how it will be shared.</p>
+    <p>The contact page is being prepared. We will announce it here when it is ready. Until then, please hold off on uses that need prior contact.</p>
+
+    <h2 id="r9">9. Limits of responsibility</h2>
+    <ul>
+      <li>The operator works to keep the content accurate and useful, but does not guarantee its accuracy, completeness or fitness for any particular purpose.</li>
+      <li>You decide whether to use the content and apps. Except in cases of intent or gross negligence by the operator, the operator is not liable for any damage to users or third parties arising from their use.</li>
+      <li>The apps are provided "as is". They may stop working, lose data, or become unusable because of changes to outside services. Please keep your own copies of important data.</li>
+      <li>If you use the content in breach of these terms, the law or your workplace's rules, and a dispute with a third party arises, you must resolve it at your own responsibility and cost.</li>
+      <li>Content may be changed or removed without notice.</li>
+    </ul>
+
+    <h2 id="r10">10. Links</h2>
+    <ul>
+      <li>You may link to this site freely, without asking. Please do not display it as if it were part of your own site (for example, inside a frame).</li>
+      <li>The operator is not responsible for the content or safety of outside sites and services linked from this site.</li>
+    </ul>
+
+    <h2 id="r11">11. Changes and governing law</h2>
+    <ul>
+      <li>These terms may be changed without notice when needed. When they change, the date on this page is updated. By using the site after a change, you agree to the new terms.</li>
+      <li>These terms are governed by the laws of Japan. This English version is a translation for reference; if it differs from the Japanese version, the Japanese version applies.</li>
+    </ul>
+
+    <p class="rules-date">Effective 28 September 2026 / toi toi toi</p>
   </div>
 </Base>

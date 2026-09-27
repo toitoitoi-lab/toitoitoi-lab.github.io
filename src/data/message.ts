@@ -11,7 +11,9 @@ export const MESSAGE = {
     sign: 'toi toi toi 運営者',
     body: [
       'テクノロジーに救われる児童生徒や大人は、必ずいます。その方法を知っているか、知らないか。それだけで、人生が変わることがあります。',
-      'もちろん、五感を使うことを無視しているわけではありません。まず実際に使ってみて、そのうえで本人が自分に合う方法を選べるようにしたい。そのために、指導者・支援者が環境を整え、いっしょに体験しながら学んでいくことが大切だと考えています。',
+      'だからといって、アナログの学びを軽く見ているわけではありません。紙と鉛筆の手ざわり、体を動かして確かめること。そこからしか身につかないものも、たしかにあります。',
+      '大切なのは、学ぶ本人が方法を選べることだと考えています。さまざまな手段を知り、試し、使いこなしたうえで、アナログか、デジタルか、その組み合わせかを自分で選ぶ。そのために、指導者・支援者が環境を整え、いっしょに体験しながら学んでいくことが欠かせません。',
+      'このサイトが、その選択への一歩になれば幸いです。',
     ],
     more: '続きを読む',
   },
@@ -25,7 +27,9 @@ export const MESSAGE = {
     sign: 'toi toi toi',
     body: [
       'There are always children, students and adults whom technology can rescue. Whether or not someone knows these methods can change the course of their life.',
-      'This does not mean ignoring the five senses. People should first try things for themselves, and then be able to choose what works for them. For that, teachers and supporters need to prepare the environment and learn together with them, through shared experience.',
+      'This does not mean looking down on analogue learning. The feel of pencil on paper, checking things with your own hands and body: some things can only be learned that way.',
+      'What matters, I believe, is that learners can choose how they learn. Knowing many ways, trying them, and becoming fluent with them, and then choosing for themselves: analogue, digital, or a mix of both. For that, teachers and supporters need to prepare the environment and learn together with them, through shared experience.',
+      'I hope this site can be one step toward that choice.',
     ],
     more: 'Read more',
   },

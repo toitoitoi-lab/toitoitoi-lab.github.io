@@ -481,3 +481,25 @@ html[data-float='hide'] .floatbar.summoned { display: flex; }
 .guide-text { font-size: 0.92rem; color: var(--sub); line-height: 1.6; }
 .guide-foot { margin: 12px 0 0; font-size: 0.95rem; }
 @media (forced-colors: active) { .guide, .guide-item { border-color: CanvasText; } }
+
+/* 操作ボタン：たたんだときは小さく（押せる大きさ 52px は確保） */
+html[data-fold='folded'] .floatbar { padding: 4px; gap: 4px; border-radius: 16px; }
+html[data-fold='folded'] .fb-btn { min-width: 52px; min-height: 52px; padding: 4px 6px; font-size: 0.72rem; }
+html[data-fold='folded'] .fb-btn svg { width: 22px; height: 22px; }
+
+/* 英語版：日本の教科の系統の説明 */
+.kyoka-system { margin: 0 0 24px; padding: 16px 20px; border-left: 4px solid var(--line); color: var(--sub); }
+.kyoka-system p { margin: 0 0 10px; max-width: 46em; }
+.kyoka-system p:last-child { margin-bottom: 0; }
+.kyoka-local { margin-left: 12px; font-size: 0.85rem; font-weight: 700; font-style: italic; color: var(--sub); letter-spacing: 0.02em; }
+.kyoka-note { margin: 8px 0 0; font-size: 0.95rem; color: var(--sub); max-width: 46em; }
+.kyoka-note-label { display: inline-block; margin-right: 8px; padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; font-size: 0.78rem; font-weight: 700; color: var(--accent-text); vertical-align: 1px; }
+
+/* 利用ルール */
+.rules-date { color: var(--sub); font-size: 0.95rem; }
+.rules-summary { margin: 24px 0 32px; padding: 22px 26px; background: var(--panel); border: 2px solid var(--accent-text); border-radius: 16px; }
+.rules-summary h2 { margin-top: 0 !important; font-size: 1.2rem; }
+.rules-summary li { margin-bottom: 8px; }
+.rules .toc ol { margin: 0; padding-left: 1.6em; }
+.rules h3 { font-size: 1.05rem; margin-top: 20px; }
+.notice-inline { font-size: 0.95rem; color: var(--sub); }

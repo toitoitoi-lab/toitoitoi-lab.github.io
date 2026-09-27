@@ -39,14 +39,14 @@ const t = ja
       theme: '配色', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
       font: '文字の形', ud: 'すっきり（UDゴシック）', kyo: '学校で習う形（教科書体）',
       size: '文字の大きさ', m: '標準', l: '大', xl: '特大', space: '文字の間隔', normal: '標準', wide: 'ひろめ',
-      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fFree: '自由に動かす', fDock: '画面の下いっぱい（タッチ操作向け）', orient: '操作ボタンの並べ方', oRow: '横に並べる', oCol: '縦に並べる', skipBar: '操作ボタンへ移動', keyHelp: 'キーボードでは、Alt＋Shift＋M（Macは option＋shift＋M）で操作ボタンへ移動します。もう一度押すか Esc で、元の場所にもどります。', fbShown: '操作ボタンを一時的に表示しています', newTab: '（新しいタブで開きます）', fbMove: '動かす', fbMoveHelp: 'ドラッグするか、選んで矢印キーで動かせます', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbBottom: '下へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
+      reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fFree: '自由に動かす', fDock: '画面の下いっぱい（タッチ操作向け）', orient: '操作ボタンの並べ方', oRow: '横に並べる', oCol: '縦に並べる', skipBar: '操作ボタンへ移動', keyHelp: 'キーボードでは、Alt＋Shift＋M（Macは option＋shift＋M）で操作ボタンへ移動します。もう一度押すか Esc で、元の場所にもどります。', fbShown: '操作ボタンを一時的に表示しています', newTab: '（新しいタブで開きます）', fbMove: '動かす', fbMoveHelp: 'ドラッグするか、選んで矢印キーで動かせます', fbNav: 'ページの操作', fbBack: 'もどる', fbTop: '上へ', fbBottom: '下へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: 'ひらく', fbOpenLong: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
       other: 'English', otherHref: '/en/', otherLang: 'en', rules: '利用ルール',
       disclaimer: '公立学校の教員が個人の活動として運営しています。所属機関の見解を示すものではありません。' }
   : { skipMain: 'Skip to main content', skipMap: 'Skip to sitemap', settings: 'Display', sitemap: 'Sitemap', close: 'Close display settings',
       theme: 'Colors', dark: 'Dark', light: 'Light', contrast: 'High contrast',
       font: 'Letter shapes', ud: 'Clear (UD Gothic)', kyo: 'As taught at school',
       size: 'Text size', m: 'Standard', l: 'Large', xl: 'Extra large', space: 'Spacing', normal: 'Standard', wide: 'Wide',
-      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fFree: 'Move freely', fDock: 'Full width at the bottom (for touch)', orient: 'Button layout', oRow: 'In a row', oCol: 'In a column', skipBar: 'Skip to action buttons', keyHelp: 'With a keyboard, press Alt+Shift+M (option+shift+M on a Mac) to jump to the action buttons. Press it again, or Esc, to go back to where you were.', fbShown: 'Action buttons shown for now', newTab: ' (opens in a new tab)', fbMove: 'Move', fbMoveHelp: 'Drag it, or focus it and use the arrow keys', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbBottom: 'Bottom', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
+      reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fFree: 'Move freely', fDock: 'Full width at the bottom (for touch)', orient: 'Button layout', oRow: 'In a row', oCol: 'In a column', skipBar: 'Skip to action buttons', keyHelp: 'With a keyboard, press Alt+Shift+M (option+shift+M on a Mac) to jump to the action buttons. Press it again, or Esc, to go back to where you were.', fbShown: 'Action buttons shown for now', newTab: ' (opens in a new tab)', fbMove: 'Move', fbMoveHelp: 'Drag it, or focus it and use the arrow keys', fbNav: 'Page actions', fbBack: 'Back', fbTop: 'Top of page', fbBottom: 'Bottom', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open', fbOpenLong: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
       other: '日本語', otherHref: '/', otherLang: 'ja', rules: 'Terms of use',
       disclaimer: 'Run personally by a public school teacher. Views here are not those of any employer.' };
 const sitemapHref = ja ? '/sitemap/' : '/en/sitemap/';
@@ -194,7 +194,7 @@ const groups = [
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"></path><circle cx="16" cy="7" r="2"></circle><circle cx="10" cy="17" r="2"></circle></svg><span>{t.settings}</span>
       </button>
     </div>
-    <button type="button" class="fb-btn fb-fold" id="fb-fold" aria-expanded="true" aria-controls="fb-buttons" data-open={t.fbOpen} data-fold={t.fbFold}>
+    <button type="button" class="fb-btn fb-fold" id="fb-fold" aria-expanded="true" aria-controls="fb-buttons" data-open={t.fbOpen} data-open-long={t.fbOpenLong} data-fold={t.fbFold}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ic-open" d="M8 12h8"></path><path class="ic-folded" d="M5 7h14M5 12h14M5 17h14"></path></svg><span class="fb-fold-label">{t.fbFold}</span>
     </button>
   </nav>
@@ -234,6 +234,7 @@ const groups = [
         var open = state !== 'folded';
         fold.setAttribute('aria-expanded', String(open));
         fold.querySelector('.fb-fold-label').textContent = open ? fold.dataset.fold : fold.dataset.open;
+        if (open) fold.removeAttribute('aria-label'); else fold.setAttribute('aria-label', fold.dataset.openLong);
         try { localStorage.setItem('t3-fold', state); } catch (e) {}
       }
       setFold(d.dataset.fold === 'folded' ? 'folded' : 'open');
