@@ -11,6 +11,18 @@ const ja = lang === 'ja';
 const base = ja ? '' : '/en';
 const hrefK = (slug: string) => `${base}/komari/${slug}/`;
 const hrefT = (slug: string) => `${base}/tachiba/${slug}/`;
+const M = MESSAGE[lang];
+const GUIDE = ja
+  ? [
+      { href: '#komari', title: '困りごとから探す', text: '読む・書く・伝えるなど、困っていることから方法を探します' },
+      { href: '#tachiba', title: '立場から探す', text: '先生・本人や家族・つくりたい方、それぞれの入口から' },
+      { href: '#manabi', title: '教科と学び方', text: '教科ごとのアプリと、学びやすくなるコツ' },
+    ]
+  : [
+      { href: '#komari', title: 'Find by need', text: 'Start from what is hard — reading, writing, communicating' },
+      { href: '#tachiba', title: 'Find by who you are', text: 'Entrances for teachers, learners and families, and builders' },
+      { href: '#manabi', title: 'Subjects & learning', text: 'Apps for each subject, and tips that make learning easier' },
+    ];
 ---
 <div class="wrap">
   <section class="hero" aria-labelledby="hero-title">
@@ -26,19 +38,49 @@ const hrefT = (slug: string) => `${base}/tachiba/${slug}/`;
       </p>
       <div class="hero-actions">
         <a class="btn btn-solid" href={`${base}/#komari`}>{ja ? '困りごとから探す' : 'Find by need'}</a>
-        <a class="btn" href={`${base}/about/`}>{ja ? 'このサイトについて' : 'About this site'}</a>
+        <a class="btn" href="#guide">{ja ? '使い方' : 'How to use'}</a>
       </div>
-      <p class="hero-note">{ja ? '配色・文字の形・文字の大きさは、上の「表示設定」で選べます。' : 'Colors, letter shapes and text size can be changed in “Display” above.'}</p>
     </div>
-    <aside class="hero-message" aria-labelledby="h-message">
-      <h2 id="h-message" class="hm-label">{MESSAGE[lang].heading}</h2>
-      <blockquote class="hm-quote">
-        <p class="hm-lead">{MESSAGE[lang].lead}</p>
-        <p class="hm-body">{MESSAGE[lang].body[0].replace(MESSAGE[lang].lead, '').trim()}</p>
-      </blockquote>
-      <a class="hm-more" href={`${base}/about/#omoi`}>{MESSAGE[lang].more}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    <aside class="statement" aria-labelledby="h-statement">
+      <div class="st-head">
+        <span class="st-kicker" lang="en" aria-hidden="true">Statement</span>
+        <h2 id="h-statement" class="st-label">{M.heading}</h2>
+      </div>
+      <p class="st-lead">{M.lead}</p>
+      <p class="st-body">{M.second.split('\n').map((l, i) => <>{i > 0 && <br />}{l}</>)}</p>
+      <p class="st-sign"><time datetime={M.date}>{M.dateLabel}</time><span aria-hidden="true">―</span><span>{M.sign}</span></p>
+      <a class="st-more" href={`${base}/about/#omoi`}>{M.more}<span class="visually-hidden">{ja ? '（サイト開設にあたって）' : ' (On opening this site)'}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
     </aside>
   </section>
+
+  <section class="guide" id="guide" aria-labelledby="h-guide">
+    <h2 id="h-guide" class="guide-label">{ja ? 'このサイトの使い方' : 'How to use this site'}</h2>
+    <ol class="guide-list">
+      {GUIDE.map((g, i) => (
+        <li>
+          <a class="guide-item" href={g.href}>
+            <span class="guide-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="guide-title">{g.title}</span>
+            <span class="guide-text">{g.text}</span>
+          </a>
+        </li>
+      ))}
+      <li>
+        <button type="button" class="guide-item guide-set" data-open-settings>
+          <span class="guide-num" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
+          <span class="guide-title">{ja ? '見やすく変える' : 'Make it easier to see'}</span>
+          <span class="guide-text">{ja ? '配色・文字の形・大きさ・行間を選べます' : 'Choose colors, letter shapes, size and spacing'}</span>
+        </button>
+      </li>
+    </ol>
+    <p class="guide-foot"><a class="inline" href={`${base}/about/`}>{ja ? 'このサイトについて（運営・大切にしていること）' : 'About this site'}</a></p>
+  </section>
+  <script>
+    document.querySelectorAll('[data-open-settings]').forEach((b) => b.addEventListener('click', () => {
+      const t = document.getElementById('settings-toggle');
+      if (t && t.getAttribute('aria-expanded') !== 'true') t.click();
+    }));
+  </script>
 
   <section class="section" id="komari" aria-labelledby="h-komari">
     <div class="section-head">

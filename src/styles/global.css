@@ -452,3 +452,29 @@ html[data-float='hide'] .floatbar.summoned { display: flex; }
 .kyoka-soon { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; color: var(--sub); }
 @media (prefers-reduced-motion: reduce) { .kyoka-tile { transition: none; } .kyoka-tile:hover { transform: none; } }
 @media (forced-colors: active) { .kyoka-tile, .kotsu, .kyoka-detail li { border-color: CanvasText; } }
+
+/* ── サイト開設にあたって（手紙のような文字組み：枠なし・署名つき） ── */
+.statement { flex: 1 1 340px; max-width: 440px; align-self: flex-end; display: flex; flex-direction: column; }
+.st-head { display: flex; align-items: baseline; gap: 14px; padding-bottom: 14px; margin-bottom: 22px; border-bottom: 1px solid var(--line); }
+.st-kicker { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent-text); }
+.st-label { margin: 0; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.12em; color: var(--sub); }
+.st-lead { margin: 0 0 16px; font-size: clamp(1.3rem, 2.3vw, 1.6rem); font-weight: 700; line-height: 1.6; letter-spacing: 0.02em; }
+.st-body { margin: 0; color: var(--sub); line-height: 1.95; }
+.st-sign { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 22px 0 0; font-size: 0.92rem; color: var(--sub); letter-spacing: 0.06em; }
+.st-more { align-self: flex-end; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 700; font-size: 0.95rem; color: var(--accent-text); text-underline-offset: 4px; }
+.st-more svg { transition: transform .15s; }
+.st-more:hover svg { transform: translateX(3px); }
+@media (max-width: 980px) { .statement { max-width: none; flex-basis: 100%; } }
+
+/* ── このサイトの使い方（道具のような枠：番号つき・押せる） ── */
+.guide { margin: 0 0 clamp(56px, 8vw, 88px); padding: 22px clamp(18px, 3vw, 28px) 18px; background: var(--panel); border: 1px solid var(--card-line); }
+.guide-label { margin: 0 0 14px; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.12em; color: var(--sub); }
+.guide-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.guide-item { width: 100%; height: 100%; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; column-gap: 12px; row-gap: 4px; align-items: baseline; padding: 14px 16px; min-height: 64px; border: 2px solid var(--line); background: var(--bg); color: var(--fg); font: inherit; text-align: left; text-decoration: none; cursor: pointer; }
+.guide-item:hover { border-color: var(--accent-text); }
+.guide-num { grid-row: 1 / 3; font-weight: 700; font-size: 1.05rem; color: var(--accent-text); align-self: start; line-height: 1.5; }
+.guide-num svg { display: block; margin-top: 2px; }
+.guide-title { font-weight: 700; font-size: 1.05rem; }
+.guide-text { font-size: 0.92rem; color: var(--sub); line-height: 1.6; }
+.guide-foot { margin: 12px 0 0; font-size: 0.95rem; }
+@media (forced-colors: active) { .guide, .guide-item { border-color: CanvasText; } }

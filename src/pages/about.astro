@@ -12,6 +12,7 @@ import { MESSAGE } from '../data/message';
     <section class="message" id="omoi" aria-labelledby="omoi-title">
       <h2 id="omoi-title">{MESSAGE.ja.heading}</h2>
       {MESSAGE.ja.body.map((p) => <p>{p}</p>)}
+      <p class="st-sign"><time datetime={MESSAGE.ja.date}>{MESSAGE.ja.dateLabel}</time><span aria-hidden="true">―</span><span>{MESSAGE.ja.sign}</span></p>
     </section>
 
     <h2>名前について</h2>
