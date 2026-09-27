@@ -373,3 +373,19 @@ html[data-float='hide'] .floatbar.summoned { display: flex; }
 
 /* 新しいタブで開くリンクの印 */
 .ext-ic { display: inline-block; margin-left: 0.25em; font-size: 0.85em; }
+
+/* トップ：運営者の思い（ヒーローの右側。狭い画面では下に） */
+.hero { align-items: stretch; }
+.hero-main { justify-content: flex-end; }
+.hero-note { margin: 0; font-size: 0.95rem; color: var(--sub); }
+.hero-message { flex: 1 1 340px; max-width: 460px; align-self: flex-end; position: relative; padding: 28px 0 4px 28px; border-left: 4px solid var(--accent-fill); }
+.hero-message::before { content: '“'; position: absolute; top: -18px; left: 18px; font-size: 5.5rem; line-height: 1; font-weight: 700; color: var(--accent-text); opacity: 0.35; pointer-events: none; }
+.hm-label { margin: 0 0 14px; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.12em; color: var(--accent-text); }
+.hm-quote { margin: 0; }
+.hm-lead { margin: 0 0 14px; font-size: clamp(1.35rem, 2.4vw, 1.7rem); font-weight: 700; line-height: 1.55; }
+.hm-body { margin: 0; color: var(--sub); }
+.hm-more { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; min-height: 44px; font-weight: 700; color: var(--accent-text); text-underline-offset: 4px; }
+.hm-more:hover svg { transform: translateX(3px); }
+.hm-more svg { transition: transform .15s; }
+@media (max-width: 980px) { .hero-message { max-width: none; flex-basis: 100%; } }
+@media (forced-colors: active) { .hero-message { border-left-color: CanvasText; } }

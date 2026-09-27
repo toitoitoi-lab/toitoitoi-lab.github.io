@@ -26,14 +26,15 @@ const hrefT = (slug: string) => `${base}/tachiba/${slug}/`;
         <a class="btn btn-solid" href={`${base}/#komari`}>{ja ? '困りごとから探す' : 'Find by need'}</a>
         <a class="btn" href={`${base}/about/`}>{ja ? 'このサイトについて' : 'About this site'}</a>
       </div>
+      <p class="hero-note">{ja ? '配色・文字の形・文字の大きさは、上の「表示設定」で選べます。' : 'Colors, letter shapes and text size can be changed in “Display” above.'}</p>
     </div>
-    <aside class="hero-aside" aria-label={ja ? 'このサイトの工夫' : 'How this site adapts'}>
-      <p class="label up" lang="en">made to be chosen</p>
-      <dl>
-        <div><dt>3</dt><dd>{ja ? '配色を選べる' : 'color themes'}</dd></div>
-        <div><dt>2</dt><dd>{ja ? '文字の形を選べる' : 'letter styles'}</dd></div>
-        <div><dt>3</dt><dd>{ja ? '文字の大きさを選べる' : 'text sizes'}</dd></div>
-      </dl>
+    <aside class="hero-message" aria-labelledby="h-message">
+      <h2 id="h-message" class="hm-label">{MESSAGE[lang].heading}</h2>
+      <blockquote class="hm-quote">
+        <p class="hm-lead">{MESSAGE[lang].lead}</p>
+        <p class="hm-body">{MESSAGE[lang].body[0].replace(MESSAGE[lang].lead, '').trim()}</p>
+      </blockquote>
+      <a class="hm-more" href={`${base}/about/#omoi`}>{MESSAGE[lang].more}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
     </aside>
   </section>
 
@@ -60,13 +61,6 @@ const hrefT = (slug: string) => `${base}/tachiba/${slug}/`;
         </li>
       ))}
     </ul>
-  </section>
-
-  <section class="section top-message" aria-labelledby="h-message">
-    <h2 id="h-message">{MESSAGE[lang].heading}</h2>
-    <p class="big">{MESSAGE[lang].lead}</p>
-    <p>{MESSAGE[lang].body[0].replace(MESSAGE[lang].lead, '').trim()}</p>
-    <a class="btn" href={`${base}/about/#omoi`}>{MESSAGE[lang].more}</a>
   </section>
 
   <section class="section" id="tachiba" aria-labelledby="h-tachiba">
