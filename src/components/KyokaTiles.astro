@@ -1,0 +1,23 @@
+---
+// 教科のタイル（トップと「教科と学び方」ページで共通）
+import Soon from './Soon.astro';
+import { KYOKA } from '../data/manabi';
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+---
+<ul class="kyoka-grid">
+  {KYOKA.map((k) => (
+    <li>
+      <a class="kyoka-tile" href={`${base}/manabi/#kyoka-${k.slug}`}>
+        <span class={`kyoka-glyph stage-${k.stage}`} aria-hidden="true">{ja ? k.glyph : (k.en.glyph ?? k.glyph)}</span>
+        <span class="kyoka-body">
+          <span class="kyoka-title">{ja ? k.ja.title : k.en.title}</span>
+          <span class="kyoka-text">{ja ? k.ja.text : k.en.text}</span>
+          {!k.ready && <Soon lang={lang} />}
+        </span>
+      </a>
+    </li>
+  ))}
+</ul>

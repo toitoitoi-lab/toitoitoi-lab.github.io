@@ -1,0 +1,24 @@
+---
+// 学び方のコツのカード（トップと「教科と学び方」ページで共通）
+import Soon from './Soon.astro';
+import { KOTSU } from '../data/manabi';
+interface Props { lang?: 'ja' | 'en'; limit?: number; headingLevel?: 3 | 4 }
+const { lang = 'ja', limit, headingLevel = 3 } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const list = limit ? KOTSU.slice(0, limit) : KOTSU;
+const H = `h${headingLevel}`;
+---
+<ol class="kotsu-list">
+  {list.map((k, i) => (
+    <li class="kotsu" id={`kotsu-${k.slug}`}>
+      <span class="kotsu-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+      <div class="kotsu-body">
+        <span class="kotsu-tag">{ja ? k.tag.ja : k.tag.en}</span>
+        <H class="kotsu-title">{ja ? k.ja.title : k.en.title}</H>
+        <p class="kotsu-text">{ja ? k.ja.text : k.en.text}</p>
+        {!k.ready && <Soon lang={lang} label={ja ? 'くわしい話は準備中' : 'Full article coming soon'} />}
+      </div>
+    </li>
+  ))}
+</ol>

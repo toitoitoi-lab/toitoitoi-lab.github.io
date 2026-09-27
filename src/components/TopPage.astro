@@ -3,6 +3,8 @@ import Illust from './Illust.astro';
 import Soon from './Soon.astro';
 import { KOMARI, TACHIBA } from '../data/site';
 import { MESSAGE } from '../data/message';
+import KyokaTiles from './KyokaTiles.astro';
+import KotsuList from './KotsuList.astro';
 interface Props { lang: 'ja' | 'en' }
 const { lang } = Astro.props;
 const ja = lang === 'ja';
@@ -84,5 +86,17 @@ const hrefT = (slug: string) => `${base}/tachiba/${slug}/`;
         </li>
       ))}
     </ul>
+  </section>
+
+  <section class="section" id="manabi" aria-labelledby="h-manabi">
+    <div class="section-head">
+      <h2 id="h-manabi">{ja ? '教科と学び方' : 'Subjects & ways of learning'}</h2>
+      <p>{ja ? '教科の勉強を助けるアプリと、知っていると学びやすくなるコツを紹介します。' : 'Apps for each subject, and small tips that make learning easier.'}</p>
+    </div>
+    <h3 class="sub-head">{ja ? '教科から探す' : 'Find by subject'}</h3>
+    <KyokaTiles lang={lang} />
+    <h3 class="sub-head">{ja ? '学び方のコツ' : 'Ways of learning'}</h3>
+    <KotsuList lang={lang} limit={3} headingLevel={4} />
+    <p class="section-more"><a class="btn" href={`${base}/manabi/`}>{ja ? '教科と学び方をすべて見る' : 'See all subjects and tips'}</a></p>
   </section>
 </div>

@@ -423,3 +423,32 @@ html[data-float='hide'] .floatbar.summoned { display: flex; }
 
 .site-footer:focus { outline: none; }
 .site-footer:focus-visible { outline: 3px solid var(--accent-text); outline-offset: -3px; }
+
+/* 教科と学び方 */
+.sub-head { font-size: 1.3rem; margin: 8px 0 14px; }
+.sub-head:not(:first-of-type) { margin-top: 40px; }
+.section-more { margin-top: 28px; }
+.kyoka-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1140px) { .kyoka-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .kyoka-grid { grid-template-columns: 1fr; } }
+.kyoka-tile { display: flex; gap: 16px; align-items: center; height: 100%; padding: 14px 16px; background: var(--panel); border: 2px solid var(--card-line); border-radius: 18px; text-decoration: none; color: var(--fg); transition: transform .16s ease, border-color .16s; }
+.kyoka-tile:hover { border-color: var(--accent-text); transform: translateY(-2px); }
+.kyoka-glyph { flex: none; width: 72px; height: 72px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2.1rem; font-weight: 700; color: var(--fg); line-height: 1; }
+.kyoka-body { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.kyoka-title { font-size: 1.2rem; font-weight: 700; }
+.kyoka-text { font-size: 0.95rem; color: var(--sub); }
+.kotsu-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.kotsu { display: flex; gap: 16px; padding: 20px; border: 2px solid var(--line); border-radius: 18px; }
+.kotsu-num { font-size: 1.8rem; font-weight: 700; color: var(--accent-text); line-height: 1; min-width: 1.6em; }
+.kotsu-body { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.kotsu-tag { font-size: 0.85rem; font-weight: 700; color: var(--violet-text, var(--sub)); letter-spacing: .06em; }
+.kotsu-title { margin: 0; font-size: 1.15rem; line-height: 1.5; }
+.kotsu-text { margin: 0; color: var(--sub); }
+.manabi-sec { margin-top: 48px; }
+.kyoka-detail { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 14px; }
+.kyoka-detail li { display: flex; gap: 18px; align-items: flex-start; padding: 18px; border: 2px solid var(--line); border-radius: 18px; scroll-margin-top: 90px; }
+.kyoka-detail h3 { margin: 0 0 4px; }
+.kyoka-detail p { margin: 0 0 6px; }
+.kyoka-soon { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; color: var(--sub); }
+@media (prefers-reduced-motion: reduce) { .kyoka-tile { transition: none; } .kyoka-tile:hover { transform: none; } }
+@media (forced-colors: active) { .kyoka-tile, .kotsu, .kyoka-detail li { border-color: CanvasText; } }

@@ -183,6 +183,14 @@ export const SITEMAP_JA: MapGroup[] = [
     links: TACHIBA.map((t) => ({ label: t.ja.title, note: t.ja.text, href: t.external ?? `/tachiba/${t.slug}/`, external: !!t.external, ready: t.ready, review: t.review, updated: t.updated, shapes: t.shapes, stage: t.stage })),
   },
   {
+    id: 'manabi', heading: '教科と学び方', href: '/manabi/', icon: 'manabi',
+    desc: '教科の勉強を助けるアプリと、学びやすくなるコツ',
+    links: [
+      { label: '教科から探す', note: '国語・算数/数学・英語・理科・社会・情報', href: '/manabi/#kyoka', ready: false },
+      { label: '学び方のコツ', note: '覚える・集中する・まとめる など', href: '/manabi/#kotsu', ready: false },
+    ],
+  },
+  {
     id: 'hasshin', heading: '発信', href: '/articles/', icon: 'hasshin',
     desc: '記事・研修の案内と、YouTube・note・GitHub へのリンク',
     links: [
@@ -217,6 +225,14 @@ export const SITEMAP_EN: MapGroup[] = [
     id: 'tachiba', heading: 'Find by who you are', href: '/en/#tachiba', icon: 'tachiba',
     desc: 'Entry points for teachers, learners and families, and builders',
     links: TACHIBA.map((t) => ({ label: t.en.title, note: t.en.text, href: t.external ?? `/en/tachiba/${t.slug}/`, external: !!t.external, ready: t.ready, review: t.review, updated: t.updated, shapes: t.shapes, stage: t.stage })),
+  },
+  {
+    id: 'manabi', heading: 'Subjects & ways of learning', href: '/en/manabi/', icon: 'manabi',
+    desc: 'Apps for each subject, and tips that make learning easier',
+    links: [
+      { label: 'Find by subject', note: 'Japanese, maths, English, science, social studies, computing', href: '/en/manabi/#kyoka', ready: false },
+      { label: 'Ways of learning', note: 'Remembering, focusing, organising and more', href: '/en/manabi/#kotsu', ready: false },
+    ],
   },
   {
     id: 'hasshin', heading: 'Articles and links', href: '/en/articles/', icon: 'hasshin',

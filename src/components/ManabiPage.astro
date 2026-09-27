@@ -1,0 +1,62 @@
+---
+// 「教科と学び方」ページ（日本語・英語で共通）
+import Base from '../layouts/Base.astro';
+import Crumbs from './Crumbs.astro';
+import Soon from './Soon.astro';
+import KotsuList from './KotsuList.astro';
+import { KYOKA } from '../data/manabi';
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const T = ja
+  ? { title: '教科と学び方', home: 'トップ',
+      lead: '教科の勉強を助けるアプリと、知っていると学びやすくなる「学び方のコツ」を紹介します。困りごとに合わせた道具は「困りごとから探す」に、ここでは教科ごとの使いどころと、学ぶこと自体のコツをまとめます。',
+      kyoka: '教科から探す', kyokaLead: '教科ごとに、学習を助けるアプリと、授業や家庭学習での使いどころを紹介します。',
+      apps: 'アプリと使いどころ', soonApps: 'この教科のアプリは準備中です。',
+      kotsu: '学び方のコツ', kotsuLead: '学びやすくなる、ちょっとした知識です。どの教科にも、大人の学び直しにも使えます。',
+      toKomari: '困りごとから探す' }
+  : { title: 'Subjects & ways of learning', home: 'Home',
+      lead: 'Apps that help with each subject, and small pieces of knowledge that make learning easier. Tools for specific needs are under "Find by need"; here you will find where apps fit in each subject, and tips about learning itself.',
+      kyoka: 'Find by subject', kyokaLead: 'Apps that support learning in each subject, and where they fit in lessons and study at home.',
+      apps: 'Apps and how to use them', soonApps: 'Apps for this subject are coming soon.',
+      kotsu: 'Ways of learning', kotsuLead: 'Small pieces of knowledge that make learning easier — for any subject, and for adults too.',
+      toKomari: 'Find by need' };
+---
+<Base title={T.title} lang={lang} current="manabi" description={T.lead}>
+  <div class="wrap page manabi-page">
+    <Crumbs lang={lang} items={[{ label: T.home, href: `${base}/` }, { label: T.title }]} />
+    <h1>{T.title}</h1>
+    <p class="lead-text">{T.lead}</p>
+    <nav class="toc" aria-label={ja ? 'このページの目次' : 'On this page'}>
+      <ul>
+        <li><a href="#kyoka">{T.kyoka}</a></li>
+        <li><a href="#kotsu">{T.kotsu}</a></li>
+      </ul>
+    </nav>
+
+    <section id="kyoka" aria-labelledby="h-kyoka" class="manabi-sec">
+      <h2 id="h-kyoka">{T.kyoka}</h2>
+      <p>{T.kyokaLead}</p>
+      <ul class="kyoka-detail">
+        {KYOKA.map((k) => (
+          <li id={`kyoka-${k.slug}`}>
+            <span class={`kyoka-glyph stage-${k.stage}`} aria-hidden="true">{ja ? k.glyph : (k.en.glyph ?? k.glyph)}</span>
+            <div>
+              <h3>{ja ? k.ja.title : k.en.title}</h3>
+              <p>{ja ? k.ja.text : k.en.text}</p>
+              {!k.ready && <p class="kyoka-soon"><Soon lang={lang} /> <span>{T.soonApps}</span></p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p><a class="inline" href={`${base}/#komari`}>{T.toKomari}</a></p>
+    </section>
+
+    <section id="kotsu" aria-labelledby="h-kotsu" class="manabi-sec">
+      <h2 id="h-kotsu">{T.kotsu}</h2>
+      <p>{T.kotsuLead}</p>
+      <KotsuList lang={lang} />
+    </section>
+  </div>
+</Base>
