@@ -30,7 +30,7 @@ export const KYOKA: Kyoka[] = [
   { slug: 'eigo', glyph: 'A', stage: 'coral', ready: false,
     ja: { title: '外国語（英語）', text: '音から入る・声で練習するアプリ' },
     en: { title: 'Foreign language (English)', local: 'gaikokugo', text: 'Start from sounds and practise aloud',
-      note: 'In Japan, English is learned as a foreign language rather than a second language: it is rarely used outside the classroom. It starts as "foreign language activities" (listening and speaking) in grades 3–4, becomes the subject "foreign language" in grades 5–6, and continues as English in junior and senior high school. For children whose first language is not Japanese, schools teach Japanese as a second language separately.' } },
+      note: 'English is learned as a foreign language rather than a second language, since it is rarely used outside the classroom. It starts as "foreign language activities" (listening and speaking) in grades 3–4, becomes the subject "foreign language" in grades 5–6, and continues as English in junior and senior high school. For children whose first language is not Japanese, schools teach Japanese as a second language separately.' } },
   { slug: 'rika', glyph: '理', stage: 'sky', ready: false,
     ja: { title: '理科', text: '観察・記録・シミュレーションのアプリ' },
     en: { title: 'Science', local: 'rika', text: 'Observe, record and simulate', glyph: '⚗',
