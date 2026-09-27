@@ -28,7 +28,7 @@ const base = ja ? '' : '/en';
   <aside class="kk-band" aria-labelledby="kk-band-title">
     <div class="kk-band-head">
       <h3 id="kk-band-title" class="kk-band-label">{K.heading}</h3>
-      <p class="kk-band-lead">{K.lead}</p>
+      <p class="kk-band-lead">{ja ? <>合う方法は、<br />一人ひとりちがう。</> : K.lead}</p>
     </div>
     <ol class="kk-band-list">
       {K.points.map((p, i) => <li><span class="kk-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{p.title}</li>)}

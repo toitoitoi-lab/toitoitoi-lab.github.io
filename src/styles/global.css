@@ -532,7 +532,7 @@ html[data-fold='folded'] .fb-btn svg { width: 22px; height: 22px; }
 .kokoroe { margin: 8px 0 44px; }
 .kk-kicker { margin: 0 0 4px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent-text); }
 .prose .kk-heading { margin-top: 0; }
-.kk-lead { margin: 0 0 20px; font-size: clamp(1.3rem, 2.4vw, 1.6rem); font-weight: 700; line-height: 1.55; word-break: auto-phrase; }
+.prose .kk-lead, .kk-lead { margin: 0 0 20px; font-size: clamp(1.3rem, 2.4vw, 1.6rem); font-weight: 700; line-height: 1.55; word-break: auto-phrase; }
 .kk-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
 .kk-points > li { display: grid; grid-template-columns: 3.2em 1fr; gap: 0 12px; margin: 0; padding: 18px 0; border-bottom: 1px solid var(--line); }
 .kk-num { font-weight: 700; color: var(--accent-text); letter-spacing: 0.04em; }
