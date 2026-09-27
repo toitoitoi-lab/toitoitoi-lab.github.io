@@ -11,7 +11,7 @@ const base = ja ? '' : '/en';
   <aside class="kk-tip" aria-labelledby="kk-tip-title">
     <div class="kk-tip-text">
       <p class="kk-tip-label" id="kk-tip-title"><span class="kk-tip-mark" aria-hidden="true">+</span>{K.heading}</p>
-      <p class="kk-tip-lead">{K.lead}</p>
+      <p class="kk-tip-lead">{K.lead.split(/(?<=、)/).map((t) => <span>{t}</span>)}</p>
     </div>
     <ol class="kk-tip-list">
       {K.points.map((p, i) => <li><span class="kk-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{p.short}</li>)}

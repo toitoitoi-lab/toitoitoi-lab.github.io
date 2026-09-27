@@ -679,3 +679,5 @@ html[data-theme='light'] .cf-send-error { color: #B3261E; }
 .kk-tip-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .kk-tip-lead { flex: none; }
 @media (max-width: 980px) { .kk-tip { grid-template-columns: 1fr; gap: 10px; } }
+
+.kk-tip-lead span { display: inline-block; }
