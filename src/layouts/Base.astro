@@ -273,13 +273,14 @@ const groups = [
         var p = null; try { p = JSON.parse(localStorage.getItem('t3-fpos')); } catch (e) {}
         if (p) { place(p.x * window.innerWidth, p.y * window.innerHeight, false); }
         else { var r = bar.getBoundingClientRect(); place(r.left, r.top, true); }
+        setAnchor();
       }
       function goFree() {
         if (d.dataset.float === 'free') return;
         var r = bar.getBoundingClientRect();
         d.dataset.float = 'free';
         try { localStorage.setItem('t3-float', 'free'); } catch (e) {}
-        place(r.left, r.top, true);
+        place(r.left, r.top, true); setAnchor();
         sync();
       }
       var drag = null;
@@ -293,7 +294,7 @@ const groups = [
       grip.addEventListener('pointermove', function (e) { if (drag) place(e.clientX - drag.dx, e.clientY - drag.dy, false); });
       function endDrag() {
         if (!drag) return; drag = null; bar.classList.remove('dragging');
-        var r = bar.getBoundingClientRect(); place(r.left, r.top, true); lastRect = bar.getBoundingClientRect();
+        var r = bar.getBoundingClientRect(); place(r.left, r.top, true); setAnchor();
       }
       grip.addEventListener('pointerup', endDrag);
       grip.addEventListener('pointercancel', endDrag);
@@ -303,21 +304,24 @@ const groups = [
         else if (e.key === 'ArrowUp') dy = -step; else if (e.key === 'ArrowDown') dy = step; else return;
         if (d.dataset.float === 'dock') return;
         e.preventDefault(); goFree();
-        var r = bar.getBoundingClientRect(); place(r.left + dx, r.top + dy, true); lastRect = bar.getBoundingClientRect();
+        var r = bar.getBoundingClientRect(); place(r.left + dx, r.top + dy, true); setAnchor();
       });
-      window.addEventListener('resize', function () { if (d.dataset.float === 'free') { applyFree(); lastRect = bar.getBoundingClientRect(); } });
+      window.addEventListener('resize', function () { if (d.dataset.float === 'free') { applyFree(); setAnchor(); } });
       // 大きさが変わったとき（ひらく・たたむ・縦横切りかえ・文字の大きさ）は、
       // 画面の端に近い側を動かさずに広げ、はみ出さないようにする
-      var lastRect = null;
+      var lastRect = null, anchor = null;
+      // 利用者が置いた場所から「どちら側に寄せたか」を覚える（画面を3つに分けて判断）
+      function setAnchor() {
+        var r = bar.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, W = window.innerWidth, H = window.innerHeight;
+        anchor = { h: cx > W * 2 / 3 ? 'r' : cx < W / 3 ? 'l' : 'c', v: cy > H * 2 / 3 ? 'b' : cy < H / 3 ? 't' : 'c' };
+        lastRect = r;
+      }
       function keepInside() {
-        if (d.dataset.float !== 'free' || drag) { lastRect = bar.getBoundingClientRect(); return; }
-        var r = bar.getBoundingClientRect(), o = lastRect || r;
-        var x = r.left, y = r.top;
-        // 画面を3つに分けて、右1/3なら右端、左1/3なら左端、まん中なら中心を動かさない（上下も同じ）
-        var cx = o.left + o.width / 2, cy = o.top + o.height / 2, W = window.innerWidth, H = window.innerHeight;
-        x = cx > W * 2 / 3 ? o.right - r.width : cx < W / 3 ? o.left : cx - r.width / 2;
-        y = cy > H * 2 / 3 ? o.bottom - r.height : cy < H / 3 ? o.top : cy - r.height / 2;
-        place(x, y, true);
+        if (d.dataset.float !== 'free' || drag || !anchor || !lastRect) { lastRect = bar.getBoundingClientRect(); return; }
+        var r = bar.getBoundingClientRect(), o = lastRect;
+        var x = anchor.h === 'r' ? o.right - r.width : anchor.h === 'l' ? o.left : o.left + o.width / 2 - r.width / 2;
+        var y = anchor.v === 'b' ? o.bottom - r.height : anchor.v === 't' ? o.top : o.top + o.height / 2 - r.height / 2;
+        place(x, y, false);
         lastRect = bar.getBoundingClientRect();
       }
       if ('ResizeObserver' in window) new ResizeObserver(keepInside).observe(bar);
@@ -352,7 +356,7 @@ const groups = [
       bar.addEventListener('focusout', function (e) {
         if (!bar.contains(e.relatedTarget)) { bar.classList.remove('summoned'); bar.removeAttribute('aria-description'); }
       });
-      applyFree(); lastRect = bar.getBoundingClientRect();
+      applyFree(); setAnchor();
       document.getElementById('settings-reset').addEventListener('click', function () {
         Object.keys(defaults).forEach(function (k) {
           d.dataset[k] = defaults[k];
