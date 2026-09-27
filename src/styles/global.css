@@ -370,3 +370,6 @@ html[data-float='hide'] .floatbar.summoned { display: flex; }
   html:not([data-orient='col'])[data-fold='folded']:not([data-float='dock']):not([data-float='free']) .floatbar { width: max-content; left: auto; }
   html:not([data-orient='col'])[data-fold='folded'][data-float='left'] .floatbar { left: 10px; right: auto; }
 }
+
+/* 新しいタブで開くリンクの印 */
+.ext-ic { display: inline-block; margin-left: 0.25em; font-size: 0.85em; }
