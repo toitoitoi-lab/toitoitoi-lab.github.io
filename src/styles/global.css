@@ -648,3 +648,7 @@ html[data-theme='light'] .cf-send-error { color: #B3261E; }
 .kn-tables td:last-child, .kn-tables th:last-child { text-align: right; }
 .kn-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 @media (max-width: 560px) { .kn-stats { grid-template-columns: repeat(2, 1fr); } }
+.kn-login[hidden], .kn-dash[hidden] { display: none; }
+.kanri .kn-big { font-size: 3rem; margin: 0 0 6px; }
+.kanri .kn-big small { font-size: 1.1rem; }
+.kn-tables table { align-self: start; }

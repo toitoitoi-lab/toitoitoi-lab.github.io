@@ -4,7 +4,7 @@
 import Base from '../layouts/Base.astro';
 import { BACKEND_URL } from '../data/site';
 ---
-<Base title="運営者ページ" noindex>
+<Base title="運営者ページ" current="kanri" noindex>
   <div class="wrap page kanri" data-backend={BACKEND_URL}>
     <h1>運営者ページ</h1>
     {!BACKEND_URL && <div class="notice"><p>サイト用 GAS の URL がまだ設定されていません（src/data/site.ts の BACKEND_URL）。</p></div>}
