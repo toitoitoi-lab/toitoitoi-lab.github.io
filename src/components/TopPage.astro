@@ -28,13 +28,15 @@ const GUIDE = ja
 <div class="wrap">
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-main">
-      <p class="kicker up" lang="en">assistive tech lab</p>
+      {ja
+        ? <p class="kicker at-def"><abbr lang="en" title="Assistive Technology">AT</abbr><span class="visually-hidden">（</span><span class="at-en" lang="en">Assistive Technology</span><span class="at-sep" aria-hidden="true">/</span><span class="visually-hidden">、</span><span class="at-ja">支援技術</span><span class="visually-hidden">）</span></p>
+        : <p class="kicker at-def"><abbr title="Assistive Technology">AT</abbr><span class="visually-hidden"> (</span><span class="at-en">Assistive Technology</span><span class="visually-hidden">)</span></p>}
       {ja
         ? <h1 id="hero-title">道具ひとつで、<br />学びの<em>入口</em>は<br />ひらく。</h1>
         : <h1 id="hero-title">One tool can open<br />the <em>door</em> to learning.</h1>}
       <p class="lead">
         {ja
-          ? '読む・書く・聞く・伝える。困りごとに合った道具（AT：支援技術）と、その使い方を。先生にも、本人にも、家族にも届くかたちで。'
+          ? '読む・書く・聞く・伝える。困りごとに合った道具（AT）と、その使い方を。先生にも、本人にも、家族にも届くかたちで。'
           : 'Reading, writing, listening, communicating. Tools that fit each need, and how to use them — for teachers, learners and families.'}
       </p>
       <div class="hero-actions">

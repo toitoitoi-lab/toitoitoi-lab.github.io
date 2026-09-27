@@ -12,9 +12,9 @@ import { TOGETHER } from '../data/message';
 interface Props { title?: string; description?: string; lang?: 'ja' | 'en'; current?: string }
 const { title, description, lang = 'ja', current = '' } = Astro.props;
 const ja = lang === 'ja';
-const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${ja ? 'AT（支援技術）で学びの入口をひらく' : 'Assistive technology for learning'}`;
+const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${ja ? 'AT（支援技術／Assistive Technology）で学びの入口をひらく' : 'Assistive technology for learning'}`;
 const desc = description ?? (ja
-  ? '読む・書く・聞く・伝える。困りごとに合った道具（AT：支援技術）と、その使い方を紹介します。'
+  ? '読む・書く・聞く・伝える。困りごとに合った道具（AT：支援技術／Assistive Technology）と、その使い方を紹介します。'
   : 'Assistive technology for reading, writing, listening and communicating.');
 const home = ja ? '/' : '/en/';
 const nav = ja

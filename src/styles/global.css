@@ -551,3 +551,13 @@ html[data-fold='folded'] .fb-btn svg { width: 22px; height: 22px; }
 .kk-band-more:hover svg { transform: translateX(3px); }
 .kk-band-more svg { transition: transform .15s; }
 @media (max-width: 900px) { .kk-band { grid-template-columns: 1fr; padding: 18px 4px; } .kk-band-list { flex-direction: column; } }
+
+/* AT の定義（トップの見出しの上） */
+.at-def { flex-wrap: wrap; gap: 6px 12px; letter-spacing: 0.08em; }
+.at-def abbr { text-decoration: none; font-size: 1.15rem; letter-spacing: 0.06em; padding: 0 8px; background: var(--accent-fill); color: var(--on-accent); border-radius: 4px; line-height: 1.5; }
+.at-def .at-en { letter-spacing: 0.14em; text-transform: uppercase; }
+.at-def .at-sep { color: var(--sub); font-weight: 400; }
+.at-def .at-ja { color: var(--fg); letter-spacing: 0.12em; }
+.at-term abbr { text-decoration: none; }
+.at-en-inline { font-style: italic; letter-spacing: 0.02em; }
+@media (forced-colors: active) { .at-def abbr { border: 1px solid CanvasText; } }
