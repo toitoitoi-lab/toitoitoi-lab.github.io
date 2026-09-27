@@ -20,11 +20,11 @@ const tb = Object.fromEntries(TACHIBA.map((x) => [x.slug, x]));
 const others = KOMARI.filter((o) => o.slug !== k.slug);
 const T = ja
   ? { home: 'トップ', list: '困りごとから探す', review: '随時更新中', upd: '最終更新', soon: 'このページは準備中です。',
-      draft: 'このページは随時更新中です。', draftText: '一般的な方法をまとめています。合う方法は一人ひとり違うので、試しながら選んでください。「こんな方法もあるよ」「ここが分かりにくい」といった声も、ぜひお寄せください。',
+      draft: 'このページは随時更新中です。', draftText: 'ここにあるのは一般的な方法の例です。', kkLink: '合う方法の見つけ方', kkAfter: 'もあわせてご覧ください。「こんな方法もあるよ」「ここが分かりにくい」といった声も、ぜひお寄せください。',
       checked: `機能の名前や場所は、機種やバージョンによって違うことがあります（${CHECKED}時点）。`,
       toc: 'このページの目次', tocTitle: '方法の一覧', points: '立場ごとのポイント', fits: 'こんなときに：', links: '参考になるページ', ext: '（外部サイト）', others: 'ほかの困りごと', sep: '／' }
   : { home: 'Home', list: 'Find by need', review: 'Updating', upd: 'Last updated', soon: 'This page is being prepared.',
-      draft: 'This page is updated as we go.', draftText: 'It collects common methods. What works is different for everyone, so try things and choose. If you know another method or find something unclear, please let us know.',
+      draft: 'This page is updated as we go.', draftText: 'These are common examples. ', kkLink: 'How to find what fits', kkAfter: ' explains how to choose. If you know another method or find something unclear, please let us know.',
       checked: `Feature names and locations can differ by device and version (checked ${CHECKED_EN}).`,
       toc: 'On this page', tocTitle: 'Methods', points: 'Points for each role', fits: 'Useful when: ', links: 'Further reading', ext: ' (external site)', others: 'Other needs', sep: ' / ' };
 ---
@@ -49,7 +49,7 @@ const T = ja
         <p class="lead-text">{c.lead}</p>
         {k.review && (
           <div class="notice">
-            <p><strong>{T.draft}</strong>{T.draftText}</p>
+            <p><strong>{T.draft}</strong>{T.draftText}<a class="inline" href={`${base}/about/#kokoroe`}>{T.kkLink}</a>{T.kkAfter}</p>
             <p>{T.checked}</p>
           </div>
         )}

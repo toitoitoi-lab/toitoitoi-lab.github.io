@@ -527,3 +527,27 @@ html[data-fold='folded'] .fb-btn svg { width: 22px; height: 22px; }
 
 /* 操作ボタンは、画面上部に動かしてもヘッダーの下にかくれないように（表示設定パネル 50 より下） */
 .floatbar { z-index: 46; }
+
+/* 支援で大切にしていること（このサイトについて） */
+.kokoroe { margin: 8px 0 44px; }
+.kk-kicker { margin: 0 0 4px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent-text); }
+.prose .kk-heading { margin-top: 0; }
+.kk-lead { margin: 0 0 20px; font-size: clamp(1.3rem, 2.4vw, 1.6rem); font-weight: 700; line-height: 1.55; word-break: auto-phrase; }
+.kk-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.kk-points > li { display: grid; grid-template-columns: 3.2em 1fr; gap: 0 12px; margin: 0; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.kk-num { font-weight: 700; color: var(--accent-text); letter-spacing: 0.04em; }
+.kk-points .kk-num { font-size: 1.3rem; line-height: 1.4; }
+.prose .kk-title { margin: 0 0 6px; font-size: 1.15rem; }
+.kk-text { margin: 0; color: var(--sub); }
+
+/* トップ：困りごとから探すの下に、短く */
+.kk-band { margin: 28px 0 0; padding: 20px 24px; display: grid; grid-template-columns: minmax(220px, 1.1fr) 2fr auto; gap: 14px 28px; align-items: center; border-top: 2px solid var(--accent-text); border-bottom: 1px solid var(--line); }
+.kk-band-label { margin: 0 0 4px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.12em; color: var(--sub); }
+.kk-band-lead { margin: 0; font-size: 1.2rem; font-weight: 700; word-break: auto-phrase; }
+.kk-band-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font-weight: 700; }
+.kk-band-list li { margin: 0; display: inline-flex; gap: 8px; align-items: baseline; }
+.kk-band-list .kk-num { font-size: 0.9rem; }
+.kk-band-more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 700; color: var(--accent-text); text-underline-offset: 4px; white-space: nowrap; }
+.kk-band-more:hover svg { transform: translateX(3px); }
+.kk-band-more svg { transition: transform .15s; }
+@media (max-width: 900px) { .kk-band { grid-template-columns: 1fr; padding: 18px 4px; } .kk-band-list { flex-direction: column; } }

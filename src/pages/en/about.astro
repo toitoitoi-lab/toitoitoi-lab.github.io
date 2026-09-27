@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
 import Credentials from '../../components/Credentials.astro';
+import Kokoroe from '../../components/Kokoroe.astro';
 import { LINKS } from '../../data/site';
 import { MESSAGE } from '../../data/message';
 ---
@@ -15,6 +16,8 @@ import { MESSAGE } from '../../data/message';
       {MESSAGE.en.body.map((p) => <p>{p}</p>)}
       <p class="st-sign"><time datetime={MESSAGE.en.date}>{MESSAGE.en.dateLabel}</time><span aria-hidden="true">―</span><span>{MESSAGE.en.sign}</span></p>
     </section>
+
+    <Kokoroe lang="en" />
 
     <h2>The name</h2>
     <p><span lang="de">Toi toi toi</span> is a German phrase said to someone about to go on stage, wishing them luck. It carries our encouragement for everyone taking a step into learning.</p>

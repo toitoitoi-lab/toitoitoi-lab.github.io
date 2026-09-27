@@ -54,3 +54,35 @@ export const TOGETHER = {
     cta: 'Contact',
   },
 };
+
+// 支援で大切にしていること（「このサイトについて」と、トップの「困りごとから探す」の下で使う）
+export const KOKOROE = {
+  ja: {
+    kicker: 'Approach',
+    heading: '支援で大切にしていること',
+    lead: '合う方法は、一人ひとりちがう。',
+    points: [
+      { title: '学び手に合わせて、組み合わせる',
+        text: '児童生徒にフィットする方法は、一人ひとりちがいます。このサイトの方法は、出発点です。組み合わせたり、少し変えたりしながら、その子に合う形を探してください。' },
+      { title: '支える人の「得意」を生かす',
+        text: '工作が好きな先生、体を動かすのが好きな先生、書くことが好きな先生。指導者・支援者にも、得意・不得意があります。自分の得意と組み合わせれば、無理なく続けられます。支える人が楽しくないと、支援は長続きしません。' },
+      { title: '学び手と、いっしょにつくる',
+        text: '学び手の得意・不得意と、支える人の得意・不得意。そのミスマッチをできるだけ小さくしながら、学び手と共に創り上げていく（共創する）ことを大切にしています。' },
+    ],
+    more: '支援で大切にしていること',
+  },
+  en: {
+    kicker: 'Approach',
+    heading: 'What matters in support',
+    lead: 'What fits is different for every learner.',
+    points: [
+      { title: 'Fit the learner, and combine',
+        text: 'The method that fits each student is different. The methods on this site are starting points. Combine them and adjust them until they fit the learner in front of you.' },
+      { title: "Use the supporter's strengths",
+        text: 'Some teachers love making things, some love moving, some love writing. Teachers and supporters have strengths and weaknesses too. Combine methods with what you are good at, and you can keep going without strain. If the supporter is not enjoying it, the support will not last.' },
+      { title: 'Create it together with the learner',
+        text: "The learner's strengths and weaknesses, and the supporter's: we try to keep the mismatch between them as small as possible, and build learning together with the learner." },
+    ],
+    more: 'What matters in support',
+  },
+};

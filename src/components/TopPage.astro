@@ -5,6 +5,7 @@ import { KOMARI, TACHIBA } from '../data/site';
 import { MESSAGE } from '../data/message';
 import KyokaTiles from './KyokaTiles.astro';
 import KotsuList from './KotsuList.astro';
+import Kokoroe from './Kokoroe.astro';
 interface Props { lang: 'ja' | 'en' }
 const { lang } = Astro.props;
 const ja = lang === 'ja';
@@ -105,6 +106,7 @@ const GUIDE = ja
         </li>
       ))}
     </ul>
+    <Kokoroe lang={lang} variant="band" />
   </section>
 
   <section class="section" id="tachiba" aria-labelledby="h-tachiba">

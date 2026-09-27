@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Credentials from '../components/Credentials.astro';
+import Kokoroe from '../components/Kokoroe.astro';
 import { LINKS } from '../data/site';
 import { MESSAGE } from '../data/message';
 ---
@@ -15,6 +16,8 @@ import { MESSAGE } from '../data/message';
       {MESSAGE.ja.body.map((p) => <p>{p}</p>)}
       <p class="st-sign"><time datetime={MESSAGE.ja.date}>{MESSAGE.ja.dateLabel}</time><span aria-hidden="true">―</span><span>{MESSAGE.ja.sign}</span></p>
     </section>
+
+    <Kokoroe lang="ja" />
 
     <h2>名前について</h2>
     <p><span lang="de">toi toi toi</span>（トイ・トイ・トイ）は、舞台に出る人などを「うまくいきますように」と送り出すときのドイツ語のことばです。学びに一歩ふみ出す人へのエールの気持ちをこめています。</p>
