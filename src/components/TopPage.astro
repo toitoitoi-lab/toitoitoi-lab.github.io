@@ -52,7 +52,7 @@ const hrefT = (slug: string) => `${base}/tachiba/${slug}/`;
                 <span class="card-title">{ja ? k.ja.title : k.en.title}</span>
                 {k.ready
                   ? <svg class="card-arrow" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-                  : <Soon lang={lang} label={k.review ? (ja ? '確認中' : 'In review') : undefined} />}
+                  : <Soon lang={lang} tone={k.review ? 'update' : 'soon'} label={k.review ? (ja ? '随時更新中' : 'Updating') : undefined} />}
               </span>
               <span class="card-sub">{ja ? k.ja.examples : k.en.examples}</span>
             </div>

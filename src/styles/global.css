@@ -328,3 +328,17 @@ html[data-float='left'] .fb-grip { border-right: 0; border-left: 2px solid var(-
 
 .floatbar { width: max-content; }
 .fb-btn span { white-space: nowrap; }
+
+/* 随時更新中・最終更新 */
+.soon-update { border-color: var(--accent-text); color: var(--accent-text); }
+.page-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 8px 0 0; }
+.updated { font-size: 0.95rem; color: var(--sub); white-space: nowrap; }
+.tree-children .updated { display: block; margin-top: 4px; font-size: 0.9rem; }
+
+/* いっしょに考える（全ページ共通） */
+.together { margin-top: 72px; border-top: 1px solid var(--line, var(--sub)); background: var(--panel); }
+.together-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; padding-top: 40px; padding-bottom: 40px; }
+.together h2 { font-size: clamp(1.25rem, 2.4vw, 1.6rem); margin: 0 0 10px; color: var(--accent-text); }
+.together p { margin: 0 0 6px; max-width: 40em; }
+.together .btn { flex: none; }
+@media (forced-colors: active) { .soon-update { border-color: CanvasText; } }

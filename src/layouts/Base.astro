@@ -7,6 +7,7 @@ import '@fontsource/klee-one/400.css';
 import '@fontsource/klee-one/600.css';
 import '../styles/global.css';
 import { LINKS, SITE } from '../data/site';
+import { TOGETHER } from '../data/message';
 
 interface Props { title?: string; description?: string; lang?: 'ja' | 'en'; current?: string }
 const { title, description, lang = 'ja', current = '' } = Astro.props;
@@ -139,6 +140,18 @@ const groups = [
   <main id="main" tabindex="-1">
     <slot />
   </main>
+
+  {current !== 'contact' && (
+    <aside class="together" aria-labelledby="together-title">
+      <div class="wrap together-inner">
+        <div>
+          <h2 id="together-title">{TOGETHER[lang].heading}</h2>
+          {TOGETHER[lang].body.map((p) => <p>{p}</p>)}
+        </div>
+        <a class="btn btn-solid" href={ja ? '/contact/' : '/en/contact/'}>{TOGETHER[lang].cta}</a>
+      </div>
+    </aside>
+  )}
 
   <footer class="site-footer">
     <div class="wrap">

@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Crumbs from './Crumbs.astro';
 import Soon from './Soon.astro';
 import Illust from './Illust.astro';
-import { SITEMAP_JA, SITEMAP_EN } from '../data/site';
+import { SITEMAP_JA, SITEMAP_EN, fmtDate } from '../data/site';
 interface Props { lang?: 'ja' | 'en' }
 const { lang = 'ja' } = Astro.props;
 const ja = lang === 'ja';
@@ -17,9 +17,9 @@ const icons: Record<string, string> = {
 };
 const T = ja
   ? { title: 'サイトマップ', home: 'トップ', intro1: 'このサイトのページは、', groups: `${MAP.length}つのまとまり`, intro2: `に分かれています（全${total}ページ）。まとまりの名前の下に、その中のページが並んでいます。`,
-      jump: 'まとまりへ移動', pages: (n: number) => `${n}ページ`, inside: (h: string) => `${h}の中のページ`, ext: '（外部サイト）', review: '確認中' }
+      jump: 'まとまりへ移動', pages: (n: number) => `${n}ページ`, inside: (h: string) => `${h}の中のページ`, ext: '（外部サイト）', review: '随時更新中', upd: (d: string) => `最終更新 ${d}` }
   : { title: 'Sitemap', home: 'Home', intro1: 'Pages on this site are grouped into ', groups: `${MAP.length} sections`, intro2: ` (${total} pages in total). Each section name is followed by the pages inside it.`,
-      jump: 'Jump to a section', pages: (n: number) => `${n} pages`, inside: (h: string) => `Pages in ${h}`, ext: ' (external site)', review: 'In review' };
+      jump: 'Jump to a section', pages: (n: number) => `${n} pages`, inside: (h: string) => `Pages in ${h}`, ext: ' (external site)', review: 'Updating', upd: (d: string) => `Last updated ${d}` };
 ---
 <Base title={T.title} lang={lang} current="sitemap">
   <div class="wrap page sitemap-page">
@@ -59,7 +59,8 @@ const T = ja
                     {l.note && <span class="child-note" aria-hidden={l.external ? 'true' : undefined}>{l.note}</span>}
                   </span>
                 </a>
-                {!l.ready && <Soon lang={lang} label={l.review ? T.review : undefined} />}
+                {!l.ready && <Soon lang={lang} tone={l.review ? 'update' : 'soon'} label={l.review ? T.review : undefined} />}
+                {l.review && l.updated && <span class="updated">{T.upd(fmtDate(l.updated, lang))}</span>}
               </li>
             ))}
           </ul>

@@ -1,5 +1,5 @@
 ---
-interface Props { lang?: 'ja' | 'en'; label?: string }
-const { lang = 'ja', label } = Astro.props;
+interface Props { lang?: 'ja' | 'en'; label?: string; tone?: 'soon' | 'update' }
+const { lang = 'ja', label, tone = 'soon' } = Astro.props;
 ---
-<span class="soon">{label ?? (lang === 'en' ? 'Coming soon' : '準備中')}</span>
+<span class={tone === 'update' ? 'soon soon-update' : 'soon'}>{label ?? (lang === 'en' ? 'Coming soon' : '準備中')}</span>

@@ -19,3 +19,23 @@ export const MESSAGE = {
     more: 'Read more',
   },
 };
+
+// いっしょに考えるメッセージ（全ページの下に出す）
+export const TOGETHER = {
+  ja: {
+    heading: 'いっしょに考えていきませんか',
+    body: [
+      'お困りのことがあれば、どうぞ気軽にご連絡ください。',
+      '答えを一つに決めるのではなく、その人に合う方法をいっしょに考えていけたらと思っています。このサイトも、みなさんの声を受けながら、少しずつ育てていきます。',
+    ],
+    cta: 'お問い合わせ',
+  },
+  en: {
+    heading: "Let's think it through together",
+    body: [
+      'If you are facing a difficulty, please feel free to get in touch.',
+      'Rather than settling on one right answer, I hope we can work out together what suits each person. This site will also keep growing, little by little, with your voices.',
+    ],
+    cta: 'Contact',
+  },
+};

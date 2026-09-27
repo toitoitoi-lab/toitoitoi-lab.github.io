@@ -28,7 +28,8 @@ const WAV = 'M94 24 Q100 34 94 44 M102 16 Q112 34 102 52';
 export type Komari = {
   slug: string;
   ready: boolean;
-  review?: boolean; // 中身は入っているが確認中
+  review?: boolean; // 中身は入っていて、随時更新中
+  updated?: string; // 最終更新日（YYYY-MM-DD）。中身を直したら書きかえる
   stage: Stage;
   ja: { title: string; examples: string };
   en: { title: string; examples: string };
@@ -37,7 +38,7 @@ export type Komari = {
 
 export const KOMARI: Komari[] = [
   {
-    slug: 'yomu', ready: false, review: true, stage: 'violet',
+    slug: 'yomu', ready: false, review: true, updated: '2026-09-27', stage: 'violet',
     ja: { title: '読む', examples: '読み上げ・拡大・ルビ・点字' },
     en: { title: 'Reading', examples: 'Text-to-speech, zoom, ruby, braille' },
     shapes: [
@@ -48,7 +49,7 @@ export const KOMARI: Komari[] = [
     ],
   },
   {
-    slug: 'kaku', ready: false, review: true, stage: 'sky',
+    slug: 'kaku', ready: false, review: true, updated: '2026-09-27', stage: 'sky',
     ja: { title: '書く', examples: '音声入力・予測変換・写真で記録' },
     en: { title: 'Writing', examples: 'Voice input, word prediction, photo notes' },
     shapes: [
@@ -60,7 +61,7 @@ export const KOMARI: Komari[] = [
     ],
   },
   {
-    slug: 'kiku', ready: false, review: true, stage: 'coral',
+    slug: 'kiku', ready: false, review: true, updated: '2026-09-27', stage: 'coral',
     ja: { title: '聞く・見る', examples: '字幕・文字起こし・視覚支援' },
     en: { title: 'Listening & seeing', examples: 'Captions, transcription, visual supports' },
     shapes: [
@@ -71,7 +72,7 @@ export const KOMARI: Komari[] = [
     ],
   },
   {
-    slug: 'tsutaeru', ready: false, review: true, stage: 'violet',
+    slug: 'tsutaeru', ready: false, review: true, updated: '2026-09-27', stage: 'violet',
     ja: { title: '伝える', examples: 'AAC・VOCA・絵カード' },
     en: { title: 'Communicating', examples: 'AAC, VOCA, picture cards' },
     shapes: [
@@ -81,7 +82,7 @@ export const KOMARI: Komari[] = [
     ],
   },
   {
-    slug: 'sousa', ready: false, review: true, stage: 'coral',
+    slug: 'sousa', ready: false, review: true, updated: '2026-09-27', stage: 'coral',
     ja: { title: '操作する', examples: 'スイッチ・視線入力・設定' },
     en: { title: 'Operating', examples: 'Switches, eye gaze, device settings' },
     shapes: [
@@ -92,7 +93,7 @@ export const KOMARI: Komari[] = [
     ],
   },
   {
-    slug: 'mitoosu', ready: false, review: true, stage: 'sky',
+    slug: 'mitoosu', ready: false, review: true, updated: '2026-09-27', stage: 'sky',
     ja: { title: '見通す・整える', examples: 'スケジュール・タイマー' },
     en: { title: 'Planning & organizing', examples: 'Schedules, timers' },
     shapes: [
@@ -153,7 +154,7 @@ export const TACHIBA: Tachiba[] = [
 
 // サイトマップ（日本語）。大項目（group）の下に小項目（links）が入る。
 // ready: false のページには「準備中」が付く。
-export type MapLink = { label: string; href: string; ready: boolean; review?: boolean; lang?: string; external?: boolean; note?: string; shapes?: Shape[]; stage?: Stage };
+export type MapLink = { label: string; href: string; ready: boolean; review?: boolean; updated?: string; lang?: string; external?: boolean; note?: string; shapes?: Shape[]; stage?: Stage };
 export type MapGroup = { id: string; heading: string; href: string; desc: string; icon: string; links: MapLink[] };
 
 export const SITEMAP_JA: MapGroup[] = [
@@ -171,7 +172,7 @@ export const SITEMAP_JA: MapGroup[] = [
   {
     id: 'komari', heading: '困りごとから探す', href: '/#komari', icon: 'komari',
     desc: '読む・書くなど、困っていることから道具と使い方を探す',
-    links: KOMARI.map((k) => ({ label: k.ja.title, note: k.ja.examples, href: `/komari/${k.slug}/`, ready: k.ready, review: k.review, shapes: k.shapes, stage: k.stage })),
+    links: KOMARI.map((k) => ({ label: k.ja.title, note: k.ja.examples, href: `/komari/${k.slug}/`, ready: k.ready, review: k.review, updated: k.updated, shapes: k.shapes, stage: k.stage })),
   },
   {
     id: 'tachiba', heading: '立場から探す', href: '/#tachiba', icon: 'tachiba',
@@ -207,7 +208,7 @@ export const SITEMAP_EN: MapGroup[] = [
   {
     id: 'komari', heading: 'Find by need', href: '/en/#komari', icon: 'komari',
     desc: 'Find tools and how to use them, starting from the difficulty',
-    links: KOMARI.map((k) => ({ label: k.en.title, note: k.en.examples, href: `/en/komari/${k.slug}/`, ready: k.ready, review: k.review, shapes: k.shapes, stage: k.stage })),
+    links: KOMARI.map((k) => ({ label: k.en.title, note: k.en.examples, href: `/en/komari/${k.slug}/`, ready: k.ready, review: k.review, updated: k.updated, shapes: k.shapes, stage: k.stage })),
   },
   {
     id: 'tachiba', heading: 'Find by who you are', href: '/en/#tachiba', icon: 'tachiba',
@@ -226,3 +227,11 @@ export const SITEMAP_EN: MapGroup[] = [
     ],
   },
 ];
+
+// 日付の表示（例：2026年9月27日 / 27 September 2026）
+export function fmtDate(iso: string, lang: 'ja' | 'en' = 'ja') {
+  const [y, m, d] = iso.split('-').map(Number);
+  if (lang === 'ja') return `${y}年${m}月${d}日`;
+  const M = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `${d} ${M[m - 1]} ${y}`;
+}
