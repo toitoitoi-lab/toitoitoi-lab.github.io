@@ -325,3 +325,6 @@ html[data-float='left'] .fb-grip { border-right: 0; border-left: 2px solid var(-
 .top-message p { max-width: 42em; }
 .message { margin: 8px 0 32px; padding: 24px 28px; border-left: 6px solid var(--accent-fill); background: var(--panel); border-radius: 0 16px 16px 0; }
 .message h2 { margin-top: 0 !important; }
+
+.floatbar { width: max-content; }
+.fb-btn span { white-space: nowrap; }
