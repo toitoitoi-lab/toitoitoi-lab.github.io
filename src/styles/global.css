@@ -522,3 +522,5 @@ html[data-fold='folded'] .fb-btn svg { width: 22px; height: 22px; }
 .cred-close { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line); font-weight: 700; }
 .cred-sys { margin: 8px 0 0; font-size: 0.9rem; color: var(--sub); }
 @media (forced-colors: active) { .cred, .cred-chips li { border-color: CanvasText; } }
+.cred-to a { white-space: nowrap; }
+.cred-close { word-break: auto-phrase; }
