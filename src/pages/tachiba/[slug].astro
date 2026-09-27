@@ -1,33 +1,10 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Illust from '../../components/Illust.astro';
-import Soon from '../../components/Soon.astro';
-import Crumbs from '../../components/Crumbs.astro';
-import { KOMARI, TACHIBA } from '../../data/site';
+import TachibaPage from '../../components/TachibaPage.astro';
+import TsukuruPage from '../../components/TsukuruPage.astro';
+import { TACHIBA } from '../../data/site';
 export function getStaticPaths() {
   return TACHIBA.map((t) => ({ params: { slug: t.slug }, props: { t } }));
 }
 const { t } = Astro.props;
 ---
-<Base title={t.ja.title} current="tachiba" description={t.ja.text}>
-  <div class="wrap page">
-    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '立場から探す', href: '/#tachiba' }, { label: t.ja.title }]} />
-    <div class="page-head">
-      <div class={`art-sm stage-${t.stage}`}><Illust shapes={t.shapes} /></div>
-      <div>
-        <h1>{t.ja.title}</h1>
-        {!t.ready && <Soon />}
-      </div>
-    </div>
-    <p>{t.ja.text}</p>
-    {!t.ready && (
-      <div class="notice">
-        <p><strong>このページは準備中です。</strong>困りごとごとに、この立場の方向けの内容を用意していきます。</p>
-        <ul>
-          {KOMARI.map((k) => <li>{k.ja.title}（{k.ja.examples}）</li>)}
-        </ul>
-      </div>
-    )}
-    <p><a href="/#tachiba">立場の一覧にもどる</a></p>
-  </div>
-</Base>
+{t.slug === 'tsukuru' ? <TsukuruPage t={t} lang="ja" /> : <TachibaPage t={t} lang="ja" />}

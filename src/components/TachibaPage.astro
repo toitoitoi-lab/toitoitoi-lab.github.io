@@ -1,0 +1,231 @@
+---
+// 立場のページ（先生・支援者／本人・家族）。日本語・英語で共通。
+// 困りごとは「困りごとから探す」と同じデータを使い、この立場向けのポイントを添えて並べる。
+import Base from '../layouts/Base.astro';
+import Illust from './Illust.astro';
+import Soon from './Soon.astro';
+import Crumbs from './Crumbs.astro';
+import { KOMARI, fmtDate, type Tachiba } from '../data/site';
+import { CONTENT } from '../data/methods';
+import { CONTENT_EN } from '../data/methods_en';
+interface Props { t: Tachiba; lang?: 'ja' | 'en' }
+const { t, lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const SRC = ja ? CONTENT : CONTENT_EN;
+const role = t.slug as 'sensei' | 'honnin';
+const L = (x: { ja: any; en: any }) => (ja ? x.ja : x.en);
+const pages = KOMARI.filter((k) => SRC[k.slug]).map((k) => ({ k, c: SRC[k.slug] }));
+const all = pages.flatMap(({ k, c }) =>
+  c.methods.map((m) => ({
+    page: k.slug,
+    id: m.id,
+    title: m.title,
+    summary: m.summary,
+    sit: m.situations.map((s) => `${k.slug}:${s}`),
+    kws: m.keywords,
+    hay: [m.title, m.summary, ...m.keywords, ...(m.devices ?? []).map((d) => `${d.name} ${d.how}`)].join(' '),
+  })),
+);
+const labels = Object.fromEntries(pages.flatMap(({ k, c }) => c.situations.map((s) => [`${k.slug}:${s.id}`, s.label])));
+const pageInfo = Object.fromEntries(pages.map(({ k, c }) => [k.slug, { title: L(k).title, point: c.points[role] }]));
+const T = ja
+  ? {
+      home: 'トップ', list: '立場から探す', review: '随時更新中', upd: '最終更新',
+      lead: t.slug === 'sensei'
+        ? '授業や支援の場で気になっていることを選ぶか、自由に書いてください。「困りごとから探す」の6つのページから合いそうな方法を拾い出し、困りごとごとに並べます。先生・支援者の方に向けたポイントもいっしょに表示します。'
+        : 'ご本人が困っていることを選ぶか、自由に書いてください。「困りごとから探す」の6つのページから合いそうな方法を拾い出し、困りごとごとに並べます。ご本人・ご家族に向けたポイントもいっしょに表示します。',
+      formTitle: '困っていることから方法を探す', legend: (x: string) => `${x}の困りごと`, pick: (n: number) => `${n}件選択中`,
+      free: '困っていることを自由に書く', hint: '例：「連絡帳を書くのに時間がかかる」「話し合いで考えがまとまらない」',
+      search: '探す', reset: '選んだものを消す', empty: 'まだ選ばれていません。下の「困りごとごとの一覧」から見ることもできます。',
+      none: '合う方法が見つかりませんでした。言葉を変えるか、下の一覧を見てください。',
+      found: (n: number, p: number) => `${p}つの困りごとから、${n}件の方法が見つかりました。`,
+      forRole: t.slug === 'sensei' ? '先生・支援者の方へ' : 'ご本人・ご家族へ', open: 'ページを開く',
+      why1: '選んだこと：', why2: 'ことば：', why3: '書いた内容に近い', sep: '、',
+      overview: '困りごとごとの一覧', overviewLead: 'すべての困りごとと方法を、項目ごとに並べています。',
+      methods: '方法', draft: 'このページは随時更新中です。', draftText: '方法の中身は「困りごとから探す」の各ページと共通です。',
+    }
+  : {
+      home: 'Home', list: 'Find by who you are', review: 'Updating', upd: 'Last updated',
+      lead: t.slug === 'sensei'
+        ? 'Choose what you notice in lessons or support, or describe it in your own words. Matching methods are picked from the six "need" pages and listed by need, with points for teachers and supporters.'
+        : 'Choose what the learner finds hard, or describe it in your own words. Matching methods are picked from the six "need" pages and listed by need, with points for learners and families.',
+      formTitle: 'Find methods from the difficulty', legend: (x: string) => `Needs in ${x}`, pick: (n: number) => `${n} selected`,
+      free: 'Describe the difficulty', hint: 'e.g. "writing in the notebook takes too long", "hard to organise ideas in discussion"',
+      search: 'Search', reset: 'Clear', empty: 'Nothing selected yet. You can also browse the list by need below.',
+      none: 'Nothing found. Try other words, or browse the list below.',
+      found: (n: number, p: number) => `${n} methods found across ${p} needs.`,
+      forRole: t.slug === 'sensei' ? 'For teachers & supporters' : 'For learners & families', open: 'Open page',
+      why1: 'You chose: ', why2: 'Words: ', why3: 'Close to what you wrote', sep: ', ',
+      overview: 'List by need', overviewLead: 'Every need and method, grouped by need.',
+      methods: 'Methods', draft: 'This page is updated as we go.', draftText: 'The methods are shared with the "need" pages.',
+    };
+const data = JSON.stringify({
+  all, labels, pageInfo, base, lang,
+  T: { empty: T.empty, none: T.none, forRole: T.forRole, open: T.open, why1: T.why1, why2: T.why2, why3: T.why3, sep: T.sep, found: ja ? '{p}つの困りごとから、{n}件の方法が見つかりました。' : '{n} methods found across {p} needs.' },
+});
+---
+<Base title={L(t).title} lang={lang} current="tachiba" description={L(t).text}>
+  <div class="wrap page tachiba-page">
+    <Crumbs lang={lang} items={[{ label: T.home, href: `${base}/` }, { label: T.list, href: `${base}/#tachiba` }, { label: L(t).title }]} />
+    <div class="page-head">
+      <div class={`art-sm stage-${t.stage}`}><Illust shapes={t.shapes} /></div>
+      <div>
+        <h1>{L(t).title}</h1>
+        <p class="page-status">
+          {!t.ready && <Soon lang={lang} tone={t.review ? 'update' : 'soon'} label={t.review ? T.review : undefined} />}
+          {t.updated && <span class="updated">{T.upd}<time datetime={t.updated}>{ja ? ' ' : ': '}{fmtDate(t.updated, lang)}</time></span>}
+        </p>
+      </div>
+    </div>
+    <p class="lead-text">{T.lead}</p>
+    {t.review && <div class="notice"><p><strong>{T.draft}</strong>{T.draftText}</p></div>}
+
+    <section class="finder" aria-labelledby="tf-title">
+      <h2 id="tf-title">{T.formTitle}</h2>
+      <form id="tf-form" class="finder-form" autocomplete="off">
+        <div class="tf-groups">
+          {pages.map(({ k, c }) => (
+            <details class="tf-group" data-page={k.slug}>
+              <summary>
+                <span class={`art-xs stage-${k.stage}`}><Illust shapes={k.shapes} /></span>
+                <span class="tf-sum-text"><span class="tf-sum-title">{L(k).title}</span><span class="tf-sum-sub">{L(k).examples}</span></span>
+                <span class="tf-count" aria-live="polite"></span>
+              </summary>
+              <fieldset>
+                <legend class="visually-hidden">{T.legend(L(k).title)}</legend>
+                <div class="finder-checks">
+                  {c.situations.map((s) => (
+                    <label class="check"><input type="checkbox" name="sit" value={`${k.slug}:${s.id}`} data-pick={T.pick(0)} /><span>{s.label}</span></label>
+                  ))}
+                </div>
+              </fieldset>
+            </details>
+          ))}
+        </div>
+        <div class="finder-text">
+          <label for="tf-q">{T.free}</label>
+          <p class="hint" id="tf-hint">{T.hint}</p>
+          <input id="tf-q" name="q" type="search" aria-describedby="tf-hint" />
+        </div>
+        <div class="finder-actions">
+          <button class="btn btn-solid" type="submit">{T.search}</button>
+          <button class="btn" type="reset">{T.reset}</button>
+        </div>
+      </form>
+      <div class="finder-results" id="tf-results" aria-live="polite" aria-atomic="true">
+        <p class="muted">{T.empty}</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="ov-title" class="tf-overview">
+      <h2 id="ov-title">{T.overview}</h2>
+      <p>{T.overviewLead}</p>
+      {pages.map(({ k, c }) => (
+        <section class="tf-ov-item" aria-labelledby={`ov-${k.slug}`}>
+          <div class="tf-ov-head">
+            <span class={`art-xs stage-${k.stage}`}><Illust shapes={k.shapes} /></span>
+            <h3 id={`ov-${k.slug}`}><a href={`${base}/komari/${k.slug}/`}>{L(k).title}</a></h3>
+          </div>
+          <p class="tf-point"><span class="tf-point-label">{T.forRole}</span>{c.points[role]}</p>
+          <details>
+            <summary>{T.methods}（{c.methods.length}）</summary>
+            <ul class="tf-ov-methods">
+              {c.methods.map((m) => <li><a href={`${base}/komari/${k.slug}/#m-${m.id}`}>{m.title}</a></li>)}
+            </ul>
+          </details>
+        </section>
+      ))}
+    </section>
+  </div>
+</Base>
+
+<script type="application/json" id="tf-data" set:html={data}></script>
+<script is:inline>
+  (function () {
+    var D = JSON.parse(document.getElementById('tf-data').textContent);
+    var T = D.T, EN = D.lang === 'en';
+    var form = document.getElementById('tf-form');
+    var out = document.getElementById('tf-results');
+    var q = document.getElementById('tf-q');
+    function norm(s) {
+      return String(s || '').normalize('NFKC').toLowerCase()
+        .replace(/[ァ-ヶ]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0x60); })
+        .replace(/[\s、。,.・「」（）()!?！？'’"-]/g, '');
+    }
+    function words(s) { return String(s || '').toLowerCase().match(/[a-z]{3,}/g) || []; }
+    function bigrams(s) { var a = []; for (var i = 0; i < s.length - 1; i++) a.push(s.slice(i, i + 2)); return a; }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    var STOP = ['the', 'and', 'can', 'cannot', 'hard', 'for', 'with', 'too', 'not', 'what', 'when', 'from', 'this', 'that', 'into', 'are', 'you', 'your'];
+    D.all.forEach(function (m) { m.nHay = norm(m.hay); m.nKws = m.kws.map(norm); m.wHay = words(m.hay); });
+
+    function score(m, sel, raw) {
+      var s = 0, why = [], nq = norm(raw);
+      var hit = m.sit.filter(function (id) { return sel.indexOf(id) >= 0; });
+      if (hit.length) { s += hit.length * 3; why.push(T.why1 + hit.map(function (id) { return D.labels[id]; }).join(T.sep)); }
+      if (nq) {
+        var found = [], lq = String(raw).toLowerCase();
+        m.kws.forEach(function (k, i) {
+          var nk = m.nKws[i];
+          if (EN) {
+            var re = new RegExp('(^|[^a-z])' + k.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es|ed|ing)?([^a-z]|$)');
+            if (re.test(lq)) found.push(k);
+          } else if (nk.length >= 2 && (nq.indexOf(nk) >= 0 || (nq.length >= 3 && nk.indexOf(nq) >= 0))) found.push(k);
+        });
+        if (found.length) { s += found.length * 2; why.push(T.why2 + found.slice(0, 4).join(T.sep)); }
+        else if (EN) {
+          var qw = words(raw).filter(function (w) { return STOP.indexOf(w) < 0; });
+          var shared = qw.filter(function (w) { return m.wHay.some(function (h) { return h.indexOf(w) === 0 || w.indexOf(h) === 0 && h.length >= 4; }); });
+          if (shared.length >= Math.max(2, Math.ceil(qw.length * 0.5))) { s += 1; why.push(T.why3); }
+        } else {
+          var bg = bigrams(nq), sh = bg.filter(function (b) { return m.nHay.indexOf(b) >= 0; }).length;
+          if (bg.length && sh >= Math.max(2, Math.ceil(bg.length * 0.4))) { s += 1; why.push(T.why3); }
+        }
+      }
+      return { s: s, why: why };
+    }
+
+    function counts() {
+      Array.prototype.forEach.call(document.querySelectorAll('.tf-group'), function (g) {
+        var n = g.querySelectorAll('input:checked').length;
+        g.querySelector('.tf-count').textContent = n ? (EN ? n + ' selected' : n + '件選択中') : '';
+        g.classList.toggle('has-pick', n > 0);
+      });
+    }
+
+    function render() {
+      counts();
+      var sel = Array.prototype.map.call(form.querySelectorAll('input[name="sit"]:checked'), function (i) { return i.value; });
+      var raw = q.value;
+      if (!sel.length && !norm(raw)) { out.innerHTML = '<p class="muted">' + esc(D.T.empty) + '</p>'; return; }
+      var groups = {};
+      D.all.forEach(function (m) {
+        var r = score(m, sel, raw);
+        if (r.s <= 0) return;
+        (groups[m.page] = groups[m.page] || { total: 0, items: [] });
+        groups[m.page].total += r.s;
+        groups[m.page].items.push({ m: m, s: r.s, why: r.why });
+      });
+      var keys = Object.keys(groups).sort(function (a, b) { return groups[b].total - groups[a].total; });
+      if (!keys.length) { out.innerHTML = '<p class="muted">' + esc(T.none) + '</p>'; return; }
+      var n = 0; keys.forEach(function (k) { n += groups[k].items.length; });
+      var html = '<p class="tf-found">' + esc(T.found.replace('{n}', n).replace('{p}', keys.length)) + '</p>';
+      keys.forEach(function (k) {
+        var g = groups[k], info = D.pageInfo[k], href = D.base + '/komari/' + k + '/';
+        g.items.sort(function (a, b) { return b.s - a.s; });
+        html += '<section class="tf-res"><h3><a href="' + href + '">' + esc(info.title) + '</a></h3>'
+          + '<p class="tf-point"><span class="tf-point-label">' + esc(T.forRole) + '</span>' + esc(info.point) + '</p>'
+          + '<ol class="hits">' + g.items.map(function (x) {
+            return '<li><a href="' + href + '#m-' + x.m.id + '">' + esc(x.m.title) + '</a>'
+              + '<span class="tf-sum">' + esc(x.m.summary) + '</span>'
+              + '<span class="why">' + esc(x.why.join(' / ')) + '</span></li>';
+          }).join('') + '</ol></section>';
+      });
+      out.innerHTML = html;
+    }
+    form.addEventListener('submit', function (e) { e.preventDefault(); render(); });
+    form.addEventListener('change', function (e) { if (e.target && e.target.name === 'sit') render(); });
+    form.addEventListener('reset', function () { setTimeout(render, 0); });
+    var tm; q.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(render, 400); });
+  })();
+</script>

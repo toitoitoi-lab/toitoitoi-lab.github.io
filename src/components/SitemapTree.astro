@@ -17,9 +17,9 @@ const icons: Record<string, string> = {
 };
 const T = ja
   ? { title: 'サイトマップ', home: 'トップ', intro1: 'このサイトのページは、', groups: `${MAP.length}つのまとまり`, intro2: `に分かれています（全${total}ページ）。まとまりの名前の下に、その中のページが並んでいます。`,
-      jump: 'まとまりへ移動', pages: (n: number) => `${n}ページ`, inside: (h: string) => `${h}の中のページ`, ext: '（外部サイト）', review: '随時更新中', upd: (d: string) => `最終更新 ${d}` }
+      jump: 'まとまりへ移動', pages: (n: number) => `${n}ページ`, inside: (h: string) => `${h}の中のページ`, ext: '（外部サイト・新しいタブで開きます）', review: '随時更新中', upd: (d: string) => `最終更新 ${d}` }
   : { title: 'Sitemap', home: 'Home', intro1: 'Pages on this site are grouped into ', groups: `${MAP.length} sections`, intro2: ` (${total} pages in total). Each section name is followed by the pages inside it.`,
-      jump: 'Jump to a section', pages: (n: number) => `${n} pages`, inside: (h: string) => `Pages in ${h}`, ext: ' (external site)', review: 'Updating', upd: (d: string) => `Last updated ${d}` };
+      jump: 'Jump to a section', pages: (n: number) => `${n} pages`, inside: (h: string) => `Pages in ${h}`, ext: ' (external site, opens in a new tab)', review: 'Updating', upd: (d: string) => `Last updated ${d}` };
 ---
 <Base title={T.title} lang={lang} current="sitemap">
   <div class="wrap page sitemap-page">
@@ -50,7 +50,7 @@ const T = ja
           <ul class="tree-children" aria-label={T.inside(g.heading)}>
             {g.links.map((l) => (
               <li>
-                <a class="child" href={l.href} lang={l.lang}>
+                <a class="child" href={l.href} lang={l.lang} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>
                   {l.shapes
                     ? <span class={`thumb stage-${l.stage}`}><Illust shapes={l.shapes} /></span>
                     : <span class="thumb thumb-plain" aria-hidden="true"></span>}

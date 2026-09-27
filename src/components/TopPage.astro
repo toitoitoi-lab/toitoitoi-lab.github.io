@@ -70,14 +70,16 @@ const hrefT = (slug: string) => `${base}/tachiba/${slug}/`;
     <ul class="grid">
       {TACHIBA.map((t) => (
         <li>
-          <a class="card card-row" href={hrefT(t.slug)}>
+          <a class="card card-row" href={t.external ?? hrefT(t.slug)} target={t.external ? '_blank' : undefined} rel={t.external ? 'noopener' : undefined}>
             <div class={`art-sm stage-${t.stage}`}><Illust shapes={t.shapes} /></div>
             <span class={`tag up tone-${t.tagTone}`} lang="en">{t.tag}</span>
             <span class="card-title-row">
               <span class="card-title">{ja ? t.ja.title : t.en.title}</span>
-              {!t.ready && <Soon lang={lang} />}
+              {t.external
+                ? <span class="ext-ic" aria-hidden="true">↗</span>
+                : !t.ready && <Soon lang={lang} tone={t.review ? 'update' : 'soon'} label={t.review ? (ja ? '随時更新中' : 'Updating') : undefined} />}
             </span>
-            <span class="card-sub">{ja ? t.ja.text : t.en.text}</span>
+            <span class="card-sub">{ja ? t.ja.text : t.en.text}{t.external && <span class="visually-hidden">{ja ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span>}</span>
           </a>
         </li>
       ))}

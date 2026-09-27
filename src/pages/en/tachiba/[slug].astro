@@ -1,25 +1,10 @@
 ---
-import Base from '../../../layouts/Base.astro';
-import Illust from '../../../components/Illust.astro';
-import Soon from '../../../components/Soon.astro';
-import Crumbs from '../../../components/Crumbs.astro';
-import { KOMARI, TACHIBA } from '../../../data/site';
+import TachibaPage from '../../../components/TachibaPage.astro';
+import TsukuruPage from '../../../components/TsukuruPage.astro';
+import { TACHIBA } from '../../../data/site';
 export function getStaticPaths() {
   return TACHIBA.map((t) => ({ params: { slug: t.slug }, props: { t } }));
 }
 const { t } = Astro.props;
 ---
-<Base title={t.en.title} lang="en" current="tachiba" description={t.en.text}>
-  <div class="wrap page">
-    <Crumbs lang="en" items={[{ label: 'Home', href: '/en/' }, { label: 'Find by who you are', href: '/en/#tachiba' }, { label: t.en.title }]} />
-    <div class="page-head">
-      <div class={`art-sm stage-${t.stage}`}><Illust shapes={t.shapes} /></div>
-      <div><h1>{t.en.title}</h1>{!t.ready && <Soon lang="en" />}</div>
-    </div>
-    <p>{t.en.text}</p>
-    <div class="notice">
-      <p><strong>This page is being prepared.</strong> Until then, each "need" page has a short section for this role:</p>
-      <ul>{KOMARI.map((k) => <li><a class="inline" href={`/en/komari/${k.slug}/#points`}>{k.en.title}</a></li>)}</ul>
-    </div>
-  </div>
-</Base>
+{t.slug === 'tsukuru' ? <TsukuruPage t={t} lang="en" /> : <TachibaPage t={t} lang="en" />}

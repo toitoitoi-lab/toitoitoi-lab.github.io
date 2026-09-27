@@ -1,0 +1,44 @@
+---
+// つくりたい方へ：GitHub のアプリ一覧へ案内する
+import Base from '../layouts/Base.astro';
+import Illust from './Illust.astro';
+import Crumbs from './Crumbs.astro';
+import { LINKS, type Tachiba } from '../data/site';
+interface Props { t: Tachiba; lang?: 'ja' | 'en' }
+const { t, lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const apps = [
+  { name: ja ? 'せんせいアシスト（教育相談編）' : 'Sensei Assist (consultation)', repo: 'sensei-assist',
+    text: ja ? '架空の児童生徒の特性から、典型的に考えられる支援を想定する道具' : 'Imagine typical support from the traits of a fictional learner (Japanese)' },
+  { name: ja ? 'techo（手帳）' : 'techo (planner)', repo: 'techo',
+    text: ja ? '使命 → 大きな石 → 日々の優先順位で、いくつもの役割を見渡す手帳' : 'A planner that links mission, big rocks and daily priorities (Japanese)' },
+];
+const newTab = ja ? '（新しいタブで開きます）' : ' (opens in a new tab)';
+---
+<Base title={ja ? t.ja.title : t.en.title} lang={lang} current="tachiba" description={ja ? t.ja.text : t.en.text}>
+  <div class="wrap page">
+    <Crumbs lang={lang} items={[{ label: ja ? 'トップ' : 'Home', href: `${base}/` }, { label: ja ? '立場から探す' : 'Find by who you are', href: `${base}/#tachiba` }, { label: ja ? t.ja.title : t.en.title }]} />
+    <div class="page-head">
+      <div class={`art-sm stage-${t.stage}`}><Illust shapes={t.shapes} /></div>
+      <div><h1>{ja ? t.ja.title : t.en.title}</h1></div>
+    </div>
+    <p class="lead-text">{ja
+      ? 'これまでにつくってきたアプリを、GitHub にまとめています。どのアプリも「プレビュー → つくった理由 → 開く・コードを見る」の順に並べています。コードは MIT ライセンスで、自由に使い、改変できます。'
+      : 'The apps are collected on GitHub, each with a preview, why it was made, and links to open it or read the code. The code is MIT licensed.'}</p>
+    <p><a class="btn btn-solid" href={LINKS.github} target="_blank" rel="noopener">{ja ? 'GitHub のアプリ一覧を開く' : 'Open the app list on GitHub'}<span class="ext-ic" aria-hidden="true">↗</span><span class="visually-hidden">{newTab}</span></a></p>
+    <h2>{ja ? '公開しているアプリ' : 'Apps'}</h2>
+    <ul class="tf-apps">
+      {apps.map((a) => (
+        <li>
+          <h3>{a.name}</h3>
+          <p>{a.text}</p>
+          <p class="tf-app-links">
+            <a href={`https://toitoitoi-lab.github.io/${a.repo}/`} target="_blank" rel="noopener">{ja ? 'アプリを開く' : 'Open'}<span class="visually-hidden">{newTab}</span></a>
+            <a href={`https://github.com/toitoitoi-lab/${a.repo}`} target="_blank" rel="noopener">{ja ? 'コードを見る' : 'Code'}<span class="visually-hidden">{newTab}</span></a>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

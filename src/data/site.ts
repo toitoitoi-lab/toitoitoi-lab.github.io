@@ -108,6 +108,9 @@ export const KOMARI: Komari[] = [
 export type Tachiba = {
   slug: string;
   ready: boolean;
+  review?: boolean;   // 中身は入っていて、随時更新中
+  updated?: string;   // 最終更新日（YYYY-MM-DD）
+  external?: string;  // 外部サイトへ直接案内するときの URL
   stage: Stage;
   tag: string;
   tagTone: 'accent' | 'violet';
@@ -118,9 +121,9 @@ export type Tachiba = {
 
 export const TACHIBA: Tachiba[] = [
   {
-    slug: 'sensei', ready: false, stage: 'sky', tag: 'teachers', tagTone: 'accent',
-    ja: { title: '先生・支援者の方へ', text: 'ATを授業に取り入れる手順と支援の型' },
-    en: { title: 'For teachers & supporters', text: 'How to bring AT into lessons and support' },
+    slug: 'sensei', ready: false, review: true, updated: '2026-09-27', stage: 'sky', tag: 'teachers', tagTone: 'accent',
+    ja: { title: '先生・支援者の方へ', text: '気になることを選ぶと、困りごとごとに支援方法を並べます' },
+    en: { title: 'For teachers & supporters', text: 'Choose what you notice and see methods grouped by need' },
     shapes: [
       F('M52 18 H108 V68 H52 Z', 'cream'),
       S('M62 34 H98 M62 48 H86', 'ink', 5),
@@ -130,9 +133,9 @@ export const TACHIBA: Tachiba[] = [
     ],
   },
   {
-    slug: 'honnin', ready: false, stage: 'coral', tag: 'family', tagTone: 'violet',
-    ja: { title: '本人・ご家族の方へ', text: '便利な設定を動画でいっしょに' },
-    en: { title: 'For learners & families', text: 'Handy device settings, step by step on video' },
+    slug: 'honnin', ready: false, review: true, updated: '2026-09-27', stage: 'coral', tag: 'family', tagTone: 'violet',
+    ja: { title: '本人・ご家族の方へ', text: '困っていることを選ぶと、家や学校で試せる方法を並べます' },
+    en: { title: 'For learners & families', text: 'Choose what is hard and see methods to try at home or school' },
     shapes: [
       F(circ(40, 34, 14) + ' ' + circ(84, 56, 11), 'coral'),
       F('M16 106 Q16 58 40 58 Q64 58 64 106 Z', 'sky'),
@@ -140,9 +143,9 @@ export const TACHIBA: Tachiba[] = [
     ],
   },
   {
-    slug: 'tsukuru', ready: false, stage: 'violet', tag: 'builders', tagTone: 'accent',
-    ja: { title: 'つくりたい方へ', text: '教材アプリのコードとお試し版' },
-    en: { title: 'For builders', text: 'Code and demos of learning apps' },
+    slug: 'tsukuru', ready: true, external: 'https://github.com/toitoitoi-lab', stage: 'violet', tag: 'builders', tagTone: 'accent',
+    ja: { title: 'つくりたい方へ', text: 'アプリのプレビューとコード（GitHub）' },
+    en: { title: 'For builders', text: 'App previews and code (GitHub)' },
     shapes: [
       F('M10 20 H110 V102 H10 Z', 'sky'),
       F('M16 36 H104 V96 H16 Z', 'cream'),
@@ -177,7 +180,7 @@ export const SITEMAP_JA: MapGroup[] = [
   {
     id: 'tachiba', heading: '立場から探す', href: '/#tachiba', icon: 'tachiba',
     desc: '先生・本人と家族・つくりたい人、それぞれに向けた入口',
-    links: TACHIBA.map((t) => ({ label: t.ja.title, note: t.ja.text, href: `/tachiba/${t.slug}/`, ready: t.ready, shapes: t.shapes, stage: t.stage })),
+    links: TACHIBA.map((t) => ({ label: t.ja.title, note: t.ja.text, href: t.external ?? `/tachiba/${t.slug}/`, external: !!t.external, ready: t.ready, review: t.review, updated: t.updated, shapes: t.shapes, stage: t.stage })),
   },
   {
     id: 'hasshin', heading: '発信', href: '/articles/', icon: 'hasshin',
@@ -213,7 +216,7 @@ export const SITEMAP_EN: MapGroup[] = [
   {
     id: 'tachiba', heading: 'Find by who you are', href: '/en/#tachiba', icon: 'tachiba',
     desc: 'Entry points for teachers, learners and families, and builders',
-    links: TACHIBA.map((t) => ({ label: t.en.title, note: t.en.text, href: `/en/tachiba/${t.slug}/`, ready: t.ready, shapes: t.shapes, stage: t.stage })),
+    links: TACHIBA.map((t) => ({ label: t.en.title, note: t.en.text, href: t.external ?? `/en/tachiba/${t.slug}/`, external: !!t.external, ready: t.ready, review: t.review, updated: t.updated, shapes: t.shapes, stage: t.stage })),
   },
   {
     id: 'hasshin', heading: 'Articles and links', href: '/en/articles/', icon: 'hasshin',
