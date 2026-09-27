@@ -46,7 +46,7 @@ const GUIDE = ja
         <span class="st-kicker" lang="en" aria-hidden="true">Statement</span>
         <h2 id="h-statement" class="st-label">{M.heading}</h2>
       </div>
-      <p class="st-lead">{M.lead.split('、').length > 1 && lang === 'ja' ? <>テクノロジーに救われる<br />児童生徒や大人は、<br class="sp-br" />必ずいます。</> : M.lead}</p>
+      <p class="st-lead">{M.leadLines.map((l, i) => <>{i > 0 && <br class={i === 2 ? 'sp-br' : undefined} />}{l}</>)}</p>
       <p class="st-body">{M.second.split('\n').map((l, i) => <>{i > 0 && <br />}{l}</>)}</p>
       <p class="st-sign"><time datetime={M.date}>{M.dateLabel}</time><span aria-hidden="true">―</span><span>{M.sign}</span></p>
       <a class="st-more" href={`${base}/about/#omoi`}>{M.more}<span class="visually-hidden">{ja ? '（サイト開設にあたって）' : ' (On opening this site)'}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
