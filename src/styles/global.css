@@ -503,3 +503,22 @@ html[data-fold='folded'] .fb-btn svg { width: 22px; height: 22px; }
 .rules .toc ol { margin: 0; padding-left: 1.6em; }
 .rules h3 { font-size: 1.05rem; margin-top: 20px; }
 .notice-inline { font-size: 0.95rem; color: var(--sub); }
+
+/* 運営者の教員免許 */
+.cred { margin: 20px 0 36px; padding: 22px 24px; border: 2px solid var(--line); border-radius: 16px; }
+.prose .cred-label { margin: 0 0 16px; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.12em; color: var(--sub); }
+.cred-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px 28px; }
+.cred-group { display: flex; flex-direction: column; }
+.cred-head { margin: 0 0 10px; font-weight: 700; color: var(--accent-text); }
+.cred-note { margin-left: 10px; font-size: 0.85rem; font-weight: 700; color: var(--sub); }
+.cred-list { list-style: none; margin: 0; padding: 0; }
+.cred-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); margin: 0; }
+.cred-list li:last-child { border-bottom: 0; }
+.cred-name { font-weight: 700; font-size: 1.1rem; }
+.cred-level { font-size: 0.9rem; color: var(--sub); }
+.cred-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.cred-chips li { margin: 0; padding: 6px 14px; border: 2px solid var(--line); border-radius: 999px; font-weight: 700; }
+.cred-to { margin: auto 0 0; padding-top: 12px; font-size: 0.92rem; color: var(--sub); }
+.cred-close { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line); font-weight: 700; }
+.cred-sys { margin: 8px 0 0; font-size: 0.9rem; color: var(--sub); }
+@media (forced-colors: active) { .cred, .cred-chips li { border-color: CanvasText; } }

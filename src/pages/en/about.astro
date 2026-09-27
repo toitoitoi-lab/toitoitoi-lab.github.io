@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
+import Credentials from '../../components/Credentials.astro';
 import { LINKS } from '../../data/site';
 import { MESSAGE } from '../../data/message';
 ---
@@ -20,6 +21,7 @@ import { MESSAGE } from '../../data/message';
 
     <h2>Who runs this site</h2>
     <p>This site is run personally by a public school teacher in Japan. It does not represent the views of any employer.</p>
+    <Credentials lang="en" />
 
     <h2>What we care about</h2>
     <p>Assistive technology (AT) means using tools to work around difficulties in reading, writing, listening, communicating and operating devices. This site connects three things along that one idea:</p>

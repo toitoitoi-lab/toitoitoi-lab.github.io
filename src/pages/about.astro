@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
+import Credentials from '../components/Credentials.astro';
 import { LINKS } from '../data/site';
 import { MESSAGE } from '../data/message';
 ---
@@ -20,6 +21,7 @@ import { MESSAGE } from '../data/message';
 
     <h2>運営について</h2>
     <p>公立学校の教員が、個人の活動として運営しています。所属機関の見解を示すものではありません。</p>
+    <Credentials lang="ja" />
 
     <h2>大切にしていること</h2>
     <p>AT（支援技術）とは、読む・書く・聞く・伝える・操作するといった場面で、困りごとを道具で補う考え方です。このサイトでは、次の3つをひとつの軸でつないで発信していきます。</p>
