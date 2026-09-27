@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Kokoroe from '../components/Kokoroe.astro';
+import { KOKOROE } from '../data/message';
+const K = KOKOROE.ja;
+---
+<Base title={K.heading} lang="ja" current="komari" description={K.lead}>
+  <div class="wrap page prose hitokufu">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: K.heading }]} />
+    <p class="kk-kicker" lang="en" aria-hidden="true">{K.kicker}</p>
+    <h1>{K.heading}</h1>
+    <Kokoroe lang="ja" />
+  </div>
+</Base>

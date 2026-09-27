@@ -175,7 +175,7 @@ export const SITEMAP_JA: MapGroup[] = [
   {
     id: 'komari', heading: '困りごとから探す', href: '/#komari', icon: 'komari',
     desc: '読む・書くなど、困っていることから道具と使い方を探す',
-    links: KOMARI.map((k) => ({ label: k.ja.title, note: k.ja.examples, href: `/komari/${k.slug}/`, ready: k.ready, review: k.review, updated: k.updated, shapes: k.shapes, stage: k.stage })),
+    links: [{ label: '支援のひと工夫', note: '同じ方法でも、使い方ひとつで届き方が変わる', href: '/hitokufu/', ready: true }, ...KOMARI.map((k) => ({ label: k.ja.title, note: k.ja.examples, href: `/komari/${k.slug}/`, ready: k.ready, review: k.review, updated: k.updated, shapes: k.shapes, stage: k.stage }))],
   },
   {
     id: 'tachiba', heading: '立場から探す', href: '/#tachiba', icon: 'tachiba',
@@ -219,7 +219,7 @@ export const SITEMAP_EN: MapGroup[] = [
   {
     id: 'komari', heading: 'Find by need', href: '/en/#komari', icon: 'komari',
     desc: 'Find tools and how to use them, starting from the difficulty',
-    links: KOMARI.map((k) => ({ label: k.en.title, note: k.en.examples, href: `/en/komari/${k.slug}/`, ready: k.ready, review: k.review, updated: k.updated, shapes: k.shapes, stage: k.stage })),
+    links: [{ label: 'Small tweaks that make support work', note: 'The same method can land very differently', href: '/en/hitokufu/', ready: true }, ...KOMARI.map((k) => ({ label: k.en.title, note: k.en.examples, href: `/en/komari/${k.slug}/`, ready: k.ready, review: k.review, updated: k.updated, shapes: k.shapes, stage: k.stage }))],
   },
   {
     id: 'tachiba', heading: 'Find by who you are', href: '/en/#tachiba', icon: 'tachiba',

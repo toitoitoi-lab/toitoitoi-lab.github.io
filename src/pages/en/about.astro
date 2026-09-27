@@ -2,7 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
 import Credentials from '../../components/Credentials.astro';
-import Kokoroe from '../../components/Kokoroe.astro';
 import { LINKS } from '../../data/site';
 import { MESSAGE } from '../../data/message';
 ---
@@ -17,8 +16,6 @@ import { MESSAGE } from '../../data/message';
       <p class="st-sign"><time datetime={MESSAGE.en.date}>{MESSAGE.en.dateLabel}</time><span aria-hidden="true">―</span><span>{MESSAGE.en.sign}</span></p>
     </section>
 
-    <Kokoroe lang="en" />
-
     <h2>The name</h2>
     <p><span lang="de">Toi toi toi</span> is a German phrase said to someone about to go on stage, wishing them luck. It carries our encouragement for everyone taking a step into learning.</p>
 
@@ -27,6 +24,7 @@ import { MESSAGE } from '../../data/message';
     <Credentials lang="en" />
 
     <h2>What we care about</h2>
+    <p class="about-hint">Our approach to support is summarised in <a class="inline" href="/en/hitokufu/">Small tweaks that make support work</a>.</p>
     <p>Assistive technology (AT) means using tools to work around difficulties in reading, writing, listening, communicating and operating devices. This site connects three things along that one idea:</p>
     <ul>
       <li>For teachers and supporters: how to bring AT into lessons and individual support</li>

@@ -1,38 +1,37 @@
 ---
-// 支援で大切にしていること。variant="full"（このサイトについて）／"band"（トップ、短く）
+// 支援のひと工夫。variant="tip"（トップ、困りごとを選ぶ直前に短く）／"full"（/hitokufu/）
 import { KOKOROE } from '../data/message';
-interface Props { lang?: 'ja' | 'en'; variant?: 'full' | 'band' }
+interface Props { lang?: 'ja' | 'en'; variant?: 'full' | 'tip' }
 const { lang = 'ja', variant = 'full' } = Astro.props;
 const ja = lang === 'ja';
 const K = KOKOROE[lang];
 const base = ja ? '' : '/en';
 ---
-{variant === 'full' ? (
-  <section class="kokoroe" id="kokoroe" aria-labelledby="kokoroe-title">
-    <p class="kk-kicker" lang="en" aria-hidden="true">{K.kicker}</p>
-    <h2 id="kokoroe-title" class="kk-heading">{K.heading}</h2>
+{variant === 'tip' ? (
+  <aside class="kk-tip" aria-labelledby="kk-tip-title">
+    <p class="kk-tip-label" id="kk-tip-title"><span class="kk-tip-mark" aria-hidden="true">+</span>{K.heading}</p>
+    <p class="kk-tip-lead">{K.lead}</p>
+    <ol class="kk-tip-list">
+      {K.points.map((p, i) => <li><span class="kk-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{p.short}</li>)}
+    </ol>
+    <a class="kk-tip-more" href={`${base}/hitokufu/`}>{K.more}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+  </aside>
+) : (
+  <div class="kokoroe">
     <p class="kk-lead">{K.lead}</p>
+    <p class="kk-intro">{K.intro}</p>
     <ol class="kk-points">
       {K.points.map((p, i) => (
         <li>
           <span class="kk-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
           <div>
-            <h3 class="kk-title">{p.title}</h3>
+            <h2 class="kk-title">{p.title}</h2>
             <p class="kk-text">{p.text}</p>
+            <p class="kk-ex">{p.ex}</p>
           </div>
         </li>
       ))}
     </ol>
-  </section>
-) : (
-  <aside class="kk-band" aria-labelledby="kk-band-title">
-    <div class="kk-band-head">
-      <h3 id="kk-band-title" class="kk-band-label">{K.heading}</h3>
-      <p class="kk-band-lead">{ja ? <>合う方法は、<br />一人ひとりちがう。</> : K.lead}</p>
-    </div>
-    <ol class="kk-band-list">
-      {K.points.map((p, i) => <li><span class="kk-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{p.title}</li>)}
-    </ol>
-    <a class="kk-band-more" href={`${base}/about/#kokoroe`}>{ja ? 'くわしく読む' : 'Read more'}<span class="visually-hidden">{ja ? '（支援で大切にしていること）' : ' (What matters in support)'}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
-  </aside>
+    <p><a class="btn btn-solid" href={`${base}/#komari`}>{K.back}</a></p>
+  </div>
 )}

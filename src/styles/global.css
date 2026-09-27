@@ -652,3 +652,25 @@ html[data-theme='light'] .cf-send-error { color: #B3261E; }
 .kanri .kn-big { font-size: 3rem; margin: 0 0 6px; }
 .kanri .kn-big small { font-size: 1.1rem; }
 .kn-tables table { align-self: start; }
+
+/* 支援のひと工夫：トップ（困りごとを選ぶ直前に、短く） */
+.kk-tip { margin: 0 0 24px; padding: 14px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; background: var(--panel); border-left: 4px solid var(--accent-fill); border-radius: 0 14px 14px 0; }
+.kk-tip-label { margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent-text); }
+.kk-tip-mark { display: inline-flex; align-items: center; justify-content: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: var(--accent-fill); color: var(--on-accent); font-weight: 700; }
+.kk-tip-lead { margin: 0; font-weight: 700; flex: 1 1 18em; word-break: auto-phrase; }
+.kk-tip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.95rem; color: var(--sub); }
+.kk-tip-list li { margin: 0; display: inline-flex; gap: 6px; align-items: baseline; }
+.kk-tip-list .kk-num { font-size: 0.8rem; }
+.kk-tip-more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 700; color: var(--accent-text); text-underline-offset: 4px; white-space: nowrap; }
+.kk-tip-more svg { transition: transform .15s; }
+.kk-tip-more:hover svg { transform: translateX(3px); }
+@media (forced-colors: active) { .kk-tip { border-left-color: CanvasText; } }
+
+/* 支援のひと工夫：くわしいページ */
+.hitokufu .kk-kicker { margin-bottom: 0; }
+.hitokufu h1 { margin-top: 4px; }
+.kk-intro { color: var(--sub); max-width: 40em; }
+.hitokufu .kk-points { margin-top: 24px; }
+.prose .kk-title { margin: 0 0 6px !important; font-size: 1.2rem; }
+.kk-ex { margin: 10px 0 0 !important; padding: 10px 14px; border-radius: 10px; background: var(--panel); font-size: 0.95rem; }
+.about-hint { color: var(--sub); }

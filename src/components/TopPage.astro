@@ -90,6 +90,7 @@ const GUIDE = ja
       <h2 id="h-komari">{ja ? '困りごとから探す' : 'Find by need'}</h2>
       <p>{ja ? '近いものを選んでください。どのページにも「先生へ」「本人・家族へ」「つくる」の入口を用意します。' : 'Choose the one closest to you.'}</p>
     </div>
+    <Kokoroe lang={lang} variant="tip" />
     <ul class="grid">
       {KOMARI.map((k) => (
         <li>
@@ -108,7 +109,6 @@ const GUIDE = ja
         </li>
       ))}
     </ul>
-    <Kokoroe lang={lang} variant="band" />
   </section>
 
   <section class="section" id="tachiba" aria-labelledby="h-tachiba">
