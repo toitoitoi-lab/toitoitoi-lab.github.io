@@ -166,7 +166,7 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
     <p><button type="button" class="btn" id="cf-again">{T.again}</button></p>
   </section>
 
-  <script type="application/json" id="cf-text">{JSON.stringify({ errPurpose: T.errPurpose, errEmail: T.errEmail, errBody: T.errBody, errAgree: T.errAgree, sendFail: T.sendFail, purposes: Object.fromEntries(T.purposes.map((p) => [p.v, p.t])), labels: { purpose: ja ? '用件' : 'About', name: T.name, email: T.email, role: T.role, komari: T.komari, event: T.event, pages: T.pages }, none: ja ? '（なし）' : '(none)' })}</script>
+  <script type="application/json" id="cf-text" set:html={JSON.stringify({ errPurpose: T.errPurpose, errEmail: T.errEmail, errBody: T.errBody, errAgree: T.errAgree, sendFail: T.sendFail, purposes: Object.fromEntries(T.purposes.map((p) => [p.v, p.t])), labels: { purpose: ja ? '用件' : 'About', name: T.name, email: T.email, role: T.role, komari: T.komari, event: T.event, pages: T.pages }, none: ja ? '（なし）' : '(none)' }).replace(/</g, '\\u003c')}></script>
 </div>
 
 <script is:inline>
