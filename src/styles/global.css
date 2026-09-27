@@ -360,3 +360,12 @@ html[data-float='dock'] .fb-btn svg { width: 32px; height: 32px; }
 /* かくしている時にキーボードで呼び出した場合 */
 html[data-float='hide'] .floatbar.summoned { display: flex; }
 .floatbar:focus { outline: 3px solid var(--accent-text); outline-offset: 3px; }
+/* スマホ幅の横並び：画面からはみ出さないよう、ボタンを均等に縮める */
+@media (max-width: 480px) {
+  html:not([data-orient='col']):not([data-float='dock']):not([data-float='free']) .floatbar { width: auto; left: 10px; right: 10px; }
+  html:not([data-orient='col']):not([data-float='dock']) .fb-buttons { flex: 1; }
+  html:not([data-orient='col']):not([data-float='dock']) .fb-btn { flex: 1; min-width: 0; padding: 6px 2px; }
+  html:not([data-orient='col']):not([data-float='dock']) .fb-btn span { white-space: normal; text-align: center; }
+  html:not([data-orient='col'])[data-fold='folded']:not([data-float='dock']):not([data-float='free']) .floatbar { width: max-content; left: auto; }
+  html:not([data-orient='col'])[data-fold='folded'][data-float='left'] .floatbar { left: 10px; right: auto; }
+}
