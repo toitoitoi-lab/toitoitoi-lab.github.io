@@ -524,3 +524,6 @@ html[data-fold='folded'] .fb-btn svg { width: 22px; height: 22px; }
 @media (forced-colors: active) { .cred, .cred-chips li { border-color: CanvasText; } }
 .cred-to a { white-space: nowrap; }
 .cred-close { word-break: auto-phrase; }
+
+/* 操作ボタンは、画面上部に動かしてもヘッダーの下にかくれないように（表示設定パネル 50 より下） */
+.floatbar { z-index: 46; }

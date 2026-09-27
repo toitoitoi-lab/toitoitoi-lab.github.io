@@ -313,8 +313,10 @@ const groups = [
         if (d.dataset.float !== 'free' || drag) { lastRect = bar.getBoundingClientRect(); return; }
         var r = bar.getBoundingClientRect(), o = lastRect || r;
         var x = r.left, y = r.top;
-        if (o.left + o.width / 2 > window.innerWidth / 2) x = o.right - r.width;
-        if (o.top + o.height / 2 > window.innerHeight / 2) y = o.bottom - r.height;
+        // 画面を3つに分けて、右1/3なら右端、左1/3なら左端、まん中なら中心を動かさない（上下も同じ）
+        var cx = o.left + o.width / 2, cy = o.top + o.height / 2, W = window.innerWidth, H = window.innerHeight;
+        x = cx > W * 2 / 3 ? o.right - r.width : cx < W / 3 ? o.left : cx - r.width / 2;
+        y = cy > H * 2 / 3 ? o.bottom - r.height : cy < H / 3 ? o.top : cy - r.height / 2;
         place(x, y, true);
         lastRect = bar.getBoundingClientRect();
       }
