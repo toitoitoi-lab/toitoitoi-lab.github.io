@@ -150,11 +150,15 @@ export const TACHIBA: Tachiba[] = [
   },
 ];
 
-// サイトマップ（日本語）。ready: false のページには「準備中」が付く。
-export type MapLink = { label: string; href: string; ready: boolean; external?: boolean };
-export const SITEMAP_JA: { heading: string; links: MapLink[] }[] = [
+// サイトマップ（日本語）。大項目（group）の下に小項目（links）が入る。
+// ready: false のページには「準備中」が付く。
+export type MapLink = { label: string; href: string; ready: boolean; external?: boolean; note?: string; shapes?: Shape[]; stage?: Stage };
+export type MapGroup = { id: string; heading: string; href: string; desc: string; icon: string; links: MapLink[] };
+
+export const SITEMAP_JA: MapGroup[] = [
   {
-    heading: 'サイト全体',
+    id: 'zentai', heading: 'サイト全体', href: '/', icon: 'home',
+    desc: 'このサイトの入口と、使い方・決まりごとのページ',
     links: [
       { label: 'トップページ', href: '/', ready: true },
       { label: 'このサイトについて', href: '/about/', ready: true },
@@ -164,21 +168,24 @@ export const SITEMAP_JA: { heading: string; links: MapLink[] }[] = [
     ],
   },
   {
-    heading: '困りごとから探す',
-    links: KOMARI.map((k) => ({ label: k.ja.title, href: `/komari/${k.slug}/`, ready: k.ready })),
+    id: 'komari', heading: '困りごとから探す', href: '/#komari', icon: 'komari',
+    desc: '読む・書くなど、困っていることから道具と使い方を探す',
+    links: KOMARI.map((k) => ({ label: k.ja.title, note: k.ja.examples, href: `/komari/${k.slug}/`, ready: k.ready, shapes: k.shapes, stage: k.stage })),
   },
   {
-    heading: '立場から探す',
-    links: TACHIBA.map((t) => ({ label: t.ja.title, href: `/tachiba/${t.slug}/`, ready: t.ready })),
+    id: 'tachiba', heading: '立場から探す', href: '/#tachiba', icon: 'tachiba',
+    desc: '先生・本人と家族・つくりたい人、それぞれに向けた入口',
+    links: TACHIBA.map((t) => ({ label: t.ja.title, note: t.ja.text, href: `/tachiba/${t.slug}/`, ready: t.ready, shapes: t.shapes, stage: t.stage })),
   },
   {
-    heading: '発信',
+    id: 'hasshin', heading: '発信', href: '/articles/', icon: 'hasshin',
+    desc: '記事・研修の案内と、YouTube・note・GitHub へのリンク',
     links: [
       { label: '記事一覧', href: '/articles/', ready: true },
       { label: '研修・講演について', href: '/talks/', ready: false },
-      { label: 'YouTube（外部サイト）', href: LINKS.youtube, ready: true, external: true },
-      { label: 'note（外部サイト）', href: LINKS.note, ready: true, external: true },
-      { label: 'GitHub（外部サイト）', href: LINKS.github, ready: true, external: true },
+      { label: 'YouTube', note: '外部サイト', href: LINKS.youtube, ready: true, external: true },
+      { label: 'note', note: '外部サイト', href: LINKS.note, ready: true, external: true },
+      { label: 'GitHub', note: '外部サイト', href: LINKS.github, ready: true, external: true },
     ],
   },
 ];
