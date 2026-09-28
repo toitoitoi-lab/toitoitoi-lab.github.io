@@ -188,6 +188,7 @@ export const SITEMAP_JA: MapGroup[] = [
     links: [
       { label: '教科から探す', note: '国語・算数/数学・外国語（英語）・理科・社会・情報', href: '/manabi/#kyoka', ready: false },
       { label: '学び方のコツ', note: '覚える・集中する・まとめる など', href: '/manabi/#kotsu', ready: false },
+      { label: '教材の部屋', note: 'つくった教材とアプリの一覧', href: '/kyozai/', ready: true },
     ],
   },
   {
@@ -232,6 +233,7 @@ export const SITEMAP_EN: MapGroup[] = [
     links: [
       { label: 'Find by subject', note: 'Japanese language, mathematics, foreign language (English), science, social studies, informatics', href: '/en/manabi/#kyoka', ready: false },
       { label: 'Ways of learning', note: 'Remembering, focusing, organising and more', href: '/en/manabi/#kotsu', ready: false },
+      { label: 'Materials room', note: 'Materials and apps I have made', href: '/en/kyozai/', ready: true },
     ],
   },
   {

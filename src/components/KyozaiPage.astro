@@ -1,0 +1,127 @@
+---
+// 教材の部屋（日本語・英語で共通）
+import Base from '../layouts/Base.astro';
+import Crumbs from './Crumbs.astro';
+import { KYOZAI, KIND_LABEL, FOR_LABEL } from '../data/kyozai';
+import { KYOKA } from '../data/manabi';
+import { KOMARI, fmtDate } from '../data/site';
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const KL = KIND_LABEL[lang], FL = FOR_LABEL[lang];
+const kyokaName = Object.fromEntries(KYOKA.map((k) => [k.slug, ja ? k.ja.title : k.en.title]));
+const komariName = Object.fromEntries(KOMARI.map((k) => [k.slug, ja ? k.ja.title : k.en.title]));
+const list = [...KYOZAI].sort((a, b) => b.updated.localeCompare(a.updated));
+const SHOW_FILTER = list.length >= 6; // 数が増えたら絞りこみを出す
+const T = ja
+  ? { title: '教材の部屋', home: 'トップ',
+      lead: 'つくった教材とアプリを、ここに1か所にまとめています。どこから入っても、同じ最新の教材が開きます。',
+      count: (n: number) => `${n}件の教材`, all: 'すべて', kind: '種類', for: 'だれ向け', kyoka: '教科', komari: '困りごと',
+      open: '開く', code: 'コードを見る', guide: '使い方', updated: '最終更新', setup: '準備が必要',
+      copy: '住所をコピー', copied: 'コピーしました', none: '条件に合う教材はありません。',
+      more: '教材は順次追加していきます。',
+      linkTitle: 'ほかのサイトや学校からリンクするとき',
+      link: ['各教材の「住所をコピー」で、教材そのものの住所をコピーできます。この住所は変えないので、授業のページやお便りに貼っても、ずっと同じ最新の教材が開きます。', '児童生徒に使ってもらうときは、この部屋ではなく、各教材の住所に直接リンクするのがおすすめです。', '授業や研修で使うときは、利用ルールと職場のルールに従ってください。'],
+      rules: '利用ルール', newTab: '（新しいタブで開きます）' }
+  : { title: 'Materials room', home: 'Home',
+      lead: 'The materials and apps I have made are gathered here in one place. Wherever you come from, the same, latest version opens.',
+      count: (n: number) => `${n} item${n === 1 ? '' : 's'}`, all: 'All', kind: 'Type', for: 'For', kyoka: 'Subject', komari: 'Need',
+      open: 'Open', code: 'Code', guide: 'How to use', updated: 'Last updated', setup: 'Setup needed',
+      copy: 'Copy link', copied: 'Copied', none: 'No materials match.',
+      more: 'More materials will be added over time.',
+      linkTitle: 'Linking from other sites or schools',
+      link: ['"Copy link" copies the address of the material itself. It will not change, so it keeps opening the latest version wherever you paste it.', 'When students use a material, link directly to the material rather than to this room.', 'When using materials in lessons or training, follow the terms of use and your workplace\'s rules.'],
+      rules: 'Terms of use', newTab: ' (opens in a new tab)' };
+---
+<Base title={T.title} lang={lang} current="kyozai" description={T.lead}>
+  <div class="wrap page kyozai-page">
+    <Crumbs lang={lang} items={[{ label: T.home, href: `${base}/` }, { label: T.title }]} />
+    <h1>{T.title}</h1>
+    <p class="lead-text">{T.lead}</p>
+
+    {SHOW_FILTER && (
+      <div class="kz-filter" role="group" aria-label={ja ? '絞りこみ' : 'Filter'}>
+        <div class="kz-frow"><span class="kz-flabel">{T.for}</span>
+          <button type="button" class="kz-chip" data-f="for" data-v="" aria-pressed="true">{T.all}</button>
+          {Object.entries(FL).map(([v, l]) => <button type="button" class="kz-chip" data-f="for" data-v={v} aria-pressed="false">{l}</button>)}
+        </div>
+        <div class="kz-frow"><span class="kz-flabel">{T.kind}</span>
+          <button type="button" class="kz-chip" data-f="kind" data-v="" aria-pressed="true">{T.all}</button>
+          {Object.entries(KL).map(([v, l]) => <button type="button" class="kz-chip" data-f="kind" data-v={v} aria-pressed="false">{l}</button>)}
+        </div>
+      </div>
+    )}
+    <p class="kz-count" id="kz-count" aria-live="polite">{T.count(list.length)}</p>
+
+    <ul class="kz-list" id="kz-list">
+      {list.map((m) => {
+        const L = ja ? m.ja : m.en;
+        const tags = [...(m.kyoka ?? []).map((s) => kyokaName[s]), ...(m.komari ?? []).map((s) => komariName[s])].filter(Boolean);
+        return (
+          <li class="kz-item" id={m.slug} data-for={m.for.join(' ')} data-kind={m.kind}>
+            <div class="kz-meta">
+              <span class="kz-kind">{KL[m.kind]}</span>
+              {m.for.map((f) => <span class="kz-for">{FL[f]}</span>)}
+              {m.needsSetup && <span class="kz-setup">{T.setup}</span>}
+            </div>
+            <h2 class="kz-title">{L.title}</h2>
+            <p class="kz-text">{L.text}</p>
+            {L.note && <p class="kz-note">{L.note}</p>}
+            {tags.length > 0 && <p class="kz-tags">{tags.map((t) => <span>{t}</span>)}</p>}
+            <p class="kz-links">
+              <a class="btn btn-solid" href={m.url} target="_blank" rel="noopener">{T.open}<span class="visually-hidden">：{L.title}{T.newTab}</span></a>
+              {m.guide && <a class="inline" href={m.guide} target="_blank" rel="noopener">{T.guide}<span class="visually-hidden">{T.newTab}</span></a>}
+              {m.code && <a class="inline" href={m.code} target="_blank" rel="noopener">{T.code}<span class="visually-hidden">{T.newTab}</span></a>}
+              <button type="button" class="kz-copy" data-url={m.url} data-done={T.copied}>{T.copy}<span class="visually-hidden">：{L.title}</span></button>
+            </p>
+            <p class="kz-updated">{T.updated}：<time datetime={m.updated}>{fmtDate(m.updated, lang)}</time></p>
+          </li>
+        );
+      })}
+    </ul>
+    <p class="kz-none" id="kz-none" hidden>{T.none}</p>
+    <p class="kz-more">{T.more}</p>
+
+    <section class="kz-linkinfo" aria-labelledby="kz-link-title">
+      <h2 id="kz-link-title">{T.linkTitle}</h2>
+      <ul>{T.link.map((t) => <li>{t}</li>)}</ul>
+      <p><a class="inline" href={`${base}/rules/`}>{T.rules}</a></p>
+    </section>
+  </div>
+</Base>
+
+<script is:inline>
+(function () {
+  // 住所をコピー
+  document.querySelectorAll('.kz-copy').forEach(function (b) {
+    var label = b.firstChild.textContent;
+    b.addEventListener('click', function () {
+      var done = function () { b.firstChild.textContent = b.dataset.done; setTimeout(function () { b.firstChild.textContent = label; }, 2000); };
+      if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.url).then(done, function () { prompt('', b.dataset.url); });
+      else prompt('', b.dataset.url);
+    });
+  });
+  // 絞りこみ（教材が増えたときだけ表示される）
+  var chips = document.querySelectorAll('.kz-chip'); if (!chips.length) return;
+  var state = { for: '', kind: '' };
+  var items = document.querySelectorAll('.kz-item'), count = document.getElementById('kz-count'), none = document.getElementById('kz-none');
+  var ja = document.documentElement.lang === 'ja';
+  function apply() {
+    var n = 0;
+    items.forEach(function (it) {
+      var ok = (!state.for || it.dataset.for.split(' ').indexOf(state.for) >= 0) && (!state.kind || it.dataset.kind === state.kind);
+      it.hidden = !ok; if (ok) n++;
+    });
+    count.textContent = ja ? n + '件の教材' : n + (n === 1 ? ' item' : ' items');
+    none.hidden = n > 0;
+  }
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      state[c.dataset.f] = c.dataset.v;
+      document.querySelectorAll('.kz-chip[data-f="' + c.dataset.f + '"]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === c)); });
+      apply();
+    });
+  });
+})();
+</script>
