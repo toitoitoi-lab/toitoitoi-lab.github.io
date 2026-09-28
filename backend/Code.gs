@@ -1,7 +1,7 @@
 /**
  * toi toi toi サイト用 GAS（お問い合わせ・閲覧数・運営者ページ）
  * https://github.com/toitoitoi-lab/toitoitoi-lab.github.io/tree/main/backend
- * v1.0  2026-09-28  MIT License
+ * v1.0.1  2026-09-28  MIT License
  *
  * ■ できること
  *  1. お問い合わせフォームの受付：スプレッドシートに記録し、運営者にメールで知らせる
@@ -26,7 +26,7 @@ const MAX_CONTACTS_PER_HOUR = 20;   // 1時間に受けつける問い合わせ�
 const MAX_LOGIN_FAILS = 5;          // パスワードをこの回数まちがえると…
 const LOCK_MINUTES = 15;            // …この時間、ログインを受けつけない
 const TOKEN_DAYS = 90;              // 「このブラウザでお知らせを表示」の有効期間
-const PURPOSES = { soudan: '困りごとの相談', kenshu: '研修・講演の依頼', riyou: '記事・教材を使いたい', iken: 'サイトへの意見' };
+const PURPOSES = { soudan: '困りごとの相談', kenshu: '研修の依頼', riyou: '記事・教材を使いたい', iken: 'サイトへの意見' };
 
 // ───────── はじめに一度だけ実行 ─────────
 function setup() {

@@ -195,7 +195,7 @@ export const SITEMAP_JA: MapGroup[] = [
     desc: '記事・研修の案内と、YouTube・note・GitHub へのリンク',
     links: [
       { label: '記事一覧', href: '/articles/', ready: true },
-      { label: '研修・講演について', href: '/talks/', ready: false },
+      { label: '研修について', href: '/talks/', ready: false },
       { label: 'YouTube', note: '外部サイト', href: LINKS.youtube, ready: true, external: true },
       { label: 'note', note: '外部サイト', href: LINKS.note, ready: true, external: true },
       { label: 'GitHub', note: '外部サイト', href: LINKS.github, ready: true, external: true },
@@ -236,10 +236,10 @@ export const SITEMAP_EN: MapGroup[] = [
   },
   {
     id: 'hasshin', heading: 'Articles and links', href: '/en/articles/', icon: 'hasshin',
-    desc: 'Articles, talks, and links to YouTube, note and GitHub',
+    desc: 'Articles, training, and links to YouTube, note and GitHub',
     links: [
       { label: 'Articles', href: '/en/articles/', ready: false },
-      { label: 'Talks and workshops', href: '/en/talks/', ready: false },
+      { label: 'Training', href: '/en/talks/', ready: false },
       { label: 'YouTube', note: 'External site', href: LINKS.youtube, ready: true, external: true },
       { label: 'note', note: 'External site (Japanese)', href: LINKS.note, ready: true, external: true },
       { label: 'GitHub', note: 'External site', href: LINKS.github, ready: true, external: true },

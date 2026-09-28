@@ -9,8 +9,8 @@ const { t, lang = 'ja' } = Astro.props;
 const ja = lang === 'ja';
 const base = ja ? '' : '/en';
 const apps = [
-  { name: ja ? 'せんせいアシスト（教育相談編）' : 'Sensei Assist (consultation)', repo: 'sensei-assist',
-    text: ja ? '架空の児童生徒の特性から、典型的に考えられる支援を想定する道具' : 'Imagine typical support from the traits of a fictional learner (Japanese)' },
+  { name: ja ? 'せんせいアシスト（仮想の児童生徒で支援を学ぶ）' : 'Sensei Assist (learning support with virtual learners)', repo: 'sensei-assist',
+    text: ja ? '不特定の児童生徒を想定した仮想の児童生徒の特性から、典型的な支援を考えて学ぶ道具' : 'Learn about support by imagining typical approaches for a virtual, non-specific learner (Japanese)' },
   { name: ja ? 'techo（手帳）' : 'techo (planner)', repo: 'techo',
     text: ja ? '使命 → 大きな石 → 日々の優先順位で、いくつもの役割を見渡す手帳' : 'A planner that links mission, big rocks and daily priorities (Japanese)' },
 ];
