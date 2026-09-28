@@ -712,3 +712,15 @@ html[data-theme='light'] .cf-send-error { color: #B3261E; }
 .kz-linkinfo ul { margin: 0 0 8px; padding-left: 1.2em; }
 .kz-linkinfo li { margin-bottom: 6px; }
 @media (forced-colors: active) { .kz-item, .kz-chip, .kz-copy { border-color: CanvasText; } }
+
+/* 教材の部屋（児童生徒向け）：大きく、やさしく */
+.kz-learner .kz-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.kz-learner .kz-title { font-size: 1.45rem; }
+.kz-learner .kz-text { font-size: 1.1rem; }
+.kz-learner .kz-open { min-height: 60px; padding: 0 36px; font-size: 1.15rem; }
+.kz-soon { opacity: 0.85; border-style: dashed; }
+.kz-empty { padding: 28px; border: 2px dashed var(--line); border-radius: 16px; color: var(--sub); }
+.kz-adult { margin-top: 44px; }
+.kz-adult summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+.kz-copies { display: flex; flex-wrap: wrap; gap: 8px; }
+.kz-other { margin-top: 20px; }

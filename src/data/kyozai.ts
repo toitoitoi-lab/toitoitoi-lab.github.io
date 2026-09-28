@@ -1,4 +1,6 @@
-// 教材の部屋：教材はここに1件ずつ書き足す。
+// 教材の部屋（児童生徒・家族向け：/kyozai/）と、支援者の部屋（先生・支援者向け：/kyozai/shien/）の目次。
+// for に 'honnin' があれば教材の部屋に、'sensei' があれば支援者の部屋に出る（両方に出すこともできる）。
+// 教材はここに1件ずつ書き足す。
 // 教材そのものは1か所（GitHub Pages など）にだけ置き、ここは「目次」。
 // url は変えない住所にする（学校などからも同じ住所にリンクしてもらうため）。
 export type KyozaiKind = 'app' | 'print' | 'slide' | 'video';
@@ -15,6 +17,7 @@ export type Kyozai = {
   guide?: string;          // 使い方・セットアップの説明
   updated: string;         // 最終更新（YYYY-MM-DD）
   needsSetup?: boolean;    // 自分の Google アカウントでの準備が必要か
+  ready?: boolean;         // false なら「準備中」として出す（開くボタンなし）
   ja: { title: string; text: string; note?: string };
   en: { title: string; text: string; note?: string };
 };
@@ -24,11 +27,18 @@ export const KIND_LABEL = {
   en: { app: 'App', print: 'Printable', slide: 'Slides', video: 'Video' },
 };
 export const FOR_LABEL = {
-  ja: { sensei: '先生・支援者', honnin: '本人・家族' },
-  en: { sensei: 'Teachers & supporters', honnin: 'Learners & families' },
+  ja: { sensei: '先生・支援者', honnin: '児童生徒・家族' },
+  en: { sensei: 'Teachers & supporters', honnin: 'Students & families' },
 };
 
 export const KYOZAI: Kyozai[] = [
+  {
+    slug: 'english-playlist', kind: 'app', for: ['honnin'], kyoka: ['eigo'],
+    url: 'https://toitoitoi-lab.github.io/english-playlist/',
+    updated: '2026-09-28', ready: false,
+    ja: { title: 'ENGLISH PLAYLIST', text: '音楽アプリのような画面で、英語の音を聞いて、まねして、話してみる。' },
+    en: { title: 'ENGLISH PLAYLIST', text: 'Listen to English, copy the sounds and try speaking, in a music-app style screen.' },
+  },
   {
     slug: 'sensei-assist', kind: 'app', for: ['sensei'], komari: [],
     url: 'https://toitoitoi-lab.github.io/sensei-assist/',
