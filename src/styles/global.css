@@ -853,3 +853,4 @@ html[data-theme='light'] .cf-send-error { color: #B3261E; }
 .tf-way[aria-pressed=false] .tf-way-title::before { content: '○ '; color: var(--sub); }
 .tf-way-text { font-size: 0.9rem; color: var(--sub); line-height: 1.6; }
 @media (forced-colors: active) { .tf-way { border-color: CanvasText; } .tf-way[aria-pressed=true] { outline: 3px solid Highlight; } }
+.tf-switch-lead, .tf-way-text { word-break: auto-phrase; }
