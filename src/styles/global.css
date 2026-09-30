@@ -840,3 +840,16 @@ html[data-theme='light'] .cf-send-error { color: #B3261E; }
 @media (max-width: 640px) { .yf-table { table-layout: auto; } }
 
 .yf-lead-strong { color: var(--fg); font-size: 1.05rem; }
+
+/* 探し方の選択（2つの視点） */
+.tf-switch-wrap { margin: 8px 0 20px; }
+.tf-switch-lead { margin: 0 0 10px; font-weight: 700; }
+.tf-switch { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin: 0; }
+.tf-way { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 18px; min-height: 64px; border: 2px solid var(--line); border-radius: 14px; background: transparent; color: var(--fg); font: inherit; text-align: left; cursor: pointer; }
+.tf-way:hover { border-color: var(--accent-text); }
+.tf-way[aria-pressed=true] { border-color: var(--accent-fill); background: var(--panel); box-shadow: inset 0 0 0 1px var(--accent-fill); }
+.tf-way-title { font-weight: 700; font-size: 1.08rem; }
+.tf-way[aria-pressed=true] .tf-way-title::before { content: '● '; color: var(--accent-text); }
+.tf-way[aria-pressed=false] .tf-way-title::before { content: '○ '; color: var(--sub); }
+.tf-way-text { font-size: 0.9rem; color: var(--sub); line-height: 1.6; }
+@media (forced-colors: active) { .tf-way { border-color: CanvasText; } .tf-way[aria-pressed=true] { outline: 3px solid Highlight; } }

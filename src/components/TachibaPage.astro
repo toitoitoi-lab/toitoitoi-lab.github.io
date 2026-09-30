@@ -83,17 +83,26 @@ const data = JSON.stringify({
     <p class="lead-text">{T.lead}</p>
     {t.review && <div class="notice"><p><strong>{T.draft}</strong>{T.draftText}</p></div>}
 
-    <!-- 探し方の切りかえ。「これまでの探し方」を消すときは：
-         (1) 下の「【旧】ここから」〜「【旧】ここまで」を消す
-         (2) この切りかえボタン（tf-switch）と、下の t3-tab のスクリプトを消し、data-panel="new" の div の hidden 指定を外す -->
-    <div class="tf-switch" role="group" aria-label={ja ? '探し方' : 'How to search'}>
-      <button type="button" class="kz-chip" data-tab="new" aria-pressed="true">{ja ? '様子から探す（新しい探し方）' : 'Start from what you see (new)'}</button>
-      <button type="button" class="kz-chip" data-tab="old" aria-pressed="false">{ja ? 'これまでの探し方' : 'Previous search'}</button>
+    <!-- 探し方は2つ。「困りごと・ことばから探す」（data-panel="old"）を消すときは：
+         (1) 下の「【困りごと・ことばから探す】ここから」〜「ここまで」を消す
+         (2) この tf-switch の部分と、ページ末尾の t3-tab のスクリプトを消す -->
+    <div class="tf-switch-wrap">
+      <p class="tf-switch-lead">{ja ? '探し方は2つあります。見る視点がちがうだけで、どちらからでも同じ方法にたどり着きます。' : 'There are two ways to search. They start from different viewpoints, but lead to the same methods.'}</p>
+      <div class="tf-switch" role="group" aria-label={ja ? '探し方を選ぶ' : 'Choose how to search'}>
+        <button type="button" class="tf-way" data-tab="new" aria-pressed="true">
+          <span class="tf-way-title">{ja ? '様子から探す' : 'Start from what you see'}</span>
+          <span class="tf-way-text">{ja ? '児童生徒の様子（事実）を選び、考えられる困りごとをしぼりこむ。どの困りごとに当たるか迷うときに。' : "Choose the learner's behaviour (facts) and narrow down the possible needs. Useful when you are not sure which need it is."}</span>
+        </button>
+        <button type="button" class="tf-way" data-tab="old" aria-pressed="false">
+          <span class="tf-way-title">{ja ? '困りごと・ことばから探す' : 'Start from the need or your words'}</span>
+          <span class="tf-way-text">{ja ? '6つの困りごとの項目を直接選ぶか、困っていることを自由に書いて探す。困りごとが分かっているときに。' : 'Pick items from the six needs directly, or describe the difficulty in your own words. Useful when you already know the need.'}</span>
+        </button>
+      </div>
     </div>
     <div data-panel="new">
       <YousuFinder lang={lang} role={role} />
     </div>
-    <!-- 【旧】ここから -->
+    <!-- 【困りごと・ことばから探す】ここから -->
     <div data-panel="old" hidden>
     <section class="finder" aria-labelledby="tf-title">
       <h2 id="tf-title">{T.formTitle}</h2>
@@ -132,7 +141,7 @@ const data = JSON.stringify({
       </div>
     </section>
     </div>
-    <!-- 【旧】ここまで -->
+    <!-- 【困りごと・ことばから探す】ここまで -->
     <div class="pk-bar"><PrintKit lang={lang} mode="tachiba" role={role} /></div>
 
     <section aria-labelledby="ov-title" class="tf-overview">
