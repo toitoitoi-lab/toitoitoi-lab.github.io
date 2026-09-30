@@ -867,3 +867,5 @@ button.kk-tip-more { background: none; border: 0; padding: 0; font: inherit; fon
 .kk-tip-body .kk-text { margin: 0; }
 .kk-tip-body .kk-ex { margin: 8px 0 0; }
 @media (prefers-reduced-motion: reduce) { .kk-tip-more svg { transition: none; } }
+.kk-intro, .kk-text, .kk-ex { word-break: auto-phrase; }
+.kk-tip-body .kk-ex { background: var(--bg); }
