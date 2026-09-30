@@ -55,7 +55,7 @@ const T = ja
       memo: 'Notes', fitsLabel: 'Useful when: ', page: 'Page', site: 'toi toi toi', kindSep: ' ', sep: ', ',
     };
 const payload = JSON.stringify({
-  mode, lang, pages, rulesUrl: `${SITE_URL}${base}/rules/`, roleLabel: role ? tb[role] : '',
+  mode, lang, pages, role: role ?? '', rulesUrl: `${SITE_URL}${base}/rules/`, roleLabel: role ? tb[role] : '',
   T: { src: T.src, out: T.out, credit: T.credit, rules: T.rules, memo: T.memo, fitsLabel: T.fitsLabel, page: T.page, site: T.site, sep: T.sep, making: T.making, done: T.done, pickOne: T.pickOne, about: T.about, points: T.points, links: T.links, word: T.word },
 }).replace(/</g, '\\u003c');
 const kinds = ['os', 'tool', 'env'] as const;
@@ -126,7 +126,7 @@ const kinds = ['os', 'tool', 'env'] as const;
   type Dev = { name: string; how: string };
   type M = { id: string; kind: string; kindLabel: string; title: string; summary: string; devices: Dev[]; tips: string[]; fits: string[] };
   type P = { slug: string; title: string; url: string; lead: string; methods: M[]; points: { role: string; label: string; text: string }[]; links: { label: string; href: string }[] };
-  type Data = { mode: 'komari' | 'tachiba'; lang: 'ja' | 'en'; pages: P[]; rulesUrl: string; roleLabel: string; T: Record<string, string> };
+  type Data = { mode: 'komari' | 'tachiba'; lang: 'ja' | 'en'; pages: P[]; role: string; rulesUrl: string; roleLabel: string; T: Record<string, string> };
   type Block = { page: P; lead: boolean; points: P['points']; links: boolean; methods: M[] };
 
   function stamp(lang: string) {
@@ -290,9 +290,11 @@ const kinds = ['os', 'tool', 'env'] as const;
       const blob = await Packer.toBlob(doc);
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `toitoitoi_${docTitle().replace(/[\\/:*?"<>|\s]/g, '')}_${st.file}.docx`;
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      a.download = `toitoitoi_${D.mode === 'komari' ? D.pages[0].slug : D.role}_${st.file}.docx`;
+      a.rel = 'noopener';
+      a.style.display = 'none';
+      dlg.appendChild(a); a.click();
+      setTimeout(() => { a.remove(); URL.revokeObjectURL(a.href); }, 30000);
       msg.textContent = T.done;
     }
     root.querySelector('[data-print]')!.addEventListener('click', printNow);
