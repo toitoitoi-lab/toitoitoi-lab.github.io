@@ -35,8 +35,8 @@ const T = ja
   ? {
       home: 'トップ', list: '立場から探す', review: '随時更新中', upd: '最終更新',
       lead: t.slug === 'sensei'
-        ? '授業や支援の場で気になっていることを選ぶか、自由に書いてください。「困りごとから探す」の6つのページから合いそうな方法を拾い出し、困りごとごとに並べます。先生・支援者の方に向けたポイントもいっしょに表示します。'
-        : 'ご本人が困っていることを選ぶか、自由に書いてください。「困りごとから探す」の6つのページから合いそうな方法を拾い出し、困りごとごとに並べます。ご本人・ご家族に向けたポイントもいっしょに表示します。',
+        ? '見たこと・聞いたことから、考えられる困りごとを自分で選び、合いそうな方法を一覧で見られます。「困りごとから探す」の6つのページを、まとめて探せます。先生・支援者の方に向けたポイントもいっしょに表示します。'
+        : 'ご本人の様子から、考えられる困りごとを自分で選び、合いそうな方法を一覧で見られます。「困りごとから探す」の6つのページを、まとめて探せます。ご本人・ご家族に向けたポイントもいっしょに表示します。',
       formTitle: '困っていることから方法を探す', legend: (x: string) => `${x}の困りごと`, pick: (n: number) => `${n}件選択中`,
       free: '困っていることを自由に書く', hint: '例：「連絡帳を書くのに時間がかかる」「話し合いで考えがまとまらない」',
       search: '探す', reset: '選んだものを消す', empty: 'まだ選ばれていません。下の「困りごとごとの一覧」から見ることもできます。',
@@ -50,8 +50,8 @@ const T = ja
   : {
       home: 'Home', list: 'Find by who you are', review: 'Updating', upd: 'Last updated',
       lead: t.slug === 'sensei'
-        ? 'Choose what you notice in lessons or support, or describe it in your own words. Matching methods are picked from the six "need" pages and listed by need, with points for teachers and supporters.'
-        : 'Choose what the learner finds hard, or describe it in your own words. Matching methods are picked from the six "need" pages and listed by need, with points for learners and families.',
+        ? 'Start from what you have seen or heard, choose the possible needs yourself, and see matching methods as a list across all six "need" pages, with points for teachers and supporters.'
+        : 'Start from what you have seen, choose the possible needs yourself, and see matching methods as a list across all six "need" pages, with points for learners and families.',
       formTitle: 'Find methods from the difficulty', legend: (x: string) => `Needs in ${x}`, pick: (n: number) => `${n} selected`,
       free: 'Describe the difficulty', hint: 'e.g. "writing in the notebook takes too long", "hard to organise ideas in discussion"',
       search: 'Search', reset: 'Clear', empty: 'Nothing selected yet. You can also browse the list by need below.',
