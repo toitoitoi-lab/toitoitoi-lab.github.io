@@ -20,7 +20,10 @@ const methods = pages.flatMap(({ k, c }) => c.methods.map((m) => ({ page: k.slug
 const pageInfo = Object.fromEntries(pages.map(({ k, c }) => [k.slug, { title: ja ? k.ja.title : k.en.title, point: c.points[role] }]));
 const T = ja
   ? {
-      s1: '1. 見たこと・聞いたことを選ぶ',
+      s1: '1. 児童生徒の様子を、事実から選ぶ',
+      s1lead: role === 'sensei'
+        ? '支援者のあなたが、児童生徒について<strong>実際に見たこと・聞いたこと</strong>を選びます。'
+        : 'ご家族やご本人が、ふだんの様子で<strong>実際に見たこと・気づいたこと</strong>を選びます。',
       rulesTitle: '選ぶ前に、必ずお読みください',
       rules: [
         '<strong>実際に見たこと・聞いたことだけ</strong>を選んでください。「たぶん〜だろう」という予想や、「やる気がない」「集中力がない」のような解釈では選びません。',
@@ -28,13 +31,13 @@ const T = ja
         'ここに出る候補や方法は、見立ての<strong>手がかり</strong>です。何を選び、どう使うかを決めるのは、使う人自身です。',
       ],
       picked: (n: number) => `${n}件の様子を選んでいます`,
-      s2: '2. 考えられる困りごとを、自分で選ぶ',
+      s2: role === 'sensei' ? '2. 支援者として、考えられる困りごとを選ぶ' : '2. 当てはまりそうな困りごとを選ぶ',
       s2lead: '選んだ様子から考えられる困りごとの候補です。当てはまると判断したものにだけ、チェックを付けてください。はじめは何も選ばれていません。',
       s2empty: '1で様子を選ぶと、ここに候補が出ます。',
       suggest: '提案（根拠の多い順）', others: 'ほかの候補', othersNote: '提案に入らなかった候補も、ここにすべて残っています。',
       reason: (n: number) => `選んだ様子のうち${n}件から`, from: '根拠：',
       all: 'すべての困りごとから選ぶ（様子を選ばずに、まとめて探すこともできます）',
-      s3: '3. 方法を一覧で見る',
+      s3: '3. 合いそうな方法を一覧で見る',
       s3empty: '2でチェックを付けた困りごとに合う方法が、ここに一覧で出ます。',
       found: (n: number, p: number) => `${p}つの困りごとから、${n}件の方法`,
       viewList: '一覧', viewDetail: 'くわしく', view: '表示',
@@ -43,7 +46,10 @@ const T = ja
       print: '印刷・保存する', reset: '選んだものをすべて消す', sep: '、',
     }
   : {
-      s1: '1. Choose what you have seen or heard',
+      s1: "1. Choose the learner's behaviour, based on facts",
+      s1lead: role === 'sensei'
+        ? 'As a supporter, choose <strong>what you have actually seen or heard</strong> about the student.'
+        : 'As family or as the learner, choose <strong>what you have actually seen or noticed</strong> day to day.',
       rulesTitle: 'Please read before choosing',
       rules: [
         'Choose <strong>only what you have actually seen or heard</strong>. Do not choose based on guesses ("probably…") or interpretations such as "unmotivated" or "cannot concentrate".',
@@ -51,13 +57,13 @@ const T = ja
         'The candidates and methods shown are <strong>clues</strong>, not conclusions. You decide what to choose and how to use it.',
       ],
       picked: (n: number) => `${n} selected`,
-      s2: '2. Choose the possible needs yourself',
+      s2: role === 'sensei' ? '2. As a supporter, choose the possible needs' : '2. Choose the needs that seem to apply',
       s2lead: 'These are possible needs based on what you chose. Tick only the ones you judge to apply. Nothing is ticked at first.',
       s2empty: 'Choose what you have seen in step 1 and candidates will appear here.',
       suggest: 'Suggestions (most evidence first)', others: 'Other candidates', othersNote: 'Candidates not in the suggestions are all kept here.',
       reason: (n: number) => `from ${n} of your choices`, from: 'Based on: ',
       all: 'Choose from all needs (you can also search all at once without choosing what you saw)',
-      s3: '3. See the methods as a list',
+      s3: '3. See matching methods as a list',
       s3empty: 'Methods for the needs you tick in step 2 will be listed here.',
       found: (n: number, p: number) => `${n} methods across ${p} needs`,
       viewList: 'List', viewDetail: 'Details', view: 'View',
@@ -70,6 +76,7 @@ const data = JSON.stringify({ sits, yousu, methods, pageInfo, base, lang, max: S
 ---
 <section class="yf" aria-labelledby="yf-s1">
   <h2 id="yf-s1" class="yf-step">{T.s1}</h2>
+  <p class="yf-lead yf-lead-strong" set:html={T.s1lead} />
   <div class="yf-rules" role="note" aria-labelledby="yf-rules-title">
     <p class="yf-rules-title" id="yf-rules-title">{T.rulesTitle}</p>
     <ul>{T.rules.map((r) => <li set:html={r} />)}</ul>
