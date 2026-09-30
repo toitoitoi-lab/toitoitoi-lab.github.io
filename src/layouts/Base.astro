@@ -264,6 +264,15 @@ const groups = [
 
       // ── 操作ボタンを自由に動かす（ドラッグ／矢印キー） ──
       var bar = document.getElementById('floatbar');
+      // 最上部・最下部に固定したときは、実際の高さ（文字の大きさで変わる）を --fb-h に入れ、
+      // 本文・表示設定パネル・移動先の見出しがボタンの下に隠れないようにする
+      function fbH() {
+        var m = d.dataset.float;
+        d.style.setProperty('--fb-h', (m === 'dock' || m === 'top') ? bar.offsetHeight + 'px' : '0px');
+      }
+      if (window.ResizeObserver) new ResizeObserver(fbH).observe(bar);
+      new MutationObserver(fbH).observe(d, { attributes: true, attributeFilter: ['data-float', 'data-size', 'data-space', 'data-font'] });
+      fbH();
       var grip = document.getElementById('fb-grip');
       function clampPos(x, y) {
         var w = bar.offsetWidth, h = bar.offsetHeight;
