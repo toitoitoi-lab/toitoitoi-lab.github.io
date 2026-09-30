@@ -91,11 +91,11 @@ const data = JSON.stringify({
       <div class="tf-switch" role="group" aria-label={ja ? '探し方を選ぶ' : 'Choose how to search'}>
         <button type="button" class="tf-way" data-tab="new" aria-pressed="true">
           <span class="tf-way-title">{ja ? '様子から探す' : 'Start from what you see'}</span>
-          <span class="tf-way-text">{ja ? '児童生徒の様子（事実）を選び、考えられる困りごとをしぼりこむ。どの困りごとに当たるか迷うときに。' : "Choose the learner's behaviour (facts) and narrow down the possible needs. Useful when you are not sure which need it is."}</span>
+          <span class="tf-way-text">{ja ? 'どの困りごとに当たるか迷うときに。児童生徒の様子（事実）を選び、考えられる困りごとをしぼりこむ。' : "When you are not sure which need it is. Choose the learner's behaviour (facts) and narrow down the possible needs."}</span>
         </button>
         <button type="button" class="tf-way" data-tab="old" aria-pressed="false">
           <span class="tf-way-title">{ja ? '困りごと・ことばから探す' : 'Start from the need or your words'}</span>
-          <span class="tf-way-text">{ja ? '6つの困りごとの項目を直接選ぶか、困っていることを自由に書いて探す。困りごとが分かっているときに。' : 'Pick items from the six needs directly, or describe the difficulty in your own words. Useful when you already know the need.'}</span>
+          <span class="tf-way-text">{ja ? '困りごとが分かっているときに。6つの困りごとの項目を直接選ぶか、困っていることを自由に書いて探す。' : 'When you already know the need. Pick items from the six needs directly, or describe the difficulty in your own words.'}</span>
         </button>
       </div>
     </div>
