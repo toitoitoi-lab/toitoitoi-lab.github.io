@@ -2,6 +2,7 @@
 // 立場のページ（先生・支援者／本人・家族）。日本語・英語で共通。
 // 困りごとは「困りごとから探す」と同じデータを使い、この立場向けのポイントを添えて並べる。
 import Base from '../layouts/Base.astro';
+import PrintKit from './PrintKit.astro';
 import Illust from './Illust.astro';
 import Soon from './Soon.astro';
 import Crumbs from './Crumbs.astro';
@@ -113,6 +114,7 @@ const data = JSON.stringify({
           <button class="btn" type="reset">{T.reset}</button>
         </div>
       </form>
+      <div class="pk-bar"><PrintKit lang={lang} mode="tachiba" role={role} /></div>
       <div class="finder-results" id="tf-results" aria-live="polite" aria-atomic="true">
         <p class="muted">{T.empty}</p>
       </div>
@@ -197,6 +199,7 @@ const data = JSON.stringify({
       counts();
       var sel = Array.prototype.map.call(form.querySelectorAll('input[name="sit"]:checked'), function (i) { return i.value; });
       var raw = q.value;
+      window.__t3Results = {};
       if (!sel.length && !norm(raw)) { out.innerHTML = '<p class="muted">' + esc(D.T.empty) + '</p>'; return; }
       var groups = {};
       D.all.forEach(function (m) {
@@ -207,6 +210,7 @@ const data = JSON.stringify({
         groups[m.page].items.push({ m: m, s: r.s, why: r.why });
       });
       var keys = Object.keys(groups).sort(function (a, b) { return groups[b].total - groups[a].total; });
+      keys.forEach(function (k) { window.__t3Results[k] = groups[k].items.map(function (x) { return x.m.id; }); });
       if (!keys.length) { out.innerHTML = '<p class="muted">' + esc(T.none) + '</p>'; return; }
       var n = 0; keys.forEach(function (k) { n += groups[k].items.length; });
       var html = '<p class="tf-found">' + esc(T.found.replace('{n}', n).replace('{p}', keys.length)) + '</p>';

@@ -1,0 +1,301 @@
+---
+// 印刷・保存（困りごとページ／立場ページで共通）
+// 入れる項目を選んで「印刷（PDF保存も可）」か「Word形式（.docx）」で書き出す。
+// どの形でも、ヘッダー・フッターに出力日時・出典・著作権の帰属が入る。
+import { KOMARI, TACHIBA } from '../data/site';
+import { CONTENT, KIND_LABEL } from '../data/methods';
+import { CONTENT_EN, KIND_LABEL_EN } from '../data/methods_en';
+interface Props { lang?: 'ja' | 'en'; mode: 'komari' | 'tachiba'; slug?: string; role?: 'sensei' | 'honnin' }
+const { lang = 'ja', mode, slug, role } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const SITE_URL = 'https://toitoitoi-lab.github.io';
+const SRC = ja ? CONTENT : CONTENT_EN;
+const KL = ja ? KIND_LABEL : KIND_LABEL_EN;
+const tb = Object.fromEntries(TACHIBA.map((x) => [x.slug, ja ? x.ja.title : x.en.title]));
+const targets = KOMARI.filter((k) => SRC[k.slug] && (mode === 'tachiba' || k.slug === slug));
+const pages = targets.map((k) => {
+  const c = SRC[k.slug];
+  const sit = Object.fromEntries(c.situations.map((s) => [s.id, s.label]));
+  return {
+    slug: k.slug,
+    title: ja ? k.ja.title : k.en.title,
+    url: `${SITE_URL}${base}/komari/${k.slug}/`,
+    lead: c.lead,
+    methods: c.methods.map((m) => ({
+      id: m.id, kind: m.kind, kindLabel: KL[m.kind], title: m.title, summary: m.summary,
+      devices: m.devices ?? [], tips: m.tips ?? [],
+      fits: m.situations.map((s) => sit[s]).filter(Boolean),
+    })),
+    points: (mode === 'tachiba' && role ? [role] : ['sensei', 'honnin', 'tsukuru']).map((r) => ({ role: r, label: tb[r], text: c.points[r as 'sensei'] })),
+    links: ja ? (c.links ?? []) : [],
+  };
+});
+const T = ja
+  ? {
+      open: '印刷・保存する', openHint: '入れる項目を選んで、印刷（PDF保存も）やWord形式で保存できます',
+      title: '印刷・保存する', lead: '入れる項目を選んでください。出力日時と出典は、ヘッダーとフッターに自動で入ります。',
+      all: 'すべて選ぶ', none: 'すべて外す', about: 'このページについて', points: '立場ごとのポイント', point: (x: string) => `${x}へのポイント`, links: '参考になるページ',
+      opts: '書き出し方', optDevices: '機種ごとの設定のしかたを入れる', optFits: '「こんなときに」を入れる', optMemo: '最後にメモ欄をつける', optLarge: '文字を大きめにする',
+      print: '印刷する', printSub: '（PDFとして保存もできます）', word: 'Word形式で保存', wordSub: '（.docx。Googleドキュメントでも開けます）', close: '閉じる',
+      making: 'Wordファイルを作っています…', done: '保存しました。', pickOne: '項目を1つ以上選んでください。',
+      noResult: 'まだ検索していないため、方法は選ばれていません。上で困りごとを選ぶか、ここで直接選んでください。',
+      src: '出典', out: '出力', credit: '内容の著作権は toi toi toi の運営者に帰属します。利用の範囲は利用ルールをご覧ください。', rules: '利用ルール',
+      memo: 'メモ', fitsLabel: 'こんなときに：', page: 'ページ', site: 'toi toi toi', kindSep: '　', sep: '、',
+    }
+  : {
+      open: 'Print or save', openHint: 'Choose what to include, then print (or save as PDF) or save as a Word file',
+      title: 'Print or save', lead: 'Choose what to include. The date and source are added to the header and footer automatically.',
+      all: 'Select all', none: 'Clear all', about: 'About this page', points: 'Points for each role', point: (x: string) => `Points: ${x}`, links: 'Further reading',
+      opts: 'Options', optDevices: 'Include device-by-device steps', optFits: 'Include "Useful when"', optMemo: 'Add a notes area at the end', optLarge: 'Larger text',
+      print: 'Print', printSub: ' (you can also save as PDF)', word: 'Save as Word', wordSub: ' (.docx, also opens in Google Docs)', close: 'Close',
+      making: 'Making the Word file…', done: 'Saved.', pickOne: 'Choose at least one item.',
+      noResult: 'You have not searched yet, so no methods are selected. Choose needs above, or pick items here.',
+      src: 'Source', out: 'Printed', credit: 'Copyright in this content belongs to the operator of toi toi toi. See the terms of use for how you may use it.', rules: 'Terms of use',
+      memo: 'Notes', fitsLabel: 'Useful when: ', page: 'Page', site: 'toi toi toi', kindSep: ' ', sep: ', ',
+    };
+const payload = JSON.stringify({
+  mode, lang, pages, rulesUrl: `${SITE_URL}${base}/rules/`, roleLabel: role ? tb[role] : '',
+  T: { src: T.src, out: T.out, credit: T.credit, rules: T.rules, memo: T.memo, fitsLabel: T.fitsLabel, page: T.page, site: T.site, sep: T.sep, making: T.making, done: T.done, pickOne: T.pickOne, about: T.about, points: T.points, links: T.links, word: T.word },
+}).replace(/</g, '\\u003c');
+const kinds = ['os', 'tool', 'env'] as const;
+---
+<div class="pk">
+  <button type="button" class="btn pk-open" aria-haspopup="dialog" aria-describedby="pk-open-hint">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>{T.open}
+  </button>
+  <span class="visually-hidden" id="pk-open-hint">{T.openHint}</span>
+
+  <dialog class="pk-dialog" aria-labelledby="pk-title">
+    <form method="dialog" class="pk-form">
+      <div class="pk-head">
+        <h2 id="pk-title">{T.title}</h2>
+        <button type="submit" class="icon-btn pk-x" value="close" aria-label={T.close}>✕</button>
+      </div>
+      <p class="pk-lead">{T.lead}</p>
+      {mode === 'tachiba' && <p class="pk-note" data-noresult hidden>{T.noResult}</p>}
+      <p class="pk-bulk"><button type="button" class="pk-link" data-all>{T.all}</button><button type="button" class="pk-link" data-none>{T.none}</button></p>
+
+      <div class="pk-tree">
+        {pages.map((p) => (
+          <fieldset class="pk-page" data-page={p.slug}>
+            <legend>{p.title}</legend>
+            <label class="pk-item"><input type="checkbox" data-kind="lead" data-page={p.slug} checked={mode === 'komari'} /><span>{T.about}</span></label>
+            {mode === 'tachiba'
+              ? p.points.map((pt) => <label class="pk-item"><input type="checkbox" data-kind="point" data-page={p.slug} data-role={pt.role} /><span>{T.point(pt.label)}</span></label>)
+              : null}
+            {kinds.filter((kd) => p.methods.some((m) => m.kind === kd)).map((kd) => (
+              <div class="pk-group">
+                <p class="pk-gl">{KL[kd]}</p>
+                {p.methods.filter((m) => m.kind === kd).map((m) => (
+                  <label class="pk-item"><input type="checkbox" data-kind="method" data-page={p.slug} data-id={m.id} checked={mode === 'komari'} /><span>{m.title}</span></label>
+                ))}
+              </div>
+            ))}
+            {mode === 'komari' && (
+              <div class="pk-group">
+                <p class="pk-gl">{T.points}</p>
+                {p.points.map((pt) => <label class="pk-item"><input type="checkbox" data-kind="point" data-page={p.slug} data-role={pt.role} checked /><span>{pt.label}</span></label>)}
+              </div>
+            )}
+            {p.links.length > 0 && <label class="pk-item"><input type="checkbox" data-kind="links" data-page={p.slug} checked={mode === 'komari'} /><span>{T.links}</span></label>}
+          </fieldset>
+        ))}
+      </div>
+
+      <fieldset class="pk-opts">
+        <legend>{T.opts}</legend>
+        <label class="pk-item"><input type="checkbox" name="devices" checked /><span>{T.optDevices}</span></label>
+        <label class="pk-item"><input type="checkbox" name="fits" checked /><span>{T.optFits}</span></label>
+        <label class="pk-item"><input type="checkbox" name="memo" /><span>{T.optMemo}</span></label>
+        <label class="pk-item"><input type="checkbox" name="large" /><span>{T.optLarge}</span></label>
+      </fieldset>
+
+      <p class="pk-msg" role="status" aria-live="polite"></p>
+      <div class="pk-actions">
+        <button type="button" class="btn btn-solid" data-print>{T.print}<small>{T.printSub}</small></button>
+        <button type="button" class="btn" data-word>{T.word}<small>{T.wordSub}</small></button>
+        <button type="submit" class="btn pk-close" value="close">{T.close}</button>
+      </div>
+    </form>
+  </dialog>
+  <script type="application/json" class="pk-data" set:html={payload}></script>
+</div>
+
+<script>
+  type Dev = { name: string; how: string };
+  type M = { id: string; kind: string; kindLabel: string; title: string; summary: string; devices: Dev[]; tips: string[]; fits: string[] };
+  type P = { slug: string; title: string; url: string; lead: string; methods: M[]; points: { role: string; label: string; text: string }[]; links: { label: string; href: string }[] };
+  type Data = { mode: 'komari' | 'tachiba'; lang: 'ja' | 'en'; pages: P[]; rulesUrl: string; roleLabel: string; T: Record<string, string> };
+  type Block = { page: P; lead: boolean; points: P['points']; links: boolean; methods: M[] };
+
+  function stamp(lang: string) {
+    const d = new Date();
+    const p = (n: number) => String(n).padStart(2, '0');
+    return {
+      label: lang === 'ja'
+        ? `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${p(d.getHours())}:${p(d.getMinutes())}`
+        : `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`,
+      file: `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`,
+    };
+  }
+  function esc(s: string) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string)); }
+
+  document.querySelectorAll<HTMLElement>('.pk').forEach((root) => {
+    const D: Data = JSON.parse(root.querySelector('.pk-data')!.textContent || '{}');
+    const T = D.T;
+    const dlg = root.querySelector<HTMLDialogElement>('.pk-dialog')!;
+    const form = root.querySelector<HTMLFormElement>('.pk-form')!;
+    const msg = root.querySelector<HTMLElement>('.pk-msg')!;
+    const opener = root.querySelector<HTMLButtonElement>('.pk-open')!;
+    const boxes = () => Array.from(root.querySelectorAll<HTMLInputElement>('.pk-tree input[type=checkbox]'));
+    const opt = (n: string) => (form.elements.namedItem(n) as HTMLInputElement).checked;
+
+    // 立場ページ：いまの検索結果に合わせて選んでおく
+    function preselect() {
+      if (D.mode !== 'tachiba') return;
+      const sel = (window as any).__t3Results as Record<string, string[]> | undefined;
+      const note = root.querySelector<HTMLElement>('[data-noresult]');
+      const has = sel && Object.keys(sel).length > 0;
+      if (note) note.hidden = !!has;
+      if (!has) return;
+      boxes().forEach((b) => {
+        const pg = b.dataset.page!, picked = sel![pg];
+        if (b.dataset.kind === 'method') b.checked = !!picked && picked.includes(b.dataset.id!);
+        else if (b.dataset.kind === 'point') b.checked = !!picked;
+        else b.checked = false;
+      });
+    }
+    opener.addEventListener('click', () => { preselect(); msg.textContent = ''; dlg.showModal(); });
+    root.querySelector('[data-all]')!.addEventListener('click', () => boxes().forEach((b) => (b.checked = true)));
+    root.querySelector('[data-none]')!.addEventListener('click', () => boxes().forEach((b) => (b.checked = false)));
+
+    function collect(): Block[] {
+      return D.pages.map((p) => {
+        const on = (kind: string, extra?: (b: HTMLInputElement) => boolean) =>
+          boxes().filter((b) => b.dataset.page === p.slug && b.dataset.kind === kind && b.checked && (!extra || extra(b)));
+        const ids = on('method').map((b) => b.dataset.id);
+        const roles = on('point').map((b) => b.dataset.role);
+        return {
+          page: p,
+          lead: on('lead').length > 0,
+          links: on('links').length > 0,
+          points: p.points.filter((x) => roles.includes(x.role)),
+          methods: p.methods.filter((m) => ids.includes(m.id)),
+        };
+      }).filter((b) => b.lead || b.links || b.points.length || b.methods.length);
+    }
+    const docTitle = () => (D.mode === 'komari' ? D.pages[0].title : D.roleLabel);
+    const srcUrl = (blocks: Block[]) => (D.mode === 'komari' ? D.pages[0].url : location.href.split('#')[0].split('?')[0]);
+
+    // ── 印刷：thead/tfoot はどのページにもくり返し印刷される ──
+    function printNow() {
+      const blocks = collect();
+      if (!blocks.length) { msg.textContent = T.pickOne; return; }
+      const st = stamp(D.lang);
+      const url = srcUrl(blocks);
+      const head = `<div class="pk-ph"><span>${esc(T.site)}｜${esc(docTitle())}</span><span>${esc(T.out)}：${esc(st.label)}</span></div>`;
+      const foot = `<div class="pk-pf"><span>${esc(T.src)}：${esc(T.site)} ${esc(url)}</span><span>${esc(T.credit)} ${esc(T.rules)}：${esc(D.rulesUrl)}</span></div>`;
+      let rows = `<tr><td><h1 class="pk-h1">${esc(docTitle())}</h1></td></tr>`;
+      blocks.forEach((b) => {
+        if (D.mode === 'tachiba') rows += `<tr><td><h2 class="pk-h2">${esc(b.page.title)}</h2></td></tr>`;
+        if (b.lead) rows += `<tr><td><p>${esc(b.page.lead)}</p></td></tr>`;
+        let lastKind = '';
+        b.methods.forEach((m) => {
+          let h = '';
+          if (m.kindLabel !== lastKind) { h += `<p class="pk-kind">${esc(m.kindLabel)}</p>`; lastKind = m.kindLabel; }
+          h += `<h3 class="pk-h3">${esc(m.title)}</h3><p>${esc(m.summary)}</p>`;
+          if (opt('devices') && m.devices.length) h += `<table class="pk-dev">${m.devices.map((d) => `<tr><th>${esc(d.name)}</th><td>${esc(d.how)}</td></tr>`).join('')}</table>`;
+          if (m.tips.length) h += `<ul>${m.tips.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>`;
+          if (opt('fits') && m.fits.length) h += `<p class="pk-fits">${esc(T.fitsLabel)}${esc(m.fits.join(T.sep))}</p>`;
+          rows += `<tr class="pk-m"><td>${h}</td></tr>`;
+        });
+        if (b.points.length) rows += `<tr class="pk-m"><td>${D.mode === 'komari' ? `<h2 class="pk-h2">${esc(T.points)}</h2>` : ''}${b.points.map((x) => `<h3 class="pk-h3">${esc(x.label)}</h3><p>${esc(x.text)}</p>`).join('')}</td></tr>`;
+        if (b.links && b.page.links.length) rows += `<tr class="pk-m"><td><h3 class="pk-h3">${esc(T.links)}</h3><ul>${b.page.links.map((l) => `<li>${esc(l.label)}：${esc(l.href)}</li>`).join('')}</ul></td></tr>`;
+      });
+      if (opt('memo')) rows += `<tr class="pk-m"><td><h2 class="pk-h2">${esc(T.memo)}</h2><div class="pk-memo"></div></td></tr>`;
+      const sheet = document.createElement('div');
+      sheet.id = 'pk-sheet';
+      sheet.lang = D.lang;
+      if (opt('large')) sheet.classList.add('pk-large');
+      sheet.innerHTML = `<table class="pk-sheet"><thead><tr><td>${head}</td></tr></thead><tfoot><tr><td>${foot}</td></tr></tfoot><tbody>${rows}</tbody></table>`;
+      document.body.appendChild(sheet);
+      document.documentElement.classList.add('pk-printing');
+      dlg.close();
+      const cleanup = () => { sheet.remove(); document.documentElement.classList.remove('pk-printing'); window.removeEventListener('afterprint', cleanup); opener.focus(); };
+      window.addEventListener('afterprint', cleanup);
+      setTimeout(() => window.print(), 50);
+    }
+
+    // ── Word（.docx）：本物のヘッダー・フッターとページ番号つき ──
+    async function saveWord() {
+      const blocks = collect();
+      if (!blocks.length) { msg.textContent = T.pickOne; return; }
+      msg.textContent = T.making;
+      const X = await import('docx');
+      const { Document, Packer, Paragraph, TextRun, HeadingLevel, Header, Footer, AlignmentType, PageNumber, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, LevelFormat } = X;
+      const st = stamp(D.lang);
+      const url = srcUrl(blocks);
+      const FONT = D.lang === 'ja' ? 'BIZ UDPゴシック' : 'Arial';
+      const size = opt('large') ? 26 : 22;
+      const run = (text: string, o: Record<string, unknown> = {}) => new TextRun({ text, font: FONT, size, ...o });
+      const para = (text: string, o: Record<string, unknown> = {}) => new Paragraph({ spacing: { after: 100, line: 320 }, children: [run(text)], ...o });
+      const h = (text: string, level: any) => new Paragraph({ heading: level, spacing: { before: 200, after: 80 }, children: [new TextRun({ text, font: FONT, bold: true, size: level === HeadingLevel.HEADING_1 ? size + 12 : level === HeadingLevel.HEADING_2 ? size + 6 : size + 2 })] });
+      const bullet = (text: string) => new Paragraph({ numbering: { reference: 'b', level: 0 }, spacing: { after: 40 }, children: [run(text)] });
+      const small = (text: string) => new TextRun({ text, font: FONT, size: 16, color: '555555' });
+      const border = { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB' };
+      const devTable = (devs: Dev[]) => new Table({
+        width: { size: 9000, type: WidthType.DXA }, columnWidths: [2200, 6800],
+        rows: devs.map((d) => new TableRow({ children: [
+          new TableCell({ width: { size: 2200, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: 'F0F0F0', color: 'auto' }, borders: { top: border, bottom: border, left: border, right: border }, margins: { top: 60, bottom: 60, left: 100, right: 100 }, children: [new Paragraph({ children: [run(d.name, { bold: true, size: size - 2 })] })] }),
+          new TableCell({ width: { size: 6800, type: WidthType.DXA }, borders: { top: border, bottom: border, left: border, right: border }, margins: { top: 60, bottom: 60, left: 100, right: 100 }, children: [new Paragraph({ children: [run(d.how, { size: size - 2 })] })] }),
+        ] })),
+      });
+      const body: any[] = [h(docTitle(), HeadingLevel.HEADING_1)];
+      blocks.forEach((b) => {
+        if (D.mode === 'tachiba') body.push(h(b.page.title, HeadingLevel.HEADING_2));
+        if (b.lead) body.push(para(b.page.lead));
+        let lastKind = '';
+        b.methods.forEach((m) => {
+          if (m.kindLabel !== lastKind) { body.push(new Paragraph({ spacing: { before: 200, after: 40 }, children: [run(m.kindLabel, { bold: true, color: '4A33B0', size: size - 2 })] })); lastKind = m.kindLabel; }
+          body.push(h(m.title, HeadingLevel.HEADING_3), para(m.summary));
+          if (opt('devices') && m.devices.length) { body.push(devTable(m.devices)); body.push(new Paragraph({ children: [] })); }
+          m.tips.forEach((t) => body.push(bullet(t)));
+          if (opt('fits') && m.fits.length) body.push(para(T.fitsLabel + m.fits.join(T.sep)));
+        });
+        if (b.points.length) {
+          if (D.mode === 'komari') body.push(h(T.points, HeadingLevel.HEADING_2));
+          b.points.forEach((x) => body.push(h(x.label, HeadingLevel.HEADING_3), para(x.text)));
+        }
+        if (b.links && b.page.links.length) { body.push(h(T.links, HeadingLevel.HEADING_3)); b.page.links.forEach((l) => body.push(bullet(`${l.label}：${l.href}`))); }
+      });
+      if (opt('memo')) {
+        body.push(h(T.memo, HeadingLevel.HEADING_2));
+        for (let i = 0; i < 8; i++) body.push(new Paragraph({ spacing: { before: 280 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: '999999', space: 1 } }, children: [] }));
+      }
+      const doc = new Document({
+        creator: T.site, title: `${T.site}｜${docTitle()}`, description: `${T.src}: ${url}`,
+        numbering: { config: [{ reference: 'b', levels: [{ level: 0, format: LevelFormat.BULLET, text: '・', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 420, hanging: 280 } } } }] }] },
+        sections: [{
+          properties: { page: { margin: { top: 1300, bottom: 1300, left: 1200, right: 1200 } } },
+          headers: { default: new Header({ children: [new Paragraph({ alignment: AlignmentType.LEFT, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`${T.site}｜${docTitle()}　　${T.out}：${st.label}`)] })] }) },
+          footers: { default: new Footer({ children: [
+            new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`${T.src}：${T.site} ${url}`)] }),
+            new Paragraph({ children: [small(`${T.credit} ${T.rules}：${D.rulesUrl}`)] }),
+            new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ children: [PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], font: FONT, size: 16, color: '555555' })] }),
+          ] }) },
+          children: body,
+        }],
+      });
+      const blob = await Packer.toBlob(doc);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `toitoitoi_${docTitle().replace(/[\\/:*?"<>|\s]/g, '')}_${st.file}.docx`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      msg.textContent = T.done;
+    }
+    root.querySelector('[data-print]')!.addEventListener('click', printNow);
+    root.querySelector('[data-word]')!.addEventListener('click', () => { saveWord().catch(() => { msg.textContent = 'Error'; }); });
+  });
+</script>

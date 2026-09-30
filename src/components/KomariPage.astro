@@ -1,6 +1,7 @@
 ---
 // 困りごとページの本体（日本語・英語で共通）
 import Base from '../layouts/Base.astro';
+import PrintKit from './PrintKit.astro';
 import Illust from './Illust.astro';
 import Soon from './Soon.astro';
 import Crumbs from './Crumbs.astro';
@@ -54,6 +55,7 @@ const T = ja
           </div>
         )}
 
+        <div class="pk-bar"><PrintKit lang={lang} mode="komari" slug={k.slug} /></div>
         <MethodSearch slug={k.slug} lang={lang} />
 
         <nav class="toc" aria-label={T.toc}>
