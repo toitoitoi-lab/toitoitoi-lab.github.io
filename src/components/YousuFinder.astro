@@ -1,0 +1,211 @@
+---
+// 様子から探す（立場のページの新しい探し方）
+// 1. 見たこと・聞いたことを選ぶ → 2. 考えられる困りごとを自分で選ぶ → 3. 方法を一覧で見る
+// 候補は「提案」として上に出すが、はじめから選ばれてはいない。選んで決めるのは使う人。
+import { KOMARI } from '../data/site';
+import { CONTENT } from '../data/methods';
+import { CONTENT_EN } from '../data/methods_en';
+import { SCENES, SUGGEST_MAX } from '../data/yousu';
+interface Props { lang?: 'ja' | 'en'; role: 'sensei' | 'honnin' }
+const { lang = 'ja', role } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const SRC = ja ? CONTENT : CONTENT_EN;
+const KS = ja ? { os: '端末の機能', tool: '道具・アプリ', env: '環境・関わり方' } : { os: 'Built-in', tool: 'Tools & apps', env: 'Environment' };
+const pages = KOMARI.filter((k) => SRC[k.slug]).map((k) => ({ k, c: SRC[k.slug] }));
+const sits: Record<string, { page: string; pageTitle: string; label: string }> = {};
+pages.forEach(({ k, c }) => c.situations.forEach((s) => { sits[`${k.slug}:${s.id}`] = { page: k.slug, pageTitle: ja ? k.ja.title : k.en.title, label: s.label }; }));
+const yousu = Object.fromEntries(SCENES.flatMap((sc) => sc.items.map((y) => [y.id, { to: y.to, label: ja ? y.ja : y.en }])));
+const methods = pages.flatMap(({ k, c }) => c.methods.map((m) => ({ page: k.slug, id: m.id, kind: KS[m.kind], title: m.title, summary: m.summary, sit: m.situations.map((s) => `${k.slug}:${s}`) })));
+const pageInfo = Object.fromEntries(pages.map(({ k, c }) => [k.slug, { title: ja ? k.ja.title : k.en.title, point: c.points[role] }]));
+const T = ja
+  ? {
+      s1: '1. 見たこと・聞いたことを選ぶ',
+      rulesTitle: '選ぶ前に、必ずお読みください',
+      rules: [
+        '<strong>実際に見たこと・聞いたことだけ</strong>を選んでください。「たぶん〜だろう」という予想や、「やる気がない」「集中力がない」のような解釈では選びません。',
+        '想定するのは<strong>仮想の児童生徒</strong>です。実在の児童生徒の名前などは入力しません。ここで選んだことは、どこにも送られません。',
+        'ここに出る候補や方法は、見立ての<strong>手がかり</strong>です。何を選び、どう使うかを決めるのは、使う人自身です。',
+      ],
+      picked: (n: number) => `${n}件の様子を選んでいます`,
+      s2: '2. 考えられる困りごとを、自分で選ぶ',
+      s2lead: '選んだ様子から考えられる困りごとの候補です。当てはまると判断したものにだけ、チェックを付けてください。はじめは何も選ばれていません。',
+      s2empty: '1で様子を選ぶと、ここに候補が出ます。',
+      suggest: '提案（根拠の多い順）', others: 'ほかの候補', othersNote: '提案に入らなかった候補も、ここにすべて残っています。',
+      reason: (n: number) => `選んだ様子のうち${n}件から`, from: '根拠：',
+      all: 'すべての困りごとから選ぶ（様子を選ばずに、まとめて探すこともできます）',
+      s3: '3. 方法を一覧で見る',
+      s3empty: '2でチェックを付けた困りごとに合う方法が、ここに一覧で出ます。',
+      found: (n: number, p: number) => `${p}つの困りごとから、${n}件の方法`,
+      viewList: '一覧', viewDetail: 'くわしく', view: '表示',
+      thMethod: '方法', thKind: '種類', thFits: '当てはまる困りごと',
+      forRole: role === 'sensei' ? '先生・支援者の方へ' : 'ご本人・ご家族へ',
+      print: '印刷・保存する', reset: '選んだものをすべて消す', sep: '、',
+    }
+  : {
+      s1: '1. Choose what you have seen or heard',
+      rulesTitle: 'Please read before choosing',
+      rules: [
+        'Choose <strong>only what you have actually seen or heard</strong>. Do not choose based on guesses ("probably…") or interpretations such as "unmotivated" or "cannot concentrate".',
+        'Think of a <strong>virtual learner</strong>. Do not enter the names of real students. Nothing you choose here is sent anywhere.',
+        'The candidates and methods shown are <strong>clues</strong>, not conclusions. You decide what to choose and how to use it.',
+      ],
+      picked: (n: number) => `${n} selected`,
+      s2: '2. Choose the possible needs yourself',
+      s2lead: 'These are possible needs based on what you chose. Tick only the ones you judge to apply. Nothing is ticked at first.',
+      s2empty: 'Choose what you have seen in step 1 and candidates will appear here.',
+      suggest: 'Suggestions (most evidence first)', others: 'Other candidates', othersNote: 'Candidates not in the suggestions are all kept here.',
+      reason: (n: number) => `from ${n} of your choices`, from: 'Based on: ',
+      all: 'Choose from all needs (you can also search all at once without choosing what you saw)',
+      s3: '3. See the methods as a list',
+      s3empty: 'Methods for the needs you tick in step 2 will be listed here.',
+      found: (n: number, p: number) => `${n} methods across ${p} needs`,
+      viewList: 'List', viewDetail: 'Details', view: 'View',
+      thMethod: 'Method', thKind: 'Type', thFits: 'Matching needs',
+      forRole: role === 'sensei' ? 'For teachers & supporters' : 'For learners & families',
+      print: 'Print or save', reset: 'Clear everything', sep: ', ',
+    };
+const data = JSON.stringify({ sits, yousu, methods, pageInfo, base, lang, max: SUGGEST_MAX,
+  T: { reason: ja ? '選んだ様子のうち{n}件から' : 'from {n} of your choices', from: T.from, found: ja ? '{p}つの困りごとから、{n}件の方法' : '{n} methods across {p} needs', forRole: T.forRole, thMethod: T.thMethod, thKind: T.thKind, thFits: T.thFits, sep: T.sep, picked: ja ? '{n}件の様子を選んでいます' : '{n} selected' } }).replace(/</g, '\\u003c');
+---
+<section class="yf" aria-labelledby="yf-s1">
+  <h2 id="yf-s1" class="yf-step">{T.s1}</h2>
+  <div class="yf-rules" role="note" aria-labelledby="yf-rules-title">
+    <p class="yf-rules-title" id="yf-rules-title">{T.rulesTitle}</p>
+    <ul>{T.rules.map((r) => <li set:html={r} />)}</ul>
+  </div>
+  <div class="yf-scenes">
+    {SCENES.map((sc) => (
+      <fieldset class="yf-scene">
+        <legend>{ja ? sc.ja : sc.en}</legend>
+        {sc.items.map((y) => (
+          <label class="yf-check"><input type="checkbox" name="yousu" value={y.id} /><span>{ja ? y.ja : y.en}</span></label>
+        ))}
+      </fieldset>
+    ))}
+  </div>
+  <p class="yf-picked" id="yf-picked" aria-live="polite"></p>
+
+  <h2 id="yf-s2" class="yf-step">{T.s2}</h2>
+  <p class="yf-lead">{T.s2lead}</p>
+  <div id="yf-cands" aria-live="polite">
+    <p class="muted" id="yf-cands-empty">{T.s2empty}</p>
+    <div id="yf-suggest-wrap" hidden>
+      <h3 class="yf-sub">{T.suggest}</h3>
+      <div id="yf-suggest" class="yf-cands"></div>
+    </div>
+    <div id="yf-others-wrap" hidden>
+      <h3 class="yf-sub">{T.others}</h3>
+      <p class="yf-note">{T.othersNote}</p>
+      <div id="yf-others" class="yf-cands"></div>
+    </div>
+  </div>
+  <details class="yf-all">
+    <summary>{T.all}</summary>
+    {pages.map(({ k, c }) => (
+      <fieldset class="yf-scene">
+        <legend>{ja ? k.ja.title : k.en.title}</legend>
+        {c.situations.map((s) => (
+          <label class="yf-check"><input type="checkbox" name="sit" value={`${k.slug}:${s.id}`} /><span>{s.label}</span></label>
+        ))}
+      </fieldset>
+    ))}
+  </details>
+
+  <h2 id="yf-s3" class="yf-step">{T.s3}</h2>
+  <div class="yf-bar">
+    <p class="yf-found" id="yf-found" aria-live="polite"></p>
+    <div class="yf-view" role="group" aria-label={T.view}>
+      <button type="button" class="kz-chip" data-view="list" aria-pressed="true">{T.viewList}</button>
+      <button type="button" class="kz-chip" data-view="detail" aria-pressed="false">{T.viewDetail}</button>
+    </div>
+    <button type="button" class="btn" data-yf-print>{T.print}</button>
+  </div>
+  <div id="yf-results" class="yf-results"><p class="muted">{T.s3empty}</p></div>
+  <p><button type="button" class="pk-link" data-yf-reset>{T.reset}</button></p>
+</section>
+<script type="application/json" id="yf-data" set:html={data}></script>
+
+<script is:inline>
+(function () {
+  var D = JSON.parse(document.getElementById('yf-data').textContent), T = D.T;
+  var root = document.querySelector('.yf'); if (!root) return;
+  var view = 'list', last = {};
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function checkedVals(name) { return Array.prototype.map.call(root.querySelectorAll('input[name="' + name + '"]:checked'), function (i) { return i.value; }); }
+  // 同じ困りごとのチェックは、どこにあっても同じ状態にそろえる
+  function syncSit(value, on) { root.querySelectorAll('input[name="sit"][value="' + value + '"]').forEach(function (i) { i.checked = on; }); }
+  function candBox(sid, reasons) {
+    var s = D.sits[sid], on = root.querySelector('input[name="sit"][value="' + sid + '"]:checked') ? ' checked' : '';
+    return '<label class="yf-cand"><input type="checkbox" name="sit" value="' + sid + '"' + on + ' />'
+      + '<span><span class="yf-cand-page">' + esc(s.pageTitle) + '</span>' + esc(s.label)
+      + '<span class="yf-why">' + esc(T.reason.replace('{n}', reasons.length)) + '　' + esc(T.from) + esc(reasons.join(T.sep)) + '</span></span></label>';
+  }
+  function candidates() {
+    var ys = checkedVals('yousu');
+    document.getElementById('yf-picked').textContent = ys.length ? T.picked.replace('{n}', ys.length) : '';
+    var map = {};
+    ys.forEach(function (y) { D.yousu[y].to.forEach(function (sid) { (map[sid] = map[sid] || []).push(D.yousu[y].label); }); });
+    var order = Object.keys(map).sort(function (a, b) { return map[b].length - map[a].length || Object.keys(D.sits).indexOf(a) - Object.keys(D.sits).indexOf(b); });
+    var sug = order.slice(0, D.max), oth = order.slice(D.max);
+    document.getElementById('yf-cands-empty').hidden = order.length > 0;
+    document.getElementById('yf-suggest-wrap').hidden = !sug.length;
+    document.getElementById('yf-others-wrap').hidden = !oth.length;
+    document.getElementById('yf-suggest').innerHTML = sug.map(function (s) { return candBox(s, map[s]); }).join('');
+    document.getElementById('yf-others').innerHTML = oth.map(function (s) { return candBox(s, map[s]); }).join('');
+  }
+  function results() {
+    var sel = []; checkedVals('sit').forEach(function (v) { if (sel.indexOf(v) < 0) sel.push(v); });
+    var out = document.getElementById('yf-results'), found = document.getElementById('yf-found');
+    last = {};
+    if (!sel.length) { out.innerHTML = '<p class="muted">' + esc(out.dataset.empty || '') + '</p>'; found.textContent = ''; publish(); return; }
+    var groups = {}, order = [];
+    D.methods.forEach(function (m) {
+      var hit = m.sit.filter(function (s) { return sel.indexOf(s) >= 0; });
+      if (!hit.length) return;
+      if (!groups[m.page]) { groups[m.page] = []; order.push(m.page); }
+      groups[m.page].push({ m: m, hit: hit });
+    });
+    var n = 0, html = '';
+    order.forEach(function (pg) {
+      var g = groups[pg], info = D.pageInfo[pg], href = D.base + '/komari/' + pg + '/';
+      g.sort(function (a, b) { return b.hit.length - a.hit.length; });
+      n += g.length; last[pg] = g.map(function (x) { return x.m.id; });
+      html += '<section class="yf-group"><h3><a href="' + href + '">' + esc(info.title) + '</a> <span class="yf-n">' + g.length + '</span></h3>'
+        + '<p class="tf-point"><span class="tf-point-label">' + esc(T.forRole) + '</span>' + esc(info.point) + '</p>'
+        + '<table class="yf-table"><thead><tr><th scope="col">' + esc(T.thMethod) + '</th><th scope="col">' + esc(T.thKind) + '</th><th scope="col">' + esc(T.thFits) + '</th></tr></thead><tbody>'
+        + g.map(function (x) {
+          return '<tr><td><a href="' + href + '#m-' + x.m.id + '">' + esc(x.m.title) + '</a>'
+            + (view === 'detail' ? '<p class="yf-sum">' + esc(x.m.summary) + '</p>' : '') + '</td>'
+            + '<td>' + esc(x.m.kind) + '</td>'
+            + '<td>' + esc(x.hit.map(function (s) { return D.sits[s].label; }).join(T.sep)) + '</td></tr>';
+        }).join('') + '</tbody></table></section>';
+    });
+    found.textContent = T.found.replace('{n}', n).replace('{p}', order.length);
+    out.innerHTML = html;
+    publish();
+  }
+  function active() { var p = root.closest('[data-panel]'); return !p || !p.hidden; }
+  function publish() { if (active()) window.__t3Results = last; }
+  document.getElementById('yf-results').dataset.empty = document.querySelector('#yf-results .muted').textContent;
+  root.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.name === 'yousu') { candidates(); }
+    if (t.name === 'sit') { syncSit(t.value, t.checked); results(); }
+  });
+  root.querySelectorAll('[data-view]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      view = b.dataset.view;
+      root.querySelectorAll('[data-view]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      results();
+    });
+  });
+  root.querySelector('[data-yf-print]').addEventListener('click', function () { var o = document.querySelector('.pk-open'); if (o) o.click(); });
+  root.querySelector('[data-yf-reset]').addEventListener('click', function () {
+    root.querySelectorAll('input[type=checkbox]').forEach(function (i) { i.checked = false; });
+    candidates(); results(); document.getElementById('yf-s1').scrollIntoView();
+  });
+  document.addEventListener('t3-tab', function () { publish(); });
+  candidates(); results();
+})();
+</script>

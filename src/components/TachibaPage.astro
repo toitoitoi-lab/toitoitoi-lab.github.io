@@ -3,6 +3,7 @@
 // 困りごとは「困りごとから探す」と同じデータを使い、この立場向けのポイントを添えて並べる。
 import Base from '../layouts/Base.astro';
 import PrintKit from './PrintKit.astro';
+import YousuFinder from './YousuFinder.astro';
 import Illust from './Illust.astro';
 import Soon from './Soon.astro';
 import Crumbs from './Crumbs.astro';
@@ -82,6 +83,18 @@ const data = JSON.stringify({
     <p class="lead-text">{T.lead}</p>
     {t.review && <div class="notice"><p><strong>{T.draft}</strong>{T.draftText}</p></div>}
 
+    <!-- 探し方の切りかえ。「これまでの探し方」を消すときは：
+         (1) 下の「【旧】ここから」〜「【旧】ここまで」を消す
+         (2) この切りかえボタン（tf-switch）と、下の t3-tab のスクリプトを消し、data-panel="new" の div の hidden 指定を外す -->
+    <div class="tf-switch" role="group" aria-label={ja ? '探し方' : 'How to search'}>
+      <button type="button" class="kz-chip" data-tab="new" aria-pressed="true">{ja ? '様子から探す（新しい探し方）' : 'Start from what you see (new)'}</button>
+      <button type="button" class="kz-chip" data-tab="old" aria-pressed="false">{ja ? 'これまでの探し方' : 'Previous search'}</button>
+    </div>
+    <div data-panel="new">
+      <YousuFinder lang={lang} role={role} />
+    </div>
+    <!-- 【旧】ここから -->
+    <div data-panel="old" hidden>
     <section class="finder" aria-labelledby="tf-title">
       <h2 id="tf-title">{T.formTitle}</h2>
       <form id="tf-form" class="finder-form" autocomplete="off">
@@ -114,11 +127,13 @@ const data = JSON.stringify({
           <button class="btn" type="reset">{T.reset}</button>
         </div>
       </form>
-      <div class="pk-bar"><PrintKit lang={lang} mode="tachiba" role={role} /></div>
       <div class="finder-results" id="tf-results" aria-live="polite" aria-atomic="true">
         <p class="muted">{T.empty}</p>
       </div>
     </section>
+    </div>
+    <!-- 【旧】ここまで -->
+    <div class="pk-bar"><PrintKit lang={lang} mode="tachiba" role={role} /></div>
 
     <section aria-labelledby="ov-title" class="tf-overview">
       <h2 id="ov-title">{T.overview}</h2>
@@ -141,6 +156,21 @@ const data = JSON.stringify({
     </section>
   </div>
 </Base>
+
+<script is:inline>
+  (function () {
+    var btns = document.querySelectorAll('.tf-switch [data-tab]');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var tab = b.dataset.tab;
+        btns.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        document.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.dataset.panel !== tab; });
+        window.__t3Results = {};
+        document.dispatchEvent(new CustomEvent('t3-tab', { detail: tab }));
+      });
+    });
+  })();
+</script>
 
 <script type="application/json" id="tf-data" set:html={data}></script>
 <script is:inline>
@@ -227,6 +257,7 @@ const data = JSON.stringify({
       });
       out.innerHTML = html;
     }
+    document.addEventListener('t3-tab', function (e) { if (e.detail === 'old') render(); });
     form.addEventListener('submit', function (e) { e.preventDefault(); render(); });
     form.addEventListener('change', function (e) { if (e.target && e.target.name === 'sit') render(); });
     form.addEventListener('reset', function () { setTimeout(render, 0); });

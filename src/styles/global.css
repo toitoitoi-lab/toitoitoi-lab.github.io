@@ -787,3 +787,47 @@ html[data-theme='light'] .cf-send-error { color: #B3261E; }
   .pk-actions .btn { flex: 1 1 100%; }
   .pk-actions .pk-close { margin-left: 0; }
 }
+
+/* 様子から探す */
+.tf-switch { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 20px; }
+.yf-step { margin-top: 36px; padding-top: 12px; border-top: 2px solid var(--line); }
+.yf-step:first-child { margin-top: 8px; }
+.yf-rules { margin: 0 0 18px; padding: 16px 20px; border: 2px solid var(--accent-text); border-radius: 14px; background: var(--panel); }
+.yf-rules-title { margin: 0 0 6px; font-weight: 700; color: var(--accent-text); }
+.yf-rules ul { margin: 0; padding-left: 1.2em; }
+.yf-rules li { margin: 4px 0; }
+.yf-scenes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.yf-scene { margin: 0; padding: 10px 14px 12px; border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
+.yf-scene legend { padding: 0 6px; font-weight: 700; }
+.yf-check, .yf-cand { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding: 6px 0; cursor: pointer; }
+.yf-check input, .yf-cand input { width: 22px; height: 22px; margin-top: 3px; flex: none; accent-color: var(--accent-fill); }
+.yf-picked { color: var(--accent-text); font-weight: 700; min-height: 1.5em; }
+.yf-lead, .yf-note { color: var(--sub); }
+.yf-sub { margin: 16px 0 6px; font-size: 1.05rem; }
+.yf-cands { display: grid; gap: 6px; }
+.yf-cand { padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.yf-cand:has(input:checked) { border-color: var(--accent-text); }
+.yf-cand-page { display: inline-block; margin-right: 8px; padding: 0 8px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; background: var(--accent-fill); color: var(--on-accent); }
+.yf-why { display: block; font-size: 0.85rem; color: var(--sub); margin-top: 2px; }
+.yf-all { margin-top: 14px; }
+.yf-all summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+.yf-all .yf-scene { margin-top: 10px; }
+.yf-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 8px; }
+.yf-found { margin: 0; font-weight: 700; flex: 1 1 auto; }
+.yf-view { display: flex; gap: 6px; }
+.yf-group { margin: 18px 0; }
+.yf-group h3 { margin: 0 0 6px; }
+.yf-n { display: inline-block; min-width: 1.6em; padding: 0 8px; border-radius: 999px; background: var(--line); font-size: 0.85rem; text-align: center; }
+.yf-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.yf-table th, .yf-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.yf-table th { font-size: 0.85rem; color: var(--sub); }
+.yf-table td:nth-child(2) { white-space: nowrap; color: var(--sub); }
+.yf-table td:nth-child(3) { color: var(--sub); font-size: 0.88rem; }
+.yf-sum { margin: 4px 0 0; color: var(--fg); font-size: 0.92rem; }
+@media (max-width: 640px) {
+  .yf-table thead { display: none; }
+  .yf-table tr { display: block; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .yf-table td { display: block; border: 0; padding: 2px 0; white-space: normal !important; }
+}
+
+.komari-alt { margin: 4px 0 0; font-size: 0.95rem; }
