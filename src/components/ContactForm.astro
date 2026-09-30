@@ -1,6 +1,7 @@
 ---
 // お問い合わせフォーム（日本語・英語で共通）。送信先はサイト用 GAS（src/data/site.ts の BACKEND_URL）
 import { BACKEND_URL, KOMARI } from '../data/site';
+import RulesNote from './RulesNote.astro';
 interface Props { lang?: 'ja' | 'en' }
 const { lang = 'ja' } = Astro.props;
 const ja = lang === 'ja';
@@ -118,12 +119,14 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
         <label for="cf-event">{T.event}<span class="cf-tag">{T.optional}</span></label>
         <p class="cf-help" id="cf-event-help">{T.eventHelp}</p>
         <textarea id="cf-event" name="event" rows="3" maxlength="1000" aria-describedby="cf-event-help"></textarea>
+        <RulesNote lang={lang} ctx="kenshu" />
       </div>
 
       <div class="cf-field cf-only" data-for="riyou">
         <label for="cf-pages">{T.pages}<span class="cf-tag">{T.optional}</span></label>
         <p class="cf-help" id="cf-pages-help">{T.pagesHelp}</p>
         <textarea id="cf-pages" name="pages" rows="3" maxlength="1000" aria-describedby="cf-pages-help"></textarea>
+        <RulesNote lang={lang} ctx="riyou" />
       </div>
 
       <div class="cf-field">

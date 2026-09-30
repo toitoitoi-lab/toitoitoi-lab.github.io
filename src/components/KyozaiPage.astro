@@ -3,6 +3,7 @@
 import Base from '../layouts/Base.astro';
 import Crumbs from './Crumbs.astro';
 import Soon from './Soon.astro';
+import RulesNote from './RulesNote.astro';
 import { KYOZAI, KIND_LABEL, FOR_LABEL } from '../data/kyozai';
 import { KYOKA } from '../data/manabi';
 import { KOMARI, fmtDate } from '../data/site';
@@ -65,6 +66,7 @@ const crumbs = learner
     <Crumbs lang={lang} items={crumbs} />
     <h1>{T.title}</h1>
     <p class="lead-text">{T.lead}</p>
+    {!learner && <RulesNote lang={lang} ctx="shien" />}
 
     {SHOW_FILTER && (
       <div class="kz-filter" role="group" aria-label={ja ? '絞りこみ' : 'Filter'}>

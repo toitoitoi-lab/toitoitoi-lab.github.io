@@ -3,6 +3,7 @@
 // 入れる項目を選んで「印刷（PDF保存も可）」か「Word形式（.docx）」で書き出す。
 // どの形でも、ヘッダー・フッターに出力日時・出典・著作権の帰属が入る。
 import { KOMARI, TACHIBA } from '../data/site';
+import RulesNote from './RulesNote.astro';
 import { CONTENT, KIND_LABEL } from '../data/methods';
 import { CONTENT_EN, KIND_LABEL_EN } from '../data/methods_en';
 interface Props { lang?: 'ja' | 'en'; mode: 'komari' | 'tachiba'; slug?: string; role?: 'sensei' | 'honnin' }
@@ -111,6 +112,7 @@ const kinds = ['os', 'tool', 'env'] as const;
         <label class="pk-item"><input type="checkbox" name="large" /><span>{T.optLarge}</span></label>
       </fieldset>
 
+      <RulesNote lang={lang} ctx="print" />
       <p class="pk-msg" role="status" aria-live="polite"></p>
       <div class="pk-actions">
         <button type="button" class="btn btn-solid" data-print>{T.print}<small>{T.printSub}</small></button>

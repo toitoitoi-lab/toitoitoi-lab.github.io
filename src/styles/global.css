@@ -869,3 +869,12 @@ button.kk-tip-more { background: none; border: 0; padding: 0; font: inherit; fon
 @media (prefers-reduced-motion: reduce) { .kk-tip-more svg { transition: none; } }
 .kk-intro, .kk-text, .kk-ex { word-break: auto-phrase; }
 .kk-tip-body .kk-ex { background: var(--bg); }
+
+/* 利用ルールの一行案内（使う直前に置く） */
+.rn { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 14px 0 22px; padding: 2px 0 2px 12px; border-left: 3px solid var(--accent-fill); font-size: 0.92rem; line-height: 1.7; color: var(--sub); }
+.rn-k { font-weight: 700; color: var(--fg); white-space: nowrap; }
+.rn-t { flex: 1 1 18em; word-break: auto-phrase; }
+.rn-a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 0.25em; white-space: nowrap; }
+.pk-dialog .rn { margin: 4px 0 12px; }
+.cf-only .rn { margin: 10px 0 0; }
+@media (forced-colors: active) { .rn { border-left-color: CanvasText; } }

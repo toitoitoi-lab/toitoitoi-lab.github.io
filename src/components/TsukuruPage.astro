@@ -3,6 +3,7 @@
 import Base from '../layouts/Base.astro';
 import Illust from './Illust.astro';
 import Crumbs from './Crumbs.astro';
+import RulesNote from './RulesNote.astro';
 import { LINKS, type Tachiba } from '../data/site';
 interface Props { t: Tachiba; lang?: 'ja' | 'en' }
 const { t, lang = 'ja' } = Astro.props;
@@ -27,6 +28,7 @@ const newTab = ja ? '（新しいタブで開きます）' : ' (opens in a new t
       ? 'これまでにつくってきたアプリを、GitHub にまとめています。どのアプリも「プレビュー → つくった理由 → 開く・コードを見る」の順に並べています。コードは MIT ライセンスで、自由に使い、改変できます。'
       : 'The apps are collected on GitHub, each with a preview, why it was made, and links to open it or read the code. The code is MIT licensed.'}</p>
     <p><a class="btn btn-solid" href={LINKS.github} target="_blank" rel="noopener">{ja ? 'GitHub のアプリ一覧を開く' : 'Open the app list on GitHub'}<span class="ext-ic" aria-hidden="true">↗</span><span class="visually-hidden">{newTab}</span></a></p>
+    <RulesNote lang={lang} ctx="apps" />
     <h2>{ja ? '公開しているアプリ' : 'Apps'}</h2>
     <ul class="tf-apps">
       {apps.map((a) => (
