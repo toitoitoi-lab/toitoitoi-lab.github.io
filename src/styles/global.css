@@ -344,30 +344,30 @@ html[data-float='left'] .fb-grip { border-right: 0; border-left: 2px solid var(-
 @media (forced-colors: active) { .soon-update { border-color: CanvasText; } }
 
 /* 操作ボタン：縦並び */
-html[data-orient='col']:not([data-float='dock']) .floatbar { flex-direction: column; align-items: stretch; }
-html[data-orient='col']:not([data-float='dock']) .fb-buttons { flex-direction: column; }
-html[data-orient='col']:not([data-float='dock']) .fb-grip { border-right: 0; border-left: 0; border-bottom: 2px solid var(--line); border-radius: 14px 14px 0 0; }
-html[data-orient='col']:not([data-float='dock']) .fb-fold { border-left: 0; border-right: 0; border-top: 2px solid var(--line); border-radius: 0 0 14px 14px; }
+html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .floatbar { flex-direction: column; align-items: stretch; }
+html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .fb-buttons { flex-direction: column; }
+html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .fb-grip { border-right: 0; border-left: 0; border-bottom: 2px solid var(--line); border-radius: 14px 14px 0 0; }
+html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .fb-fold { border-left: 0; border-right: 0; border-top: 2px solid var(--line); border-radius: 0 0 14px 14px; }
 html[data-orient='col'][data-fold='folded'] .fb-fold { border: 0; border-radius: 14px; }
-html[data-orient='col']:not([data-float='dock']) .floatbar { max-height: calc(100vh - 32px); overflow-y: auto; }
-/* 操作ボタン：画面の下いっぱい（タッチ操作向け。位置が変わらず、指で探しやすい） */
-html[data-float='dock'] body { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
-html[data-float='dock'] .floatbar { left: 0; right: 0; bottom: 0; top: auto; width: 100%; max-width: none; border-radius: 20px 20px 0 0; border-width: 2px 0 0; padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); gap: 8px; }
-html[data-float='dock'] .fb-grip, html[data-float='dock'] .fb-fold { display: none; }
-html[data-float='dock'] .fb-buttons { display: flex !important; flex: 1; gap: 8px; }
-html[data-float='dock'] .fb-btn { flex: 1; min-height: 88px; min-width: 0; font-size: 0.95rem; border: 2px solid var(--line); }
-html[data-float='dock'] .fb-btn svg { width: 32px; height: 32px; }
+html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .floatbar { max-height: calc(100vh - 32px); overflow-y: auto; }
+/* 操作ボタン：画面の最下部・最上部（位置が変わらず、画面の端をさわれば見つかる） */
+html:is([data-float='dock'],[data-float='top']) body { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
+html:is([data-float='dock'],[data-float='top']) .floatbar { left: 0; right: 0; bottom: 0; top: auto; width: 100%; max-width: none; border-radius: 20px 20px 0 0; border-width: 2px 0 0; padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); gap: 8px; }
+html:is([data-float='dock'],[data-float='top']) .fb-grip, html:is([data-float='dock'],[data-float='top']) .fb-fold { display: none; }
+html:is([data-float='dock'],[data-float='top']) .fb-buttons { display: flex !important; flex: 1; gap: 8px; }
+html:is([data-float='dock'],[data-float='top']) .fb-btn { flex: 1; min-height: 88px; min-width: 0; font-size: 0.95rem; border: 2px solid var(--line); }
+html:is([data-float='dock'],[data-float='top']) .fb-btn svg { width: 32px; height: 32px; }
 /* かくしている時にキーボードで呼び出した場合 */
 html[data-float='hide'] .floatbar.summoned { display: flex; }
 .floatbar:focus { outline: 3px solid var(--accent-text); outline-offset: 3px; }
 /* スマホ幅の横並び：画面からはみ出さないよう、ボタンを均等に縮める */
 @media (max-width: 480px) {
-  html:not([data-orient='col']):not([data-float='dock']):not([data-float='free']) .floatbar { width: auto; left: 10px; right: 10px; }
-  html:not([data-orient='col']):not([data-float='dock']) .fb-buttons { flex: 1; }
-  html:not([data-orient='col']):not([data-float='dock']) .floatbar, html:not([data-orient='col']):not([data-float='dock']) .fb-buttons { gap: 2px; }
-  html:not([data-orient='col']):not([data-float='dock']) .fb-btn { flex: 1 1 0; min-width: 44px; padding: 6px 0; font-size: 0.7rem; letter-spacing: 0; }
-  html:not([data-orient='col']):not([data-float='dock']) .fb-btn svg { width: 24px; height: 24px; }
-  html:not([data-orient='col'])[data-fold='folded']:not([data-float='dock']):not([data-float='free']) .floatbar { width: max-content; left: auto; }
+  html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']):not([data-float='free']) .floatbar { width: auto; left: 10px; right: 10px; }
+  html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .fb-buttons { flex: 1; }
+  html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .floatbar, html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .fb-buttons { gap: 2px; }
+  html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .fb-btn { flex: 1 1 0; min-width: 44px; padding: 6px 0; font-size: 0.7rem; letter-spacing: 0; }
+  html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .fb-btn svg { width: 24px; height: 24px; }
+  html:not([data-orient='col'])[data-fold='folded']:not([data-float='dock']):not([data-float='top']):not([data-float='free']) .floatbar { width: max-content; left: auto; }
   html:not([data-orient='col'])[data-fold='folded'][data-float='left'] .floatbar { left: 10px; right: auto; }
 }
 
@@ -878,3 +878,10 @@ button.kk-tip-more { background: none; border: 0; padding: 0; font: inherit; fon
 .pk-dialog .rn { margin: 4px 0 12px; }
 .cf-only .rn { margin: 10px 0 0; }
 @media (forced-colors: active) { .rn { border-left-color: CanvasText; } }
+
+/* 操作ボタン：画面の最上部（最下部の指定を上向きに置きかえる） */
+html[data-float='top'] body { padding-bottom: 0; padding-top: calc(112px + env(safe-area-inset-top)); }
+html[data-float='top'] .floatbar { top: 0; bottom: auto; border-radius: 0 0 20px 20px; border-width: 0 0 2px; padding: calc(8px + env(safe-area-inset-top)) 8px 8px; }
+html[data-float='top'] .skip:focus { top: calc(124px + env(safe-area-inset-top)); z-index: 47; }
+/* 表示設定の欄の説明 */
+.settings .fs-hint { margin: 0 0 10px; line-height: 1.7; word-break: auto-phrase; }
