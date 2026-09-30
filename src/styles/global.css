@@ -854,3 +854,16 @@ html[data-theme='light'] .cf-send-error { color: #B3261E; }
 .tf-way-text { font-size: 0.9rem; color: var(--sub); line-height: 1.6; }
 @media (forced-colors: active) { .tf-way { border-color: CanvasText; } .tf-way[aria-pressed=true] { outline: 3px solid Highlight; } }
 .tf-switch-lead, .tf-way-text { word-break: auto-phrase; }
+
+/* 支援のひと工夫：その場でひらく・とじる */
+button.kk-tip-more { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; color: var(--accent-text); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.kk-tip-more svg { transition: transform .2s; }
+.kk-tip-more[aria-expanded=true] svg { transform: rotate(180deg); }
+.kk-tip-body { grid-column: 1 / -1; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line); }
+.kk-tip-body[hidden] { display: none; }
+.kk-tip-body .kk-intro { margin: 0 0 8px; }
+.kk-tip-body .kk-points { border-top: 0; }
+.kk-tip-body .kk-title { margin: 0 0 4px; font-size: 1.08rem; }
+.kk-tip-body .kk-text { margin: 0; }
+.kk-tip-body .kk-ex { margin: 8px 0 0; }
+@media (prefers-reduced-motion: reduce) { .kk-tip-more svg { transition: none; } }

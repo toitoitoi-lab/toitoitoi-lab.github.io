@@ -16,7 +16,37 @@ const base = ja ? '' : '/en';
     <ol class="kk-tip-list">
       {K.points.map((p, i) => <li><span class="kk-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{p.short}</li>)}
     </ol>
-    <a class="kk-tip-more" href={`${base}/hitokufu/`}>{K.more}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    <button type="button" class="kk-tip-more" aria-expanded="false" aria-controls="kk-tip-body" data-open={ja ? '3つの工夫をひらく' : 'Open the three tweaks'} data-close={ja ? 'とじる' : 'Close'}>
+      <span class="kk-tip-more-label">{ja ? '3つの工夫をひらく' : 'Open the three tweaks'}</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+    </button>
+    <div class="kk-tip-body" id="kk-tip-body" hidden>
+      <p class="kk-intro">{K.intro}</p>
+      <ol class="kk-points">
+        {K.points.map((p, i) => (
+          <li>
+            <span class="kk-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="kk-title">{p.title}</h3>
+              <p class="kk-text">{p.text}</p>
+              <p class="kk-ex">{p.ex}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <script is:inline>
+      (function () {
+        var b = document.currentScript.parentElement.querySelector('.kk-tip-more');
+        var body = document.getElementById('kk-tip-body');
+        b.addEventListener('click', function () {
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          b.setAttribute('aria-expanded', String(open));
+          body.hidden = !open;
+          b.querySelector('.kk-tip-more-label').textContent = open ? b.dataset.close : b.dataset.open;
+        });
+      })();
+    </script>
   </aside>
 ) : (
   <div class="kokoroe">
