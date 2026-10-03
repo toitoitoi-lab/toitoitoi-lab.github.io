@@ -177,10 +177,6 @@ const groups = [
   </footer>
 
   <nav class="floatbar" id="floatbar" aria-label={t.fbNav} tabindex="-1" aria-keyshortcuts="Alt+Shift+M" data-shown={t.fbShown}>
-    <button type="button" class="fb-btn fb-grip" id="fb-grip" aria-describedby="fb-grip-help">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"></path></svg><span>{t.fbMove}</span>
-    </button>
-    <span class="visually-hidden" id="fb-grip-help">{t.fbMoveHelp}</span>
     <div class="fb-buttons" id="fb-buttons">
       <button type="button" class="fb-btn" id="fb-back">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg><span>{t.fbBack}</span>
@@ -204,6 +200,10 @@ const groups = [
     <button type="button" class="fb-btn fb-fold" id="fb-fold" aria-expanded="true" aria-controls="fb-buttons" data-open={t.fbOpen} data-open-long={t.fbOpenLong} data-fold={t.fbFold}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ic-open" d="M8 12h8"></path><path class="ic-folded" d="M5 7h14M5 12h14M5 17h14"></path></svg><span class="fb-fold-label">{t.fbFold}</span>
     </button>
+    <button type="button" class="fb-btn fb-grip" id="fb-grip" aria-describedby="fb-grip-help">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"></path></svg><span>{t.fbMove}</span>
+    </button>
+    <span class="visually-hidden" id="fb-grip-help">{t.fbMoveHelp}</span>
   </nav>
 
   <script is:inline>
@@ -331,12 +331,35 @@ const groups = [
         var r = bar.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, W = window.innerWidth, H = window.innerHeight;
         anchor = { h: cx > W * 2 / 3 ? 'r' : cx < W / 3 ? 'l' : 'c', v: cy > H * 2 / 3 ? 'b' : cy < H / 3 ? 't' : 'c' };
         lastRect = r;
+        setDir();
       }
+      // 「動かす」「たたむ／ひらく」を置く側を決め、見た目と読み上げ・Tab の順番が同じになるよう DOM ごと並べかえる
+      // 横：右端（左下に置いたとき・自由に動かして画面の左側にあるときは左端）／縦：下端（画面の上側にあるときは上端）
+      var gripHelp = document.getElementById('fb-grip-help');
+      function setDir() {
+        var col = d.dataset.orient === 'col', m = d.dataset.float, free = m === 'free' && anchor;
+        var dir = col ? (free && anchor.v === 't' ? 'u' : 'd') : (m === 'left' || (free && anchor.h === 'l') ? 'l' : 'r');
+        if (bar.dataset.dir === dir) return;
+        var g0 = grip.getBoundingClientRect(), act = document.activeElement;
+        bar.dataset.dir = dir;
+        if (dir === 'l' || dir === 'u') { bar.insertBefore(fold, bar.firstChild); bar.insertBefore(gripHelp, fold); bar.insertBefore(grip, gripHelp); }
+        else { bar.appendChild(fold); bar.appendChild(grip); bar.appendChild(gripHelp); }
+        if (act && bar.contains(act) && document.activeElement !== act) act.focus();
+        if (m === 'free' && g0.width) {
+          var g1 = grip.getBoundingClientRect(), r = bar.getBoundingClientRect();
+          place(r.left - (g1.left - g0.left), r.top - (g1.top - g0.top), true);
+          lastRect = bar.getBoundingClientRect();
+        }
+      }
+      new MutationObserver(function () { if (d.dataset.float !== 'free') anchor = null; setDir(); }).observe(d, { attributes: true, attributeFilter: ['data-float', 'data-orient'] });
+      setDir();
       function keepInside() {
         if (d.dataset.float !== 'free' || drag || !anchor || !lastRect) { lastRect = bar.getBoundingClientRect(); return; }
         var r = bar.getBoundingClientRect(), o = lastRect;
-        var x = anchor.h === 'r' ? o.right - r.width : anchor.h === 'l' ? o.left : o.left + o.width / 2 - r.width / 2;
-        var y = anchor.v === 'b' ? o.bottom - r.height : anchor.v === 't' ? o.top : o.top + o.height / 2 - r.height / 2;
+        // ひらく・たたむで大きさが変わっても、「動かす」のある端は動かさない
+        var dir = bar.dataset.dir;
+        var x = dir === 'r' ? o.right - r.width : dir === 'l' ? o.left : anchor.h === 'r' ? o.right - r.width : anchor.h === 'l' ? o.left : o.left + o.width / 2 - r.width / 2;
+        var y = dir === 'd' ? o.bottom - r.height : dir === 'u' ? o.top : anchor.v === 'b' ? o.bottom - r.height : anchor.v === 't' ? o.top : o.top + o.height / 2 - r.height / 2;
         place(x, y, false);
         lastRect = bar.getBoundingClientRect();
       }

@@ -295,16 +295,13 @@ main { position: relative; z-index: 1; display: block; }
 html { scroll-padding-bottom: 120px; }
 html:not([data-float='hide']) body { padding-bottom: 104px; }
 .floatbar { position: fixed; z-index: 40; bottom: 16px; right: 16px; display: flex; align-items: stretch; gap: 6px; padding: 6px; background: var(--panel); border: 2px solid var(--accent-text); border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); max-width: calc(100vw - 32px); }
-html[data-float='left'] .floatbar { right: auto; left: 16px; flex-direction: row-reverse; }
+html[data-float='left'] .floatbar { right: auto; left: 16px; }
 html[data-float='hide'] .floatbar { display: none; }
 .fb-buttons { display: flex; gap: 6px; }
 html[data-fold='folded'] .fb-buttons { display: none; }
 .fb-btn { min-width: 64px; min-height: 64px; padding: 6px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 0; border-radius: 14px; background: transparent; color: var(--fg); font: inherit; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; line-height: 1.2; }
 .fb-btn:hover { background: var(--bg); color: var(--accent-text); }
 .fb-btn svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.fb-fold { border-left: 2px solid var(--line); border-radius: 0 14px 14px 0; }
-html[data-float='left'] .fb-fold { border-left: 0; border-right: 2px solid var(--line); border-radius: 14px 0 0 14px; }
-html[data-fold='folded'] .fb-fold { border: 0; border-radius: 14px; }
 .fb-fold .ic-folded { display: none; }
 html[data-fold='folded'] .fb-fold .ic-open { display: none; }
 html[data-fold='folded'] .fb-fold .ic-folded { display: inline; }
@@ -313,10 +310,9 @@ html[data-fold='folded'] .fb-fold .ic-folded { display: inline; }
 @media (forced-colors: active) { .floatbar { border-color: CanvasText; } }
 
 /* 操作ボタン：自由に動かす */
-.fb-grip { cursor: grab; touch-action: none; border-right: 2px solid var(--line); border-radius: 14px 0 0 14px; }
+.fb-grip { cursor: grab; touch-action: none; }
 .floatbar.dragging { cursor: grabbing; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); }
 .floatbar.dragging .fb-grip { cursor: grabbing; }
-html[data-float='left'] .fb-grip { border-right: 0; border-left: 2px solid var(--line); border-radius: 0 14px 14px 0; }
 
 /* 運営者の思い */
 .top-message { margin-bottom: 80px; padding: clamp(24px, 4vw, 44px); border-left: 6px solid var(--accent-fill); background: var(--panel); border-radius: 0 20px 20px 0; }
@@ -346,9 +342,6 @@ html[data-float='left'] .fb-grip { border-right: 0; border-left: 2px solid var(-
 /* 操作ボタン：縦並び */
 html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .floatbar { flex-direction: column; align-items: stretch; }
 html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .fb-buttons { flex-direction: column; }
-html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .fb-grip { border-right: 0; border-left: 0; border-bottom: 2px solid var(--line); border-radius: 14px 14px 0 0; }
-html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .fb-fold { border-left: 0; border-right: 0; border-top: 2px solid var(--line); border-radius: 0 0 14px 14px; }
-html[data-orient='col'][data-fold='folded'] .fb-fold { border: 0; border-radius: 14px; }
 html[data-orient='col']:not([data-float='dock']):not([data-float='top']) .floatbar { max-height: calc(100vh - 32px); overflow-y: auto; }
 /* 操作ボタン：画面の最下部・最上部（位置が変わらず、画面の端をさわれば見つかる） */
 html[data-float='dock'] body { padding-bottom: calc(var(--fb-h, 112px) + 24px); }
@@ -890,3 +883,16 @@ html[data-float='dock'] { scroll-padding-bottom: calc(var(--fb-h, 112px) + 24px)
 html[data-float='top'] { scroll-padding-top: calc(var(--fb-h, 112px) + 16px); scroll-padding-bottom: 24px; }
 /* 表示設定の欄の説明 */
 .settings .fs-hint { margin: 0 0 10px; line-height: 1.7; word-break: auto-phrase; }
+
+/* 操作ボタン：「動かす」「たたむ／ひらく」はいつも端の同じ場所に置き、操作ボタンはその反対側へひらく
+   data-dir = 「動かす」がある側（r:右端 / l:左端 / d:下端 / u:上端）。並び順は Base.astro で DOM ごと入れかえる */
+.fb-fold, .fb-grip { border-radius: 0; }
+.floatbar[data-dir='r'] .fb-fold, .floatbar[data-dir='r'] .fb-grip { border-left: 2px solid var(--line); }
+.floatbar[data-dir='r'] .fb-grip { border-radius: 0 14px 14px 0; }
+.floatbar[data-dir='l'] .fb-fold, .floatbar[data-dir='l'] .fb-grip { border-right: 2px solid var(--line); }
+.floatbar[data-dir='l'] .fb-grip { border-radius: 14px 0 0 14px; }
+.floatbar[data-dir='d'] .fb-fold, .floatbar[data-dir='d'] .fb-grip { border-top: 2px solid var(--line); }
+.floatbar[data-dir='d'] .fb-grip { border-radius: 0 0 14px 14px; }
+.floatbar[data-dir='u'] .fb-fold, .floatbar[data-dir='u'] .fb-grip { border-bottom: 2px solid var(--line); }
+.floatbar[data-dir='u'] .fb-grip { border-radius: 14px 14px 0 0; }
+html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
