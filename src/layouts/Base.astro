@@ -365,8 +365,9 @@ const groups = [
       var backTo = null;
       function firstBtn() {
         // まず操作ボタン（もどる…）、たたんでいるときは「ひらく」へ
-        var list = bar.querySelectorAll('.fb-buttons .fb-btn, .fb-fold');
+        var list = bar.querySelectorAll('.fb-buttons .fb-btn');
         for (var i = 0; i < list.length; i++) { if (list[i].offsetParent !== null) return list[i]; }
+        if (fold.offsetParent !== null) return fold;
         return bar;
       }
       function toBar() {

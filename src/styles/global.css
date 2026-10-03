@@ -896,6 +896,7 @@ html[data-float='top'] { scroll-padding-top: calc(var(--fb-h, 112px) + 16px); sc
 html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 @media (max-width: 480px) {
   /* スマホ幅の横並び：「動かす」「たたむ／ひらく」は、ひらいても たたんでも同じ幅にする */
+  .floatbar { max-width: calc(100vw - 20px); }
   html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .floatbar > .fb-fold,
   html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .floatbar > .fb-grip { flex: 0 0 52px; min-width: 52px; }
 }
