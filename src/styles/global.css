@@ -476,9 +476,7 @@ html[data-float='hide'] .floatbar.summoned { display: flex; }
 @media (forced-colors: active) { .guide, .guide-item { border-color: CanvasText; } }
 
 /* 操作ボタン：たたんだときは小さく（押せる大きさ 52px は確保） */
-html[data-fold='folded'] .floatbar { padding: 4px; gap: 4px; border-radius: 16px; }
-html[data-fold='folded'] .fb-btn { min-width: 52px; min-height: 52px; padding: 4px 6px; font-size: 0.72rem; }
-html[data-fold='folded'] .fb-btn svg { width: 22px; height: 22px; }
+/* たたんでも「動かす」「ひらく」の大きさと位置は変えない（同じ場所を押して開け閉めできるように） */
 
 /* 英語版：日本の教科の系統の説明 */
 .kyoka-system { margin: 0 0 24px; padding: 16px 20px; border-left: 4px solid var(--line); color: var(--sub); }
@@ -896,3 +894,8 @@ html[data-float='top'] { scroll-padding-top: calc(var(--fb-h, 112px) + 16px); sc
 .floatbar[data-dir='u'] .fb-fold, .floatbar[data-dir='u'] .fb-grip { border-bottom: 2px solid var(--line); }
 .floatbar[data-dir='u'] .fb-grip { border-radius: 14px 14px 0 0; }
 html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
+@media (max-width: 480px) {
+  /* スマホ幅の横並び：「動かす」「たたむ／ひらく」は、ひらいても たたんでも同じ幅にする */
+  html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .floatbar > .fb-fold,
+  html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .floatbar > .fb-grip { flex: 0 0 52px; min-width: 52px; }
+}

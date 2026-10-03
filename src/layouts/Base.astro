@@ -340,16 +340,11 @@ const groups = [
         var col = d.dataset.orient === 'col', m = d.dataset.float, free = m === 'free' && anchor;
         var dir = col ? (free && anchor.v === 't' ? 'u' : 'd') : (m === 'left' || (free && anchor.h === 'l') ? 'l' : 'r');
         if (bar.dataset.dir === dir) return;
-        var g0 = grip.getBoundingClientRect(), act = document.activeElement;
+        var act = document.activeElement;
         bar.dataset.dir = dir;
         if (dir === 'l' || dir === 'u') { bar.insertBefore(fold, bar.firstChild); bar.insertBefore(gripHelp, fold); bar.insertBefore(grip, gripHelp); }
         else { bar.appendChild(fold); bar.appendChild(grip); bar.appendChild(gripHelp); }
         if (act && bar.contains(act) && document.activeElement !== act) act.focus();
-        if (m === 'free' && g0.width) {
-          var g1 = grip.getBoundingClientRect(), r = bar.getBoundingClientRect();
-          place(r.left - (g1.left - g0.left), r.top - (g1.top - g0.top), true);
-          lastRect = bar.getBoundingClientRect();
-        }
       }
       new MutationObserver(function () { if (d.dataset.float !== 'free') anchor = null; setDir(); }).observe(d, { attributes: true, attributeFilter: ['data-float', 'data-orient'] });
       setDir();
@@ -369,7 +364,8 @@ const groups = [
       // ── キーボードで操作ボタンへ移動（Alt/option＋Shift＋M）。もう一度か Esc で元の場所へ ──
       var backTo = null;
       function firstBtn() {
-        var list = bar.querySelectorAll('.fb-btn');
+        // まず操作ボタン（もどる…）、たたんでいるときは「ひらく」へ
+        var list = bar.querySelectorAll('.fb-buttons .fb-btn, .fb-fold');
         for (var i = 0; i < list.length; i++) { if (list[i].offsetParent !== null) return list[i]; }
         return bar;
       }
