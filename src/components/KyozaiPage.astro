@@ -61,7 +61,7 @@ const crumbs = learner
   ? [{ label: T.home, href: `${base}/` }, { label: T.title }]
   : [{ label: T.home, href: `${base}/` }, { label: ja ? '教材の部屋' : 'Materials room', href: `${base}/kyozai/` }, { label: T.title }];
 ---
-<Base title={T.title} lang={lang} current="kyozai" description={T.lead}>
+<Base title={T.title} lang={lang} current="kyozai" news={!learner} description={T.lead}>
   <div class={`wrap page kyozai-page ${learner ? 'kz-learner' : 'kz-shien'}`}>
     <Crumbs lang={lang} items={crumbs} />
     <h1>{T.title}</h1>

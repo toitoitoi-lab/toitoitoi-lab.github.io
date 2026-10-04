@@ -1,0 +1,62 @@
+---
+// ページ最上部の「お知らせ欄」。閉じていても最新の1件は見える。ほかは、ボタンでひらく。
+// JS がなくても全件が読めるよう、最初から全部を出しておき、JS が動くときだけ畳む。
+import { UPDATES, SHOW_COUNT } from '../data/updates';
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const items = UPDATES.slice(0, SHOW_COUNT);
+const [first, ...rest] = items;
+const today = Date.now();
+const isNew = (d: string) => today - new Date(d + 'T00:00:00+09:00').getTime() < 14 * 86400000;
+const label = (d: string) => {
+  const [y, m, dd] = d.split('-').map(Number);
+  return ja ? `${y}年${m}月${dd}日` : new Date(Date.UTC(y, m - 1, dd)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+};
+const href = (h?: string) => (h ? base + h : undefined);
+const T = ja
+  ? { head: 'お知らせ', fresh: '新着', more: (n: number) => `ほか${n}件を見る`, less: 'とじる', all: '更新履歴をすべて見る', detail: 'くわしく' }
+  : { head: 'News', fresh: 'New', more: (n: number) => `Show ${n} more`, less: 'Hide', all: 'See all updates', detail: 'Details' };
+---
+<section class="nw" id="nw" aria-labelledby="nw-h">
+  <div class="wrap">
+    <div class="nw-row">
+      <h2 class="nw-k" id="nw-h">{T.head}</h2>
+      <p class="nw-latest">
+        <time datetime={first.date}>{label(first.date)}</time>
+        {isNew(first.date) && <span class="nw-new">{T.fresh}</span>}
+        <span class="nw-t">{ja ? first.ja : first.en}</span>
+        {first.href && <a href={href(first.href)}>{T.detail}</a>}
+      </p>
+      {rest.length > 0 && (
+        <button type="button" class="nw-btn" id="nw-btn" aria-expanded="true" aria-controls="nw-more" hidden data-more={T.more(rest.length)} data-less={T.less}>{T.more(rest.length)}</button>
+      )}
+    </div>
+    {rest.length > 0 && (
+      <div class="nw-more" id="nw-more">
+        <ul class="nw-list">
+          {rest.map((u) => (
+            <li>
+              <time datetime={u.date}>{label(u.date)}</time>
+              {isNew(u.date) && <span class="nw-new">{T.fresh}</span>}
+              <span class="nw-t">{ja ? u.ja : u.en}</span>
+              {u.href && <a href={href(u.href)}>{T.detail}</a>}
+            </li>
+          ))}
+        </ul>
+        <p class="nw-all"><a href={`${base}/updates/`}>{T.all}<span aria-hidden="true"> →</span></a></p>
+      </div>
+    )}
+  </div>
+</section>
+<script is:inline>
+  (function () {
+    var b = document.getElementById('nw-btn'), m = document.getElementById('nw-more');
+    if (!b || !m) return;
+    function set(open) { m.hidden = !open; b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.textContent = open ? b.dataset.less : b.dataset.more; }
+    b.hidden = false; set(false);
+    b.addEventListener('click', function () { set(b.getAttribute('aria-expanded') !== 'true'); });
+    m.addEventListener('keydown', function (e) { if (e.key === 'Escape') { set(false); b.focus(); } });
+  })();
+</script>

@@ -8,9 +8,10 @@ import '@fontsource/klee-one/600.css';
 import '../styles/global.css';
 import { LINKS, SITE, BACKEND_URL } from '../data/site';
 import { TOGETHER } from '../data/message';
+import UpdatesBar from '../components/UpdatesBar.astro';
 
-interface Props { title?: string; description?: string; lang?: 'ja' | 'en'; current?: string; noindex?: boolean }
-const { title, description, lang = 'ja', current = '', noindex = false } = Astro.props;
+interface Props { title?: string; description?: string; lang?: 'ja' | 'en'; current?: string; noindex?: boolean; news?: boolean }
+const { title, description, lang = 'ja', current = '', noindex = false, news = false } = Astro.props;
 const ja = lang === 'ja';
 const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${ja ? 'AT（支援技術／Assistive Technology）で学びの入口をひらく' : 'Assistive technology for learning'}`;
 const desc = description ?? (ja
@@ -146,6 +147,8 @@ const groups = [
       </form>
     </section>
   </header>
+
+  {news && <UpdatesBar lang={lang} />}
 
   <main id="main" tabindex="-1">
     <slot />

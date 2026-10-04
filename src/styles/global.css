@@ -900,3 +900,26 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
   html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .floatbar > .fb-fold,
   html:not([data-orient='col']):not([data-float='dock']):not([data-float='top']) .floatbar > .fb-grip { flex: 0 0 52px; min-width: 52px; }
 }
+
+/* お知らせ欄：細い一行。閉じていても最新の1件は見える。開閉はボタン（自動では動かさない） */
+.nw { border-bottom: 1px solid var(--line); font-size: 0.95rem; line-height: 1.7; }
+.nw-row { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; padding: 6px 0; }
+.nw-k { margin: 0; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent-text); white-space: nowrap; }
+.nw-latest { margin: 0; flex: 1 1 22em; min-width: 0; }
+.nw time, .nw-hist time { font-weight: 700; color: var(--fg); margin-right: 0.6em; white-space: nowrap; }
+.nw-new { display: inline-block; margin-right: 0.6em; padding: 0 0.5em; border: 1.5px solid var(--accent-text); border-radius: 4px; font-size: 0.8em; font-weight: 700; color: var(--accent-text); line-height: 1.5; }
+.nw-t { color: var(--sub); word-break: auto-phrase; }
+.nw a { margin-left: 0.6em; color: var(--accent-text); text-decoration: underline; text-underline-offset: 0.25em; white-space: nowrap; }
+.nw-btn { min-height: 48px; padding: 0 16px; border: 2px solid var(--line); background: transparent; color: var(--fg); font: inherit; font-weight: 700; cursor: pointer; }
+.nw-btn::after { content: ' ▾'; }
+.nw-btn[aria-expanded='true']::after { content: ' ▴'; }
+.nw-btn:hover { border-color: var(--accent-text); }
+.nw-more { padding: 4px 0 12px; border-top: 1px dashed var(--line); }
+.nw-more[hidden] { display: none; }
+.nw-list { list-style: none; margin: 0; padding: 0; }
+.nw-list li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.nw-list li:last-child { border-bottom: 0; }
+.nw-all { margin: 6px 0 0; }
+.nw-hist li { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.nw-hist .nw-t { color: var(--fg); }
+@media (max-width: 640px) { .nw-btn { width: 100%; } .nw-row { padding: 8px 0; } }

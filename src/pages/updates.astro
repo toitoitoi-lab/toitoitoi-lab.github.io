@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { UPDATES } from '../data/updates';
+const label = (d: string) => { const [y, m, dd] = d.split('-').map(Number); return `${y}年${m}月${dd}日`; };
+---
+<Base title="更新履歴" description="toi toi toi の更新履歴です。新しいものから順に並んでいます。">
+  <div class="wrap page prose">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '更新履歴' }]} />
+    <h1>更新履歴</h1>
+    <p>新しいものから順に並んでいます。</p>
+    <ul class="nw-list nw-hist">
+      {UPDATES.map((u) => (
+        <li><time datetime={u.date}>{label(u.date)}</time><span class="nw-t">{u.ja}</span>{u.href && <a href={u.href}>くわしく</a>}</li>
+      ))}
+    </ul>
+  </div>
+</Base>
