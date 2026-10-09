@@ -163,7 +163,7 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       const key = h('p', 'td-key'); key.setAttribute('aria-hidden', 'true');
       key.innerHTML = '<span class="td-key-i"><span class="td-dot"></span>あなた</span><span class="td-key-i"><span class="td-band"></span>子ども（帯が長いほど、得意としんどさの両方がある）</span>';
       sec.appendChild(key);
-      const ends = h('div', 'td-mv-ends'); ends.setAttribute('aria-hidden', 'true'); ends.append(h('span', null, ''), h('span', null, '← 苦手・しんどい'), h('span', null, '得意 →')); sec.appendChild(ends);
+      const ends = h('div', 'td-mv-ends'); ends.setAttribute('aria-hidden', 'true'); const mid = h('span', 'td-mv-mid'); mid.append(h('span', null, '← 苦手・しんどい'), h('span', null, '得意 →')); ends.append(h('span'), mid, h('span')); sec.appendChild(ends);
       R.forEach((r) => {
         const row = h('div', 'td-mv');
         const nm = h('span', 'td-mv-n', r.c.name); row.appendChild(nm);
