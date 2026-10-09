@@ -9,7 +9,7 @@ const base = ja ? '' : '/en';
 const items = UPDATES.slice(0, SHOW_COUNT);
 const [first, ...rest] = items;
 const today = Date.now();
-const isNew = (d: string) => today - new Date(d + 'T00:00:00+09:00').getTime() < 14 * 86400000;
+const isNew = (d: string) => today - new Date(d + 'T00:00:00+09:00').getTime() < 10 * 86400000;
 const label = (d: string) => {
   const [y, m, dd] = d.split('-').map(Number);
   return ja ? `${y}年${m}月${dd}日` : new Date(Date.UTC(y, m - 1, dd)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
@@ -57,6 +57,6 @@ const T = ja
     function set(open) { m.hidden = !open; b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.textContent = open ? b.dataset.less : b.dataset.more; }
     b.hidden = false; set(false);
     b.addEventListener('click', function () { set(b.getAttribute('aria-expanded') !== 'true'); });
-    m.addEventListener('keydown', function (e) { if (e.key === 'Escape') { set(false); b.focus(); } });
+    document.getElementById('nw').addEventListener('keydown', function (e) { if (e.key === 'Escape' && !m.hidden) { set(false); b.focus(); } });
   })();
 </script>
