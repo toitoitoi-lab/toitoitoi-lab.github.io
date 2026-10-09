@@ -1002,3 +1002,26 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .td-map td:nth-child(2) { color: inherit; font-weight: 400; }
 .td-map th, .td-map td { white-space: nowrap; }
 @media (max-width: 480px) { .td-map th, .td-map td { padding: 8px 8px; font-size: 0.92rem; } }
+/* 立ち止まる：6つの窓の一覧（目盛り） */
+.td-mapv { margin: 8px 0 24px; }
+.td-mapv h3 { font-size: 1.2rem; margin: 0 0 6px; }
+.td-key { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 10px; font-size: 0.88rem; color: var(--sub); }
+.td-key-i { display: inline-flex; align-items: center; gap: 6px; }
+.td-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-fill); }
+.td-band { display: inline-block; width: 28px; height: 10px; border-radius: 5px; border: 2px solid var(--fg); }
+.td-mv, .td-mv-ends { display: grid; grid-template-columns: 7.5em 1fr 6.5em; align-items: center; gap: 10px; }
+.td-mv-ends { font-size: 0.8rem; color: var(--sub); margin-bottom: 2px; }
+.td-mv-ends span:nth-child(3) { text-align: right; grid-column: 2; justify-self: end; }
+.td-mv-ends span:nth-child(2) { grid-column: 2; grid-row: 1; }
+.td-mv { min-height: 48px; border-top: 1px solid var(--line); }
+.td-mv-n { font-weight: 700; word-break: keep-all; }
+.td-mv-t { position: relative; height: 32px; }
+.td-mv-l { position: absolute; left: 10px; right: 10px; top: 50%; height: 4px; margin-top: -2px; background: var(--line); border-radius: 2px; }
+.td-mv-l::after { content: ''; position: absolute; left: 50%; top: -6px; width: 2px; height: 16px; background: var(--sub); opacity: .6; }
+.td-mv-b { position: absolute; top: 50%; height: 14px; margin-top: -7px; border: 2.5px solid var(--fg); border-radius: 7px; background: color-mix(in srgb, var(--fg) 18%, transparent); box-sizing: border-box; }
+.td-mv-b0 { width: 14px !important; margin-left: -7px; }
+.td-mv-d { position: absolute; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: var(--accent-fill); box-shadow: 0 0 0 2px var(--bg); z-index: 1; }
+.td-mv-tag { font-size: 0.85rem; font-weight: 700; text-align: right; }
+@media (max-width: 480px) { .td-mv, .td-mv-ends { grid-template-columns: 5.2em 1fr 5em; gap: 6px; } .td-mv-n, .td-mv-tag { font-size: 0.82rem; } }
+@media (forced-colors: active) { .td-mv-d, .td-dot { forced-color-adjust: none; background: Highlight; } .td-mv-b, .td-band { border-color: CanvasText; } }
+#kekka { scroll-margin-top: 16px; }

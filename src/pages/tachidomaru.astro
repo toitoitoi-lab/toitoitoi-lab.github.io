@@ -156,6 +156,33 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       return L;
     }
 
+    const LV = ['あてはまらない', 'あまり', 'やや', 'あてはまる'];
+    function mapView(R: ChRes[]) {
+      const sec = h('section', 'td-mapv'); sec.setAttribute('aria-labelledby', 'td-mapv-h');
+      const t = h('h3', null, '6つの窓の一覧'); t.id = 'td-mapv-h'; sec.appendChild(t);
+      const key = h('p', 'td-key'); key.setAttribute('aria-hidden', 'true');
+      key.innerHTML = '<span class="td-key-i"><span class="td-dot"></span>あなた</span><span class="td-key-i"><span class="td-band"></span>子ども（帯が長いほど、得意としんどさの両方がある）</span>';
+      sec.appendChild(key);
+      const ends = h('div', 'td-mv-ends'); ends.setAttribute('aria-hidden', 'true'); ends.append(h('span', null, ''), h('span', null, '← 苦手・しんどい'), h('span', null, '得意 →')); sec.appendChild(ends);
+      R.forEach((r) => {
+        const row = h('div', 'td-mv');
+        const nm = h('span', 'td-mv-n', r.c.name); row.appendChild(nm);
+        const tr = h('div', 'td-mv-t'); tr.setAttribute('role', 'img');
+        const line = h('div', 'td-mv-l'); tr.appendChild(line);
+        if (r.cs !== null || r.cw !== null) {
+          const a = 50 - ((r.cw ?? 0) / 3) * 50, b = 50 + ((r.cs ?? 0) / 3) * 50;
+          const band = h('span', 'td-mv-b' + (b - a < 4 ? ' td-mv-b0' : '')); band.style.left = a + '%'; band.style.width = Math.max(b - a, 0) + '%'; line.appendChild(band);
+        }
+        if (r.s !== null) { const d = h('span', 'td-mv-d'); d.style.left = (r.s / 3) * 100 + '%'; line.appendChild(d); }
+        const you = r.s === null ? 'あなた：未回答' : `あなた：この窓で伝えるのが得意か「${LV[r.s]}」`;
+        const kid = r.cs === null && r.cw === null ? '子ども：未回答' : `子ども：得意「${LV[r.cs ?? 0]}」、しんどさ「${LV[r.cw ?? 0]}」`;
+        tr.setAttribute('aria-label', `${r.c.name}。${you}。${kid}。${r.rel && REL_LABEL[r.rel] ? '組み合わせ：' + REL_LABEL[r.rel] + '。' : ''}`);
+        row.appendChild(tr);
+        const tg = h('span', 'td-mv-tag' + (r.rel ? ' td-tag-' + r.rel : ''), r.rel && REL_LABEL[r.rel] ? REL_LABEL[r.rel] : ''); tg.setAttribute('aria-hidden', 'true'); row.appendChild(tg);
+        sec.appendChild(row);
+      });
+      return sec;
+    }
     function renderCh(r: ChRes) {
       const c = r.c, box = h('section', 'td-r'); box.setAttribute('aria-labelledby', 'td-r-' + c.id);
       const head = h('div', 'td-rh'); const t = h('h3', null, `${c.name}（${c.sub}）`); t.id = 'td-r-' + c.id; head.appendChild(t);
@@ -187,14 +214,16 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       const ax = D.ax.map(axResult).filter(Boolean) as AxRes[];
       const sum = summary(ch);
       last = { ch, ax, sum };
-      const sb = h('div', 'td-sum'); sb.appendChild(h('h3', null, 'まとめ')); const ul = h('ul'); sum.forEach((x) => ul.appendChild(h('li', null, x))); sb.appendChild(ul); out.appendChild(sb);
-      // 一覧表
-      const wrap = h('div', 'td-tbl-wrap'), tb = h('table', 'td-tbl td-map'); tb.innerHTML = '<caption>6つの窓の一覧</caption><thead><tr><th scope="col">窓</th><th scope="col">あなた</th><th scope="col">子ども</th><th scope="col">組み合わせ</th></tr></thead>';
-      const tbody = h('tbody'); ch.forEach((r) => { const tr = h('tr'); const th = h('th', null, r.c.name); th.setAttribute('scope', 'row'); tr.append(th, h('td', null, r.youSt), h('td', null, r.kidSt), h('td', null, r.rel ? REL_LABEL[r.rel] || '—' : '—')); tbody.appendChild(tr); }); tb.appendChild(tbody); wrap.appendChild(tb); out.appendChild(wrap);
+      const sb = h('div', 'td-sum'); const sh = h('h3', null, '結果のまとめ'); sh.id = 'td-sum-h'; sh.tabIndex = -1; sb.appendChild(sh); const ul = h('ul'); sum.forEach((x) => ul.appendChild(h('li', null, x))); sb.appendChild(ul); out.appendChild(sb);
+      // 一覧：目盛りで見せる（目で見る人向け）。読み上げでは、各行の説明文を読む
+      out.appendChild(mapView(ch));
       out.appendChild(h('h3', 'td-sec', '窓ごとの支援'));
       ch.forEach((r) => out.appendChild(renderCh(r)));
       if (ax.length) { out.appendChild(h('h3', 'td-sec', '関わり方のくせ')); ax.forEach((r) => out.appendChild(renderAx(r))); }
-      pr.hidden = wd.hidden = sn.hidden = false; out.setAttribute('tabindex', '-1'); out.focus();
+      pr.hidden = wd.hidden = sn.hidden = false;
+      // 見出し「6. 見比べる・支援を考える」を画面のいちばん上に。読み上げは「結果のまとめ」から始まる
+      $('kekka').scrollIntoView({ block: 'start' });
+      (document.getElementById('td-sum-h') as HTMLElement).focus({ preventScroll: true });
     });
     pr.addEventListener('click', () => window.print());
     $('td-reset').addEventListener('click', () => {
