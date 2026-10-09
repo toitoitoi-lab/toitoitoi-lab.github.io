@@ -998,3 +998,7 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .td-tag-ryouhou { color: var(--fg); }
 .td-save-note { border-left: 3px solid var(--accent-fill); padding-left: 12px; }
 @media print { .td details.td-more:not([open]) { display: none; } .td-save-note { display: none; } }
+.td-map { min-width: 0; }
+.td-map td:nth-child(2) { color: inherit; font-weight: 400; }
+.td-map th, .td-map td { white-space: nowrap; }
+@media (max-width: 480px) { .td-map th, .td-map td { padding: 8px 8px; font-size: 0.92rem; } }
