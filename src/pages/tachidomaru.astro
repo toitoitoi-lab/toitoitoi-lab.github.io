@@ -1,0 +1,138 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import RulesNote from '../components/RulesNote.astro';
+import { AXES, SCALE, REFRAME } from '../data/tachidomaru';
+const title = '支援の前に、立ち止まる';
+const desc = '支援する人と子ども、それぞれの持ち味（強みと弱み）を同じ6つの軸で見て、重なりとずれを知るチェックです。診断ではなく、関わり方を考えるための道具です。';
+const json = JSON.stringify({ axes: AXES, scale: SCALE });
+const Q = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((side) => ({ id: `${who}-${a.id}-${side}`, axis: a.id, side, text: a[who][side] })));
+const QS = Q('s'), QC = Q('c');
+---
+<Base title={title} lang="ja" current="tachiba" description={desc}>
+  <div class="wrap page prose td">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '立場から探す', href: '/#tachiba' }, { label: title }]} />
+    <p class="kk-kicker" lang="en" aria-hidden="true">Before you support</p>
+    <h1>{title}</h1>
+    <p class="lead-text">支援する人にも、子どもにも、持ち味があります。どちらの持ち味も、場面によって強みにも弱みにもなります。同じ6つの軸で、自分と子どもを見比べると、「がんばっているのに苦しい」理由が見えることがあります。</p>
+    <ul class="td-pts">
+      <li><strong>診断ではありません。</strong>優劣もありません。関わり方を考える前に、いったん立ち止まるための道具です。</li>
+      <li><strong>ずれは悪いことではありません。</strong>ずれを知っていれば、自分の強みの使いどころと、人に頼むところが決められます。</li>
+      <li><strong>名前は入れません。結果は保存しません。</strong>画面を閉じると消えます。残したいときは、印刷してください。</li>
+    </ul>
+    <RulesNote lang="ja" ctx="shien" />
+
+    <nav class="toc" aria-label="このページの目次"><ol>
+      <li><a href="#ura">1. 行動の裏側を見る</a></li>
+      <li><a href="#q-s">2. チェック① あなた（支援する人）</a></li>
+      <li><a href="#q-c">3. チェック② 子どもの様子</a></li>
+      <li><a href="#kekka">4. 見比べる</a></li>
+    </ol></nav>
+
+    <h2 id="ura">1. 行動の裏側を見る</h2>
+    <p>目に見える行動は、「問題」と見える前に、その子の学び方のあらわれです。同じ行動が、強みでもあり、弱みでもあります（表裏一体）。</p>
+    <div class="td-tbl-wrap">
+      <table class="td-tbl">
+        <thead><tr><th scope="col">目に見える行動</th><th scope="col">強みとして見ると</th><th scope="col">学びで苦しくなる場面</th></tr></thead>
+        <tbody>{REFRAME.map((r) => <tr><th scope="row">{r.act}</th><td>{r.tsuyomi}</td><td>{r.yowami}</td></tr>)}</tbody>
+      </table>
+    </div>
+
+    <h2 id="q-s">2. チェック① あなた（支援する人）</h2>
+    <p>先生・放課後等デイサービスの職員・家族など、支援する人が、自分について答えます。深く考えず、ふだんの自分に近いほうを選びます。</p>
+    <div class="td-qs" id="qs-s">
+      {QS.map((q, i) => (
+        <fieldset class="td-q" data-axis={q.axis} data-side={q.side}>
+          <legend><span class="td-n">{i + 1}</span>{q.text}</legend>
+          <div class="opts td-opts">{SCALE.map((s, v) => <label><input type="radio" name={q.id} value={v} /><span>{s}</span></label>)}</div>
+        </fieldset>
+      ))}
+    </div>
+
+    <h2 id="q-c">3. チェック② 子どもの様子</h2>
+    <p>支援する人が、<strong>見ている事実</strong>から答えます。本人が答えられるときは、本人と一緒に答えても構いません。一人の子について、一回ずつ使います。</p>
+    <div class="td-qs" id="qs-c">
+      {QC.map((q, i) => (
+        <fieldset class="td-q" data-axis={q.axis} data-side={q.side}>
+          <legend><span class="td-n">{i + 1}</span>{q.text}</legend>
+          <div class="opts td-opts">{SCALE.map((s, v) => <label><input type="radio" name={q.id} value={v} /><span>{s}</span></label>)}</div>
+        </fieldset>
+      ))}
+    </div>
+
+    <h2 id="kekka">4. 見比べる</h2>
+    <p class="td-acts"><button type="button" class="btn btn-solid" id="td-go">結果を見る</button> <button type="button" class="btn" id="td-print" hidden>印刷する</button> <button type="button" class="btn" id="td-reset">最初からやり直す</button></p>
+    <p class="note" id="td-note" aria-live="polite"></p>
+    <div id="td-out" aria-live="polite"></div>
+
+    <h2>使い方のヒント</h2>
+    <ul>
+      <li>「ずれ」の軸は、あなたの弱い面ではなく、<strong>その面が得意な人に相談するところ</strong>です。同僚・家族・放課後の支援者など、立場の違う人ほど、持ち味も違います。</li>
+      <li>「重なり」の軸は、安心して力を出せるところです。ただし、同じ持ち味どうしは、同じ弱みも重なります。「気をつけたいこと」を一つだけ意識します。</li>
+      <li>子どもは変わります。学期ごと・担当が変わるたびに、やり直してください。</li>
+    </ul>
+  </div>
+  <script type="application/json" id="td-data" set:html={json}></script>
+  <script is:inline>
+    (function () {
+      var D = JSON.parse(document.getElementById('td-data').textContent), AX = D.axes;
+      var out = document.getElementById('td-out'), note = document.getElementById('td-note'), pr = document.getElementById('td-print');
+      function val(name) { var e = document.querySelector('input[name="' + name + '"]:checked'); return e ? Number(e.value) : null; }
+      function score(who, a) { var l = val(who + '-' + a.id + '-l'), r = val(who + '-' + a.id + '-r'); if (l === null && r === null) return null; return (r || 0) - (l || 0); }
+      function side(x) { return x > 0 ? 'r' : x < 0 ? 'l' : null; }
+      function h(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+      function row(a, s, c) {
+        var box = h('section', 'td-r'); box.setAttribute('aria-labelledby', 'td-r-' + a.id);
+        var gap = (s === null || c === null) ? null : Math.abs(s - c);
+        var st = gap === null ? '' : gap >= 3 ? 'ずれ' : gap === 2 ? '少しずれ' : '重なり';
+        var head = h('div', 'td-rh'); var t = h('h3', null, a.name); t.id = 'td-r-' + a.id; head.appendChild(t);
+        if (st) { var tag = h('span', 'td-tag td-tag-' + (gap >= 3 ? 'gap' : gap === 2 ? 'mid' : 'ok'), st); head.appendChild(tag); }
+        box.appendChild(head);
+        var tr = h('div', 'td-track'); tr.setAttribute('role', 'img');
+        var desc = [];
+        tr.appendChild(h('span', 'td-pole td-pole-l', a.l)); tr.appendChild(h('span', 'td-pole td-pole-r', a.r));
+        var line = h('div', 'td-line'); tr.appendChild(line);
+        [['s', s, 'あなた'], ['c', c, '子ども']].forEach(function (p) {
+          if (p[1] === null) { desc.push(p[2] + '：未回答'); return; }
+          var m = h('span', 'td-mk td-mk-' + p[0]); m.style.left = ((p[1] + 3) / 6 * 100) + '%'; m.appendChild(h('span', 'td-mk-l', p[2])); line.appendChild(m);
+          desc.push(p[2] + '：' + (p[1] === 0 ? 'どちらにも寄らない' : (p[1] < 0 ? a.l : a.r) + '寄り（' + Math.abs(p[1]) + '）'));
+        });
+        tr.setAttribute('aria-label', a.name + '。左が「' + a.l + '」、右が「' + a.r + '」。' + desc.join('。'));
+        box.appendChild(tr);
+        var ss = side(s), cs = side(c), key = null;
+        if (ss && cs) key = ss + cs; else if (ss) key = ss + ss; else if (cs) key = cs + cs;
+        if (key) {
+          var adv = a.adv[key];
+          var dl = h('dl', 'td-adv');
+          [['あなたの強みを生かすと', adv.ikasu], ['気をつけたいこと', adv.ki], ['相談するなら', adv.soudan]].forEach(function (x) { dl.appendChild(h('dt', null, x[0])); dl.appendChild(h('dd', null, x[1])); });
+          if (!ss || !cs) dl.insertBefore(h('p', 'note', (ss ? '子ども' : 'あなた') + 'はこの軸ではどちらにも寄っていません。寄っているほうに合わせた文を出しています。'), dl.firstChild);
+          box.appendChild(dl);
+        } else box.appendChild(h('p', 'note', 'この軸は、どちらもどちらにも寄っていないか、未回答です。'));
+        return box;
+      }
+      document.getElementById('td-go').addEventListener('click', function () {
+        out.innerHTML = '';
+        var S = {}, C = {}, ns = 0, nc = 0;
+        AX.forEach(function (a) { S[a.id] = score('s', a); C[a.id] = score('c', a); if (S[a.id] !== null) ns++; if (C[a.id] !== null) nc++; });
+        if (!ns && !nc) { note.textContent = 'まだ答えがありません。チェック①から選んでください。'; return; }
+        note.textContent = (ns < AX.length || nc < AX.length) ? '未回答の項目があります。答えた分だけで表示しています。' : '';
+        var gaps = AX.filter(function (a) { return S[a.id] !== null && C[a.id] !== null; }).map(function (a) { return { a: a, g: Math.abs(S[a.id] - C[a.id]) }; }).sort(function (x, y) { return y.g - x.g; });
+        var sum = h('div', 'td-sum');
+        sum.appendChild(h('h3', null, 'まとめ'));
+        if (gaps.length) {
+          var big = gaps.filter(function (x) { return x.g >= 3; }), ok = gaps.filter(function (x) { return x.g <= 1; });
+          sum.appendChild(h('p', null, big.length ? 'ずれが大きい軸：' + big.map(function (x) { return x.a.name; }).join('、') + '。ここは、あなたの強みの使い方を変えるか、その面が得意な人に相談するところです。' : '大きなずれはありません。持ち味が近い分、同じ弱みも重なりやすいので、「気をつけたいこと」を一つ意識します。'));
+          if (ok.length) sum.appendChild(h('p', null, '重なる軸：' + ok.map(function (x) { return x.a.name; }).join('、') + '。安心して力を出せるところです。'));
+        } else sum.appendChild(h('p', null, (ns ? '子ども' : 'あなた') + 'の分がまだです。両方答えると、重なりとずれが出ます。'));
+        out.appendChild(sum);
+        AX.forEach(function (a) { out.appendChild(row(a, S[a.id], C[a.id])); });
+        pr.hidden = false; out.setAttribute('tabindex', '-1'); out.focus();
+      });
+      pr.addEventListener('click', function () { window.print(); });
+      document.getElementById('td-reset').addEventListener('click', function () {
+        document.querySelectorAll('.td input[type=radio]').forEach(function (i) { i.checked = false; });
+        out.innerHTML = ''; note.textContent = ''; pr.hidden = true; document.getElementById('q-s').scrollIntoView();
+      });
+    })();
+  </script>
+</Base>

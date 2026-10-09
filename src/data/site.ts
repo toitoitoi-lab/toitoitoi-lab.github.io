@@ -181,7 +181,7 @@ export const SITEMAP_JA: MapGroup[] = [
   {
     id: 'tachiba', heading: '立場から探す', href: '/#tachiba', icon: 'tachiba',
     desc: '先生・本人と家族・つくりたい人、それぞれに向けた入口',
-    links: TACHIBA.map((t) => ({ label: t.ja.title, note: t.ja.text, href: t.external ?? `/tachiba/${t.slug}/`, external: !!t.external, ready: t.ready, review: t.review, updated: t.updated, shapes: t.shapes, stage: t.stage })),
+    links: [{ label: '支援の前に、立ち止まる', note: '支援する人と子どもの持ち味を、同じ6つの軸で見比べるチェック', href: '/tachidomaru/', ready: true }, ...TACHIBA.map((t) => ({ label: t.ja.title, note: t.ja.text, href: t.external ?? `/tachiba/${t.slug}/`, external: !!t.external, ready: t.ready, review: t.review, updated: t.updated, shapes: t.shapes, stage: t.stage }))],
   },
   {
     id: 'manabi', heading: '教科と学び方', href: '/manabi/', icon: 'manabi',

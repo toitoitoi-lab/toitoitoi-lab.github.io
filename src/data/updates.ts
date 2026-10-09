@@ -7,6 +7,12 @@ export type Update = { date: string; ja: string; en: string; href?: string };
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-10-10',
+    ja: '「支援の前に、立ち止まる」を追加しました。支援する人と子どもの持ち味を、同じ6つの軸で見比べるチェックです。',
+    en: 'Added “Pause before you support”: a check that compares a supporter’s and a child’s traits on the same six axes (Japanese only for now).',
+    href: '/tachidomaru/',
+  },
+  {
     date: '2026-10-04',
     ja: '操作ボタンの並びを変えました。「動かす」を端に、「たたむ／ひらく」をその内側に置き、ボタンは反対側にひらきます。',
     en: 'Rearranged the action buttons: “Move” sits at the edge, “Fold/Open” next to it, and the buttons open toward the other side.',
