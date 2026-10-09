@@ -39,6 +39,7 @@ const nav = ja
     ];
 const t = ja
   ? { skipMain: '本文へ移動', skipMap: 'サイトマップへ移動', settings: '表示設定', sitemap: 'サイトマップ', close: '表示設定を閉じる',
+      detail: '説明の量', dFold: 'たたむ（図と要点）', dOpen: '最初から開く（文字で詳しく）', dHint: '図や表のあるページで、くわしい説明を最初からたたむか、開いておくかを選べます。どちらでも、書かれている内容は同じです。読み上げ機能で文字を読む方や、文字で読みたい方は「最初から開く」が便利です。',
       theme: '配色', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
       font: '文字の形', ud: 'すっきり（UDゴシック）', kyo: '学校で習う形（教科書体）',
       size: '文字の大きさ', m: '標準', l: '大', xl: '特大', space: '文字の間隔', normal: '標準', wide: 'ひろめ',
@@ -46,6 +47,7 @@ const t = ja
       other: 'English', otherHref: '/en/', otherLang: 'en', rules: '利用ルール',
       disclaimer: '公立学校の教員が個人の活動として運営しています。所属機関の見解を示すものではありません。' }
   : { skipMain: 'Skip to main content', skipMap: 'Skip to sitemap', settings: 'Display', sitemap: 'Sitemap', close: 'Close display settings',
+      detail: 'Amount of explanation', dFold: 'Folded (charts and key points)', dOpen: 'Open (full text)', dHint: 'On pages with charts and tables, choose whether detailed explanations start folded or open. The content is the same either way. “Open” is handy if you use a screen reader or prefer reading text.',
       theme: 'Colors', dark: 'Dark', light: 'Light', contrast: 'High contrast',
       font: 'Letter shapes', ud: 'Clear (UD Gothic)', kyo: 'As taught at school',
       size: 'Text size', m: 'Standard', l: 'Large', xl: 'Extra large', space: 'Spacing', normal: 'Standard', wide: 'Wide',
@@ -60,10 +62,11 @@ const groups = [
   { name: 'space', legend: t.space, opts: [['normal', t.normal], ['wide', t.wide]] },
   { name: 'float', legend: t.float, hint: t.fHint, opts: [['right', t.fRight], ['left', t.fLeft], ['top', t.fTop], ['dock', t.fDock], ['free', t.fFree], ['hide', t.fHide]] },
   { name: 'orient', legend: t.orient, opts: [['row', t.oRow], ['col', t.oCol]] },
+  { name: 'detail', legend: t.detail, hint: t.dHint, opts: [['fold', t.dFold], ['open', t.dOpen]] },
 ];
 ---
 <!doctype html>
-<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal" data-float="right" data-orient="row" data-backend={BACKEND_URL || undefined}>
+<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal" data-float="right" data-orient="row" data-detail="fold" data-backend={BACKEND_URL || undefined}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -89,6 +92,7 @@ const groups = [
       d.dataset.float = get('float', 'right');
       d.dataset.orient = get('orient', 'row');
       d.dataset.fold = get('fold', 'open');
+      d.dataset.detail = get('detail', 'fold');
     })();
   </script>
 </head>
@@ -216,7 +220,7 @@ const groups = [
       var toggle = document.getElementById('settings-toggle');
       var close = document.getElementById('settings-close');
       var form = document.getElementById('settings-form');
-      var defaults = { theme: 'dark', font: 'ud', size: 'm', space: 'normal', float: 'right', orient: 'row' };
+      var defaults = { theme: 'dark', font: 'ud', size: 'm', space: 'normal', float: 'right', orient: 'row', detail: 'fold' };
       function sync() {
         ['theme', 'font', 'size', 'space', 'float', 'orient'].forEach(function (k) {
           var el = form.querySelector('input[name="' + k + '"][value="' + d.dataset[k] + '"]');
@@ -237,6 +241,12 @@ const groups = [
         try { localStorage.setItem('t3-' + t.name, t.value); } catch (err) {}
         if (t.name === 'float' || t.name === 'orient') applyFree();
       });
+      // 説明の量：details[data-auto] を、設定に合わせて最初から開く／たたむ
+      function applyDetail() { var o = d.dataset.detail === 'open'; document.querySelectorAll('details[data-auto]').forEach(function (x) { x.open = o; }); }
+      applyDetail();
+      new MutationObserver(applyDetail).observe(d, { attributes: true, attributeFilter: ['data-detail'] });
+      window.addEventListener('beforeprint', function () { document.querySelectorAll('details[data-auto]').forEach(function (x) { x.open = true; }); }); /* 印刷では、たたんだ説明も紙に出す */
+      window.addEventListener('afterprint', applyDetail);
       // ── 操作ボタン（フローティング） ──
       var fold = document.getElementById('fb-fold');
       function setFold(state) {

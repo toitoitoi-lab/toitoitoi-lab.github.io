@@ -87,6 +87,13 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       <button type="button" class="btn" id="td-word" hidden>Word形式で保存（編集できます）</button>
       <button type="button" class="btn" id="td-reset">最初からやり直す</button>
     </p>
+    <fieldset class="td-wfmt" id="td-wfmt" hidden>
+      <legend>Wordの形式</legend>
+      <div class="opts td-opts">
+        <label><input type="radio" name="td-wf" value="zu" checked /><span>図と表で短く（A4 2枚まで）</span></label>
+        <label><input type="radio" name="td-wf" value="moji" /><span>文字で詳しく（読み上げ向け）</span></label>
+      </div>
+    </fieldset>
     <p class="note td-save-note" id="td-save-note" hidden>印刷した紙や、保存したファイルは、あなたの手元（端末）に残ります。実名など、子どもが誰か分かることを書き足すときは、職場の個人情報のルールに従ってください。</p>
     <p class="note" id="td-note" aria-live="polite"></p>
     <div id="td-out"></div>
@@ -105,7 +112,8 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
     type Ax = { id: string; name: string; l: string; r: string; adv: Record<string, Adv> };
     const D = JSON.parse(document.getElementById('td-data')!.textContent!) as { ch: Ch[]; ax: Ax[] };
     const $ = (id: string) => document.getElementById(id)!;
-    const out = $('td-out'), note = $('td-note'), pr = $('td-print'), wd = $('td-word'), sn = $('td-save-note');
+    const out = $('td-out'), note = $('td-note'), pr = $('td-print'), wd = $('td-word'), sn = $('td-save-note'), wf = $('td-wfmt');
+    const showSave = (v: boolean) => { pr.hidden = wd.hidden = sn.hidden = wf.hidden = !v; if (v) { const m = document.querySelector<HTMLInputElement>(`input[name="td-wf"][value="${document.documentElement.dataset.detail === 'open' ? 'moji' : 'zu'}"]`); if (m) m.checked = true; } };
     const val = (name: string): number | null => { const e = document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`); return e ? Number(e.value) : null; };
     const h = (tag: string, cls?: string | null, text?: string | null) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
@@ -192,15 +200,20 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       if (r.relText) box.appendChild(h('p', 'td-rel', r.relText));
       if (r.cStrong && r.cWeak) box.appendChild(h('p', 'td-hyouri', '表裏一体：' + c.hyouri));
       const list = (head: string, items: string[], at: string[]) => { const d = h('div', 'td-blk'); d.appendChild(h('h4', null, head)); const ul = h('ul'); items.forEach((x) => ul.appendChild(h('li', null, x))); d.appendChild(ul); const p = h('p', 'td-at'); p.append(h('span', 'td-at-k', '道具（AT）の例'), document.createTextNode(at.join('／'))); d.appendChild(p); return d; };
-      if (r.cStrong) box.appendChild(list('この窓を入口にする支援', c.strong.houhou, c.strong.at));
-      if (r.cWeak) box.appendChild(list('負担を減らす・別の窓に置きかえる支援', c.weak.houhou, c.weak.at));
+      if (r.cStrong || r.cWeak) {
+        const det = h('details', 'td-det') as HTMLDetailsElement; det.setAttribute('data-auto', ''); det.open = document.documentElement.dataset.detail === 'open';
+        det.appendChild(h('summary', null, `支援の方法と道具（${[r.cStrong ? '入口にする' : '', r.cWeak ? '負担を減らす' : ''].filter(Boolean).join('・')}）`));
+        if (r.cStrong) det.appendChild(list('この窓を入口にする支援', c.strong.houhou, c.strong.at));
+        if (r.cWeak) det.appendChild(list('負担を減らす・別の窓に置きかえる支援', c.weak.houhou, c.weak.at));
+        box.appendChild(det);
+      }
       return box;
     }
     function renderAx(r: AxRes) {
       const a = r.a, box = h('section', 'td-r'); const head = h('div', 'td-rh'); head.appendChild(h('h3', null, a.name)); if (r.st) head.appendChild(h('span', 'td-tag ' + (r.gap! >= 3 ? 'td-tag-zure' : 'td-tag-sonota'), r.st)); box.appendChild(head);
       const desc = (x: number | null, who: string) => who + '：' + (x === null ? '未回答' : x === 0 ? 'どちらにも寄らない' : (x < 0 ? a.l : a.r) + '寄り');
       box.appendChild(h('p', 'td-st', `左「${a.l}」— 右「${a.r}」。${desc(r.s, 'あなた')}。${desc(r.c, '子ども')}。`));
-      if (r.adv) { const dl = h('dl', 'td-adv'); if (r.partial) dl.appendChild(h('p', 'note', r.partial)); ([['あなたの強みを生かすと', r.adv.ikasu], ['気をつけたいこと', r.adv.ki], ['相談するなら', r.adv.soudan]] as const).forEach(([k, v]) => { dl.appendChild(h('dt', null, k)); dl.appendChild(h('dd', null, v)); }); box.appendChild(dl); }
+      if (r.adv) { const det = h('details', 'td-det') as HTMLDetailsElement; det.setAttribute('data-auto', ''); det.open = document.documentElement.dataset.detail === 'open'; det.appendChild(h('summary', null, '強みの生かし方・気をつけたいこと・相談')); box.appendChild(det); const dl = h('dl', 'td-adv'); if (r.partial) dl.appendChild(h('p', 'note', r.partial)); ([['あなたの強みを生かすと', r.adv.ikasu], ['気をつけたいこと', r.adv.ki], ['相談するなら', r.adv.soudan]] as const).forEach(([k, v]) => { dl.appendChild(h('dt', null, k)); dl.appendChild(h('dd', null, v)); }); det.appendChild(dl); }
       return box;
     }
 
@@ -208,7 +221,7 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       out.innerHTML = '';
       const ch = D.ch.map(chResult);
       const any = ch.some((r) => r.s !== null || r.cs !== null || r.cw !== null);
-      if (!any) { note.textContent = 'まだ答えがありません。チェック①から選んでください。'; last = null; pr.hidden = wd.hidden = sn.hidden = true; return; }
+      if (!any) { note.textContent = 'まだ答えがありません。チェック①から選んでください。'; last = null; showSave(false); return; }
       const miss = ch.some((r) => r.s === null || r.cs === null || r.cw === null);
       note.textContent = miss ? '未回答の項目があります。答えた分だけで表示しています。' : '';
       const ax = D.ax.map(axResult).filter(Boolean) as AxRes[];
@@ -220,7 +233,7 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       out.appendChild(h('h3', 'td-sec', '窓ごとの支援'));
       ch.forEach((r) => out.appendChild(renderCh(r)));
       if (ax.length) { out.appendChild(h('h3', 'td-sec', '関わり方のくせ')); ax.forEach((r) => out.appendChild(renderAx(r))); }
-      pr.hidden = wd.hidden = sn.hidden = false;
+      showSave(true);
       // 見出し「6. 見比べる・支援を考える」を画面のいちばん上に。読み上げは「結果のまとめ」から始まる
       $('kekka').scrollIntoView({ block: 'start' });
       (document.getElementById('td-sum-h') as HTMLElement).focus({ preventScroll: true });
@@ -228,79 +241,135 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
     pr.addEventListener('click', () => window.print());
     $('td-reset').addEventListener('click', () => {
       document.querySelectorAll<HTMLInputElement>('.td input[type=radio]').forEach((i) => (i.checked = false));
-      out.innerHTML = ''; note.textContent = ''; last = null; pr.hidden = wd.hidden = sn.hidden = true; $('q-s').scrollIntoView();
+      out.innerHTML = ''; note.textContent = ''; last = null; showSave(false); $('q-s').scrollIntoView();
     });
 
     // ── Word（.docx）。この端末の中で作って保存する（サイトには送らない） ──
+    // zu = 図と表で短く（A4 2枚まで）／ moji = 文字で詳しく（読み上げ向け）
+    function drawTracks(rows: { name: string; tag: string; dot: number | null; band?: [number, number] | null; dot2?: number | null; left: string; right: string }[], legend: string[]): { png: Promise<Uint8Array>; w: number; h: number } {
+      const S = 2, W = 680, RH = 34, TOP = 46, H = TOP + rows.length * RH + 8;
+      const cv = document.createElement('canvas'); cv.width = W * S; cv.height = H * S; const x = cv.getContext('2d')!; x.scale(S, S);
+      const F = (sz: number, b = false) => `${b ? '700 ' : ''}${sz}px "BIZ UDPGothic", "BIZ UDPゴシック", "Hiragino Sans", "Noto Sans JP", sans-serif`;
+      x.fillStyle = '#fff'; x.fillRect(0, 0, W, H);
+      const L = 128, R = W - 110, len = R - L, VI = '#4A33B0';
+      // 凡例
+      x.font = F(12); x.fillStyle = '#333'; let lx = 0;
+      legend.forEach((t, i) => { const cx = lx + 8; if (i === 0) { x.fillStyle = VI; x.beginPath(); x.arc(cx, 10, 6, 0, 7); x.fill(); } else if (legend.length > 1 && rows.some((r) => r.band)) { x.strokeStyle = '#111'; x.lineWidth = 2; x.fillStyle = 'rgba(0,0,0,.12)'; x.beginPath(); x.roundRect(lx, 5, 22, 10, 5); x.fill(); x.stroke(); } else { x.strokeStyle = '#111'; x.lineWidth = 2.5; x.fillStyle = '#fff'; x.beginPath(); x.arc(cx, 10, 6, 0, 7); x.fill(); x.stroke(); } x.fillStyle = '#333'; x.fillText(t, lx + 28, 14); lx += 28 + x.measureText(t).width + 22; });
+      x.fillStyle = '#555'; x.font = F(11); x.textAlign = 'left'; x.fillText('← ' + rows[0].left, L, 36); x.textAlign = 'right'; x.fillText(rows[0].right + ' →', R, 36); x.textAlign = 'left';
+      rows.forEach((r, i) => {
+        const y = TOP + i * RH + RH / 2;
+        x.strokeStyle = '#ddd'; x.lineWidth = 1; x.beginPath(); x.moveTo(0, y - RH / 2); x.lineTo(W, y - RH / 2); x.stroke();
+        x.font = F(13, true); x.fillStyle = '#111'; x.fillText(r.name, 0, y + 5);
+        x.fillStyle = '#ccc'; x.fillRect(L, y - 2, len, 4); x.fillStyle = '#999'; x.fillRect(L + len / 2 - 1, y - 8, 2, 16);
+        if (r.band) { const a = L + r.band[0] * len, b = L + r.band[1] * len, w = Math.max(b - a, 12), ax = b - a < 12 ? (a + b) / 2 - 6 : a; x.fillStyle = 'rgba(0,0,0,.12)'; x.strokeStyle = '#111'; x.lineWidth = 2.5; x.beginPath(); x.roundRect(ax, y - 7, w, 14, 7); x.fill(); x.stroke(); }
+        if (r.dot2 != null) { x.strokeStyle = '#111'; x.lineWidth = 2.5; x.fillStyle = '#fff'; x.beginPath(); x.arc(L + r.dot2 * len, y, 7, 0, 7); x.fill(); x.stroke(); }
+        if (r.dot != null) { x.fillStyle = VI; x.beginPath(); x.arc(L + r.dot * len, y, 8, 0, 7); x.fill(); x.strokeStyle = '#fff'; x.lineWidth = 2; x.stroke(); }
+        if (r.tag) { x.font = F(12, true); x.fillStyle = r.tag === '重なり' || r.tag === '少しずれ' ? '#555' : VI; x.textAlign = 'right'; x.fillText(r.tag, W, y + 4); x.textAlign = 'left'; }
+      });
+      const png = new Promise<Uint8Array>((res) => cv.toBlob((bl) => bl!.arrayBuffer().then((ab) => res(new Uint8Array(ab))), 'image/png'));
+      return { png, w: W, h: H };
+    }
+
     wd.addEventListener('click', async () => {
       if (!last) return;
-      const L = last;
+      const L = last, fmt = (document.querySelector<HTMLInputElement>('input[name="td-wf"]:checked')?.value || 'zu') as 'zu' | 'moji';
       note.textContent = 'ファイルを作っています…';
       try {
         const X = await import('docx');
-        const { Document, Packer, Paragraph, TextRun, HeadingLevel, Header, Footer, AlignmentType, PageNumber, BorderStyle, LevelFormat, Table, TableRow, TableCell, WidthType, ShadingType } = X;
-        const FONT = 'BIZ UDPゴシック', size = 22;
+        const { Document, Packer, Paragraph, TextRun, HeadingLevel, Header, Footer, AlignmentType, PageNumber, BorderStyle, LevelFormat, Table, TableRow, TableCell, WidthType, ShadingType, ImageRun, VerticalAlign } = X;
+        const FONT = 'BIZ UDPゴシック', zu = fmt === 'zu', size = zu ? 18 : 22;
         const now = new Date(), pad = (n: number) => String(n).padStart(2, '0');
         const label = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`, file = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
         const run = (text: string, o: Record<string, unknown> = {}) => new TextRun({ text, font: FONT, size, ...o });
-        const para = (text: string, o: Record<string, unknown> = {}) => new Paragraph({ spacing: { after: 100, line: 320 }, children: [run(text)], ...o });
-        const hd = (text: string, lv: any) => new Paragraph({ heading: lv, spacing: { before: 240, after: 80 }, children: [new TextRun({ text, font: FONT, bold: true, size: lv === HeadingLevel.HEADING_1 ? size + 12 : lv === HeadingLevel.HEADING_2 ? size + 6 : size + 2 })] });
-        const bullet = (text: string) => new Paragraph({ numbering: { reference: 'b', level: 0 }, spacing: { after: 40 }, children: [run(text)] });
-        const lines = (n: number) => Array.from({ length: n }, () => new Paragraph({ spacing: { before: 300 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: '999999', space: 1 } }, children: [] }));
+        const para = (text: string, o: Record<string, unknown> = {}) => new Paragraph({ spacing: { after: zu ? 40 : 100, line: zu ? 260 : 320 }, children: [run(text)], ...o });
+        const hd = (text: string, lv: any) => new Paragraph({ heading: lv, spacing: { before: zu ? 140 : 240, after: zu ? 40 : 80 }, children: [new TextRun({ text, font: FONT, bold: true, size: lv === HeadingLevel.HEADING_1 ? size + 10 : lv === HeadingLevel.HEADING_2 ? size + 4 : size + 2 })] });
+        const bullet = (text: string) => new Paragraph({ numbering: { reference: 'b', level: 0 }, spacing: { after: zu ? 0 : 40, line: zu ? 250 : 300 }, children: [run(text)] });
+        const lines = (n: number) => Array.from({ length: n }, () => new Paragraph({ spacing: { before: zu ? 260 : 300 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: '999999', space: 1 } }, children: [] }));
         const small = (text: string) => new TextRun({ text, font: FONT, size: 16, color: '555555' });
         const bd = { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB' }, B = { top: bd, bottom: bd, left: bd, right: bd };
-        const cell = (t: string, w: number, head = false) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: B, margins: { top: 60, bottom: 60, left: 100, right: 100 }, shading: head ? { type: ShadingType.CLEAR, fill: 'F0F0F0', color: 'auto' } : undefined, children: [new Paragraph({ children: [run(t, { bold: head, size: size - 2 })] })] });
-        const W = [1800, 1800, 2400, 3000];
-        const map = new Table({ width: { size: 9000, type: WidthType.DXA }, columnWidths: W, rows: [
-          new TableRow({ tableHeader: true, children: ['窓', 'あなた', '子ども', '組み合わせ'].map((t, i) => cell(t, W[i], true)) }),
-          ...L.ch.map((r) => new TableRow({ children: [r.c.name, r.youSt, r.kidSt, r.rel ? REL_LABEL[r.rel] || '—' : '—'].map((t, i) => cell(t, W[i], i === 0)) })),
+        const cellP = (items: (string | Paragraph)[], w: number, head = false) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: B, verticalAlign: VerticalAlign.TOP, margins: { top: 40, bottom: 40, left: 80, right: 80 }, shading: head ? { type: ShadingType.CLEAR, fill: 'F0F0F0', color: 'auto' } : undefined, children: items.length ? items.map((t) => typeof t === 'string' ? new Paragraph({ spacing: { after: 0, line: 250 }, children: [run(t, { bold: head, size: size - (zu ? 0 : 2) })] }) : t) : [new Paragraph({ children: [] })] });
+        const cell = (t: string, w: number, head = false) => cellP([t], w, head);
+        const tbl = (W: number[], head: string[], rows: (string | (string | Paragraph)[])[][]) => new Table({ width: { size: W.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: W, rows: [
+          new TableRow({ tableHeader: true, children: head.map((t, i) => cell(t, W[i], true)) }),
+          ...rows.map((r) => new TableRow({ cantSplit: true, children: r.map((t, i) => Array.isArray(t) ? cellP(t, W[i]) : cell(t, W[i], i === 0)) })),
         ] });
-        const body: any[] = [
-          hd('支援の前に、立ち止まる', HeadingLevel.HEADING_1),
-          para(`記入日：${label}　　記入した人：　　　　　　　　　子どもの呼び名（実名は書かない）：`),
-          para('診断ではありません。支援を考える前に、いったん立ち止まるための記録です。このファイルは自由に書きかえられます。'),
-          hd('まとめ', HeadingLevel.HEADING_2), ...L.sum.map(bullet),
-          hd('6つの窓の一覧', HeadingLevel.HEADING_2), map,
-          hd('窓ごとの支援', HeadingLevel.HEADING_2),
-        ];
-        L.ch.forEach((r) => {
-          body.push(hd(`${r.c.name}（${r.c.sub}）${r.rel && r.rel !== 'sonota' ? '　― ' + REL_LABEL[r.rel] : ''}`, HeadingLevel.HEADING_3));
-          body.push(para(`あなた：${r.youSt}　　子ども：${r.kidSt}`));
-          if (r.relText) body.push(para(r.relText));
-          if (r.cStrong && r.cWeak) body.push(para('表裏一体：' + r.c.hyouri));
-          if (r.cStrong) { body.push(para('この窓を入口にする支援', { children: [run('この窓を入口にする支援', { bold: true })] })); r.c.strong.houhou.forEach((x) => body.push(bullet(x))); body.push(para('道具（AT）の例：' + r.c.strong.at.join('／'))); }
-          if (r.cWeak) { body.push(para('', { children: [run('負担を減らす・別の窓に置きかえる支援', { bold: true })] })); r.c.weak.houhou.forEach((x) => body.push(bullet(x))); body.push(para('道具（AT）の例：' + r.c.weak.at.join('／'))); }
-        });
-        if (L.ax.length) {
-          body.push(hd('関わり方のくせ', HeadingLevel.HEADING_2));
-          L.ax.forEach((r) => {
-            body.push(hd(`${r.a.name}${r.st ? '　― ' + r.st : ''}`, HeadingLevel.HEADING_3));
-            if (r.partial) body.push(para(r.partial));
-            if (r.adv) { body.push(para('あなたの強みを生かすと：' + r.adv.ikasu), para('気をつけたいこと：' + r.adv.ki), para('相談するなら：' + r.adv.soudan)); }
+        const dot = (t: string) => new Paragraph({ spacing: { after: 0, line: 240 }, indent: { left: 160, hanging: 160 }, children: [run('・' + t)] });
+        const LV = ['あてはまらない', 'あまり', 'やや', 'あてはまる'];
+        const chAlt = L.ch.map((r) => `${r.c.name}：あなた${r.s === null ? '未回答' : '「' + LV[r.s] + '」'}、子ども 得意${r.cs === null ? '未回答' : '「' + LV[r.cs] + '」'}・しんどさ${r.cw === null ? '未回答' : '「' + LV[r.cw] + '」'}${r.rel && REL_LABEL[r.rel] ? '（' + REL_LABEL[r.rel] + '）' : ''}`).join('。');
+        const body: any[] = [];
+        const head1 = [hd('支援の前に、立ち止まる', HeadingLevel.HEADING_1), para(`記入日：${label}　　記入した人：　　　　　　　子どもの呼び名（実名は書かない）：`)];
+        if (zu) {
+          body.push(...head1);
+          // ① 6つの窓の目盛り（図）
+          const g = drawTracks(L.ch.map((r) => ({ name: r.c.name, tag: r.rel && REL_LABEL[r.rel] ? REL_LABEL[r.rel] : '', dot: r.s === null ? null : r.s / 3, band: r.cs === null && r.cw === null ? null : [0.5 - (r.cw ?? 0) / 6, 0.5 + (r.cs ?? 0) / 6] as [number, number], left: '苦手・しんどい', right: '得意' })), ['あなた', '子ども（帯が長いほど、得意としんどさの両方がある）']);
+          body.push(hd('6つの窓', HeadingLevel.HEADING_2), new Paragraph({ children: [new ImageRun({ type: 'png', data: await g.png, transformation: { width: g.w, height: g.h }, altText: { name: '6つの窓の目盛り', title: '6つの窓の一覧', description: chAlt } })] }));
+          // ② まとめ（表）
+          const nm = (f: (r: ChRes) => boolean) => L.ch.filter(f).map((r) => r.c.name).join('、');
+          const sumRows: string[][] = ([['届きやすい窓（入口）', nm((r) => r.cStrong)], ['負担の大きい窓', nm((r) => r.cWeak)], ['あなたの得意な窓', nm((r) => r.sStrong === true)], ['使いすぎ注意', nm((r) => r.rel === 'chui')], ['相談するとよい窓', nm((r) => r.rel === 'zure')], ['どちらも負担', nm((r) => r.rel === 'ryouhou')]] as string[][]).filter((x) => x[1]);
+          if (sumRows.length) body.push(new Paragraph({ spacing: { after: 60 }, children: [] }), tbl([2600, 7600], ['まとめ', '窓'], sumRows));
+          // ③ 窓ごとの支援（表）
+          const sup = L.ch.filter((r) => r.cStrong || r.cWeak);
+          if (sup.length) {
+            body.push(hd('窓ごとの支援', HeadingLevel.HEADING_2));
+            const W = [1500, 3500, 3500, 1700];
+            body.push(tbl(W, ['窓', 'この窓を入口にする', '負担を減らす・置きかえる', '道具（AT）の例'], sup.map((r) => [
+              [r.c.name, ...(r.rel && REL_LABEL[r.rel] ? [new Paragraph({ children: [run(REL_LABEL[r.rel], { color: '4A33B0', bold: true, size: size - 2 })] })] : [])],
+              r.cStrong ? r.c.strong.houhou.map(dot) : ['—'],
+              r.cWeak ? r.c.weak.houhou.map(dot) : ['—'],
+              [...(r.cStrong ? r.c.strong.at.slice(0, 2) : []), ...(r.cWeak ? r.c.weak.at.slice(0, 2) : [])].map(dot),
+            ])));
+            const rel = L.ch.filter((r) => r.rel === 'zure' || r.rel === 'chui' || r.rel === 'ryouhou');
+            if (rel.length) body.push(new Paragraph({ spacing: { before: 60, after: 0 }, children: [run('相談先の目安：' + rel.map((r) => `${r.c.name}→${r.c.soudan}`).join('／'), { size: size - 2 })] }));
+          }
+          // ④ 関わり方のくせ（図＋表）
+          if (L.ax.length) {
+            const g2 = drawTracks(L.ax.map((r) => ({ name: r.a.name, tag: r.st, dot: r.s === null ? null : (r.s + 3) / 6, dot2: r.c === null ? null : (r.c + 3) / 6, left: '左の端', right: '右の端' })), ['あなた', '子ども']);
+            const axAlt = L.ax.map((r) => `${r.a.name}（左：${r.a.l}／右：${r.a.r}）：あなた ${r.s === null ? '未回答' : r.s === 0 ? '中間' : (r.s < 0 ? r.a.l : r.a.r) + '寄り'}、子ども ${r.c === null ? '未回答' : r.c === 0 ? '中間' : (r.c < 0 ? r.a.l : r.a.r) + '寄り'}${r.st ? '（' + r.st + '）' : ''}`).join('。');
+            body.push(hd('関わり方のくせ', HeadingLevel.HEADING_2), new Paragraph({ children: [new ImageRun({ type: 'png', data: await g2.png, transformation: { width: g2.w, height: g2.h }, altText: { name: '関わり方のくせの目盛り', title: '関わり方のくせ', description: axAlt } })] }));
+            body.push(tbl([1700, 2300, 6200], ['軸', '左の端 ／ 右の端', '気をつけたいこと'], L.ax.map((r) => [r.a.name, `${r.a.l} ／ ${r.a.r}`, r.adv ? r.adv.ki : '—'])));
+          }
+          body.push(hd('やってみること', HeadingLevel.HEADING_2), ...lines(4), hd('相談する人・相談したいこと', HeadingLevel.HEADING_2), ...lines(3));
+        } else {
+          body.push(...head1, para('診断ではありません。支援を考える前に、いったん立ち止まるための記録です。このファイルは自由に書きかえられます。'));
+          body.push(hd('まとめ', HeadingLevel.HEADING_2), ...L.sum.map(bullet));
+          body.push(hd('6つの窓の一覧', HeadingLevel.HEADING_2), ...L.ch.map((r) => bullet(`${r.c.name}：あなたは${r.youSt}。子どもは${r.kidSt}。${r.rel && REL_LABEL[r.rel] ? '組み合わせは' + REL_LABEL[r.rel] + '。' : ''}`)));
+          body.push(hd('窓ごとの支援', HeadingLevel.HEADING_2));
+          L.ch.forEach((r) => {
+            body.push(hd(`${r.c.name}（${r.c.sub}）${r.rel && r.rel !== 'sonota' ? '　― ' + REL_LABEL[r.rel] : ''}`, HeadingLevel.HEADING_3));
+            body.push(para(`あなた：${r.youSt}　　子ども：${r.kidSt}`));
+            if (r.relText) body.push(para(r.relText));
+            if (r.cStrong && r.cWeak) body.push(para('表裏一体：' + r.c.hyouri));
+            if (r.cStrong) { body.push(new Paragraph({ children: [run('この窓を入口にする支援', { bold: true })] })); r.c.strong.houhou.forEach((x) => body.push(bullet(x))); body.push(para('道具（AT）の例：' + r.c.strong.at.join('／'))); }
+            if (r.cWeak) { body.push(new Paragraph({ children: [run('負担を減らす・別の窓に置きかえる支援', { bold: true })] })); r.c.weak.houhou.forEach((x) => body.push(bullet(x))); body.push(para('道具（AT）の例：' + r.c.weak.at.join('／'))); }
           });
+          if (L.ax.length) {
+            body.push(hd('関わり方のくせ', HeadingLevel.HEADING_2));
+            L.ax.forEach((r) => {
+              body.push(hd(`${r.a.name}${r.st ? '　― ' + r.st : ''}`, HeadingLevel.HEADING_3));
+              if (r.partial) body.push(para(r.partial));
+              if (r.adv) body.push(para('あなたの強みを生かすと：' + r.adv.ikasu), para('気をつけたいこと：' + r.adv.ki), para('相談するなら：' + r.adv.soudan));
+            });
+          }
+          body.push(hd('やってみること（自由に書く）', HeadingLevel.HEADING_2), ...lines(6), hd('相談する人・相談したいこと', HeadingLevel.HEADING_2), ...lines(4));
         }
-        body.push(hd('やってみること（自由に書く）', HeadingLevel.HEADING_2), ...lines(6));
-        body.push(hd('相談する人・相談したいこと', HeadingLevel.HEADING_2), ...lines(4));
         const SRC = 'https://toitoitoi-lab.github.io/tachidomaru/';
         const doc = new Document({
           creator: 'toi toi toi', title: 'toi toi toi｜支援の前に、立ち止まる',
           numbering: { config: [{ reference: 'b', levels: [{ level: 0, format: LevelFormat.BULLET, text: '・', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 420, hanging: 280 } } } }] }] },
           sections: [{
-            properties: { page: { margin: { top: 1300, bottom: 1300, left: 1200, right: 1200 } } },
-            headers: { default: new Header({ children: [new Paragraph({ border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`toi toi toi｜支援の前に、立ち止まる　　出力：${label}`)] })] }) },
+            properties: { page: { size: { width: 11906, height: 16838 }, margin: zu ? { top: 850, bottom: 850, left: 850, right: 850, header: 400, footer: 400 } : { top: 1300, bottom: 1300, left: 1200, right: 1200 } } },
+            headers: { default: new Header({ children: [new Paragraph({ border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`toi toi toi｜支援の前に、立ち止まる　　出力：${label}　　診断ではありません`)] })] }) },
             footers: { default: new Footer({ children: [
-              new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`出典：toi toi toi ${SRC}`)] }),
-              new Paragraph({ children: [small('© toi toi toi（圓井健史）　利用ルール：https://toitoitoi-lab.github.io/rules/')] }),
-              new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ children: [PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], font: FONT, size: 16, color: '555555' })] }),
+              new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, tabStops: [{ type: 'right', position: zu ? 10200 : 9500 }], children: [small(`出典：toi toi toi ${SRC}　© toi toi toi（圓井健史）　利用ルール：https://toitoitoi-lab.github.io/rules/`), new TextRun({ children: ['\t', PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], font: FONT, size: 16, color: '555555' })] }),
             ] }) },
             children: body,
           }],
         });
         const blob = await Packer.toBlob(doc);
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `toitoitoi_tachidomaru_${file}.docx`; a.style.display = 'none';
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `toitoitoi_tachidomaru_${zu ? 'zu' : 'moji'}_${file}.docx`; a.style.display = 'none';
         document.body.appendChild(a); a.click(); setTimeout(() => { a.remove(); URL.revokeObjectURL(a.href); }, 30000);
-        note.textContent = 'Word形式のファイルを保存しました。';
-      } catch (e) { note.textContent = 'ファイルを作れませんでした。印刷（PDFとして保存）をお使いください。'; }
+        note.textContent = zu ? 'Word形式（図と表）のファイルを保存しました。' : 'Word形式（文字で詳しく）のファイルを保存しました。';
+      } catch (e) { console.error(e); note.textContent = 'ファイルを作れませんでした。印刷（PDFとして保存）をお使いください。'; }
     });
   </script>
 </Base>
