@@ -35,8 +35,8 @@ const T = ja
   ? {
       home: 'トップ', list: '立場から探す', review: '随時更新中', upd: '最終更新',
       lead: t.slug === 'sensei'
-        ? '見たこと・聞いたことから、考えられる困りごとを自分で選び、合いそうな方法を一覧で見られます。「困りごとから探す」の6つのページを、まとめて探せます。先生・支援者の方に向けたポイントもいっしょに表示します。'
-        : 'ご本人の様子から、考えられる困りごとを自分で選び、合いそうな方法を一覧で見られます。「困りごとから探す」の6つのページを、まとめて探せます。ご本人・ご家族に向けたポイントもいっしょに表示します。',
+        ? '児童生徒の様子を選ぶと、合いそうな方法が一覧で出ます（6つの困りごとをまとめて探せます）。先生・支援者向けのポイントつき。支援する人と子どもの持ち味を先に見たいときは、「支援の前に、立ち止まる」へ。'
+        : 'ご本人の様子を選ぶと、合いそうな方法が一覧で出ます（6つの困りごとをまとめて探せます）。ご本人・ご家族向けのポイントつき。',
       formTitle: '困っていることから方法を探す', legend: (x: string) => `${x}の困りごと`, pick: (n: number) => `${n}件選択中`,
       free: '困っていることを自由に書く', hint: '例：「連絡帳を書くのに時間がかかる」「話し合いで考えがまとまらない」',
       search: '探す', reset: '選んだものを消す', empty: 'まだ選ばれていません。下の「困りごとごとの一覧」から見ることもできます。',
@@ -81,13 +81,14 @@ const data = JSON.stringify({
       </div>
     </div>
     <p class="lead-text">{T.lead}</p>
+    {ja && t.slug === 'sensei' && <p class="komari-alt"><a class="inline" href="/tachidomaru/">支援の前に、立ち止まる（あなたと子どもの持ち味から、明日の手立てを出す）</a></p>}
     {t.review && <div class="notice"><p><strong>{T.draft}</strong>{T.draftText}</p></div>}
 
     <!-- 探し方は2つ。「困りごと・ことばから探す」（data-panel="old"）を消すときは：
          (1) 下の「【困りごと・ことばから探す】ここから」〜「ここまで」を消す
          (2) この tf-switch の部分と、ページ末尾の t3-tab のスクリプトを消す -->
     <div class="tf-switch-wrap">
-      <p class="tf-switch-lead">{ja ? '探し方は2つあります。見る視点がちがうだけで、どちらからでも同じ方法にたどり着きます。' : 'There are two ways to search. They start from different viewpoints, but lead to the same methods.'}</p>
+      <p class="tf-switch-lead">{ja ? '迷うときは「様子から探す」。困りごとが分かっていれば「困りごと・ことばから探す」。どちらからでも同じ方法にたどり着きます。' : 'There are two ways to search. They start from different viewpoints, but lead to the same methods.'}</p>
       <div class="tf-switch" role="group" aria-label={ja ? '探し方を選ぶ' : 'Choose how to search'}>
         <button type="button" class="tf-way" data-tab="new" aria-pressed="true">
           <span class="tf-way-title">{ja ? '様子から探す' : 'Start from what you see'}</span>

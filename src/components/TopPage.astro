@@ -36,12 +36,12 @@ const GUIDE = ja
         : <h1 id="hero-title">One tool can open<br />the <em>door</em> to learning.</h1>}
       <p class="lead">
         {ja
-          ? '読む・書く・聞く・伝える。困りごとに合った道具（AT）と、その使い方を。先生にも、本人にも、家族にも届くかたちで。'
+          ? '読む・書く・聞く・伝える。困りごとを選ぶと、合いそうな道具（AT）と使い方が出ます。先生にも、本人にも、家族にも届くかたちで。'
           : 'Reading, writing, listening, communicating. Tools that fit each need, and how to use them — for teachers, learners and families.'}
       </p>
       <div class="hero-actions">
         <a class="btn btn-solid" href={`${base}/#komari`}>{ja ? '困りごとから探す' : 'Find by need'}</a>
-        <a class="btn" href="#guide">{ja ? '使い方' : 'How to use'}</a>
+        {ja ? <a class="btn" href="/tachidomaru/">支援の前に、立ち止まる</a> : <a class="btn" href="#guide">How to use</a>}
       </div>
     </div>
     <aside class="statement" aria-labelledby="h-statement">
@@ -56,34 +56,6 @@ const GUIDE = ja
     </aside>
   </section>
 
-  <section class="guide" id="guide" aria-labelledby="h-guide">
-    <h2 id="h-guide" class="guide-label">{ja ? 'このサイトの使い方' : 'How to use this site'}</h2>
-    <ol class="guide-list">
-      {GUIDE.map((g, i) => (
-        <li>
-          <a class="guide-item" href={g.href}>
-            <span class="guide-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <span class="guide-title">{g.title}</span>
-            <span class="guide-text">{g.text}</span>
-          </a>
-        </li>
-      ))}
-      <li>
-        <button type="button" class="guide-item guide-set" data-open-settings>
-          <span class="guide-num" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
-          <span class="guide-title">{ja ? '見やすく変える' : 'Make it easier to see'}</span>
-          <span class="guide-text">{ja ? '配色・文字の形・大きさ・行間を選べます' : 'Choose colors, letter shapes, size and spacing'}</span>
-        </button>
-      </li>
-    </ol>
-    <p class="guide-foot"><a class="inline" href={`${base}/about/`}>{ja ? 'このサイトについて（運営・大切にしていること）' : 'About this site'}</a></p>
-  </section>
-  <script>
-    document.querySelectorAll('[data-open-settings]').forEach((b) => b.addEventListener('click', () => {
-      const t = document.getElementById('settings-toggle');
-      if (t && t.getAttribute('aria-expanded') !== 'true') t.click();
-    }));
-  </script>
 
   <section class="section" id="komari" aria-labelledby="h-komari">
     <div class="section-head">
@@ -146,4 +118,33 @@ const GUIDE = ja
     <KotsuList lang={lang} limit={3} headingLevel={4} />
     <p class="section-more"><a class="btn" href={`${base}/manabi/`}>{ja ? '教科と学び方をすべて見る' : 'See all subjects and tips'}</a> <a class="btn btn-accent" href={`${base}/kyozai/`}>{ja ? '教材の部屋へ' : 'Materials room'}</a></p>
   </section>
+
+  <section class="guide" id="guide" aria-labelledby="h-guide">
+    <h2 id="h-guide" class="guide-label">{ja ? 'このサイトの使い方' : 'How to use this site'}</h2>
+    <ol class="guide-list">
+      {GUIDE.map((g, i) => (
+        <li>
+          <a class="guide-item" href={g.href}>
+            <span class="guide-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="guide-title">{g.title}</span>
+            <span class="guide-text">{g.text}</span>
+          </a>
+        </li>
+      ))}
+      <li>
+        <button type="button" class="guide-item guide-set" data-open-settings>
+          <span class="guide-num" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
+          <span class="guide-title">{ja ? '見やすく変える' : 'Make it easier to see'}</span>
+          <span class="guide-text">{ja ? '配色・文字の形・大きさ・行間を選べます' : 'Choose colors, letter shapes, size and spacing'}</span>
+        </button>
+      </li>
+    </ol>
+    <p class="guide-foot"><a class="inline" href={`${base}/about/`}>{ja ? 'このサイトについて（運営・大切にしていること）' : 'About this site'}</a></p>
+  </section>
+  <script>
+    document.querySelectorAll('[data-open-settings]').forEach((b) => b.addEventListener('click', () => {
+      const t = document.getElementById('settings-toggle');
+      if (t && t.getAttribute('aria-expanded') !== 'true') t.click();
+    }));
+  </script>
 </div>
