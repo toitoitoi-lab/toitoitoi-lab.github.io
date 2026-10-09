@@ -964,3 +964,37 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 @media (max-width: 640px) { .td-adv { grid-template-columns: 1fr; gap: 2px 0; } .td-adv dd { margin-bottom: 8px; } }
 @media print { .td .site-header, .td-acts, .td .toc { display: none; } .td-q { break-inside: avoid; } .td-r { break-inside: avoid; } }
 @media (forced-colors: active) { .td-mk { forced-color-adjust: none; border-color: CanvasText; background: Canvas; } .td-mk-s { background: Highlight; border-color: Highlight; } }
+
+/* 立ち止まる：6つの窓版の追加分 */
+.td-mado { display: flex; flex-wrap: wrap; gap: 8px 10px; list-style: none; padding: 0; margin: 12px 0; }
+.td-mado li { border: 2px solid var(--line); border-radius: 999px; padding: 6px 16px; margin: 0; }
+.td-sub { color: var(--sub); font-weight: 400; font-size: 0.9em; }
+.td-m { white-space: nowrap; }
+.td-tagm { display: inline-block; margin-right: 0.6em; padding: 0 0.6em; border-radius: 6px; border: 1.5px solid var(--accent-text); color: var(--accent-text); font-size: 0.85em; }
+.td-qg { border: 1px solid var(--line); padding: 12px 14px 14px; display: grid; gap: 10px; }
+.td-qgh { margin: 0; font-weight: 700; font-size: 1.1rem; }
+.td-qg .td-q { border: 0; border-top: 1px dashed var(--line); padding: 10px 0 0; }
+.td-kind { display: inline-block; margin-right: 0.6em; padding: 0 0.6em; border-radius: 6px; font-size: 0.85em; }
+.td-kind-s { background: var(--accent-fill); color: var(--on-accent); }
+.td-kind-w { border: 1.5px solid var(--fg); }
+.td-more { border: 1px solid var(--line); padding: 4px 16px 16px; }
+.td-more summary { cursor: pointer; font-weight: 700; padding: 12px 0; min-height: 48px; }
+.td-more h3 { font-size: 1.1rem; margin: 18px 0 8px; }
+.td-sum ul { margin: 0; padding-left: 1.2em; }
+.td-sum li { margin: 4px 0; }
+.td-map caption { text-align: left; font-weight: 700; padding-bottom: 6px; }
+.td-sec { font-size: 1.3rem; margin: 32px 0 4px; }
+.td-st { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 8px 0; color: var(--sub); }
+.td-st-k { font-weight: 700; color: var(--fg); }
+.td-st-k:not(:first-child) { margin-left: 10px; }
+.td-rel { font-weight: 700; margin: 6px 0; }
+.td-hyouri { border-left: 3px solid var(--accent-fill); padding-left: 12px; }
+.td-blk h4 { margin: 14px 0 4px; font-size: 1.02rem; color: var(--accent-text); }
+.td-blk ul { margin: 0 0 6px; }
+.td-at { margin: 4px 0 0; color: var(--sub); }
+.td-at-k { font-weight: 700; color: var(--fg); margin-right: 0.8em; }
+.td-tag-zure, .td-tag-chui { color: var(--accent-text); }
+.td-tag-kasanari, .td-tag-sonota { color: var(--sub); }
+.td-tag-ryouhou { color: var(--fg); }
+.td-save-note { border-left: 3px solid var(--accent-fill); padding-left: 12px; }
+@media print { .td details.td-more:not([open]) { display: none; } .td-save-note { display: none; } }

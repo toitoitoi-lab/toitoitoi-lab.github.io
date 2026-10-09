@@ -8,8 +8,8 @@ export type Update = { date: string; ja: string; en: string; href?: string };
 export const UPDATES: Update[] = [
   {
     date: '2026-10-10',
-    ja: '「支援の前に、立ち止まる」を追加しました。支援する人と子どもの持ち味を、同じ6つの軸で見比べるチェックです。',
-    en: 'Added “Pause before you support”: a check that compares a supporter’s and a child’s traits on the same six axes (Japanese only for now).',
+    ja: '「支援の前に、立ち止まる」を追加しました。見る・聞く・話す・動く・感じる・見通すの6つの窓から、支援する人と子どもの得意としんどさを見比べ、支援の方法を考えるチェックです。Word形式で保存して書き込めます。',
+    en: 'Added “Pause before you support”: a check that compares a supporter’s and a child’s strengths and difficulties through six windows — seeing, hearing, speaking, moving, sensing and planning — and suggests ways to support (Japanese only for now).',
     href: '/tachidomaru/',
   },
   {
