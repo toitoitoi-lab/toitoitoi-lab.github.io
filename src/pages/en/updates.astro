@@ -11,7 +11,7 @@ const label = (d: string) => { const [y, m, dd] = d.split('-').map(Number); retu
     <p>Newest first.</p>
     <ul class="nw-list nw-hist">
       {UPDATES.map((u) => (
-        <li><time datetime={u.date}>{label(u.date)}</time><span class="nw-t">{u.en}</span>{u.href && <a href={'/en' + u.href}>Details</a>}</li>
+        <li><time datetime={u.date}>{label(u.date)}</time><span class="nw-t">{u.en}</span>{u.href && <a href={u.jaOnly ? u.href : '/en' + u.href}>Details</a>}</li>
       ))}
     </ul>
   </div>

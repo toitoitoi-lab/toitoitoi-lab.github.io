@@ -14,7 +14,7 @@ const label = (d: string) => {
   const [y, m, dd] = d.split('-').map(Number);
   return ja ? `${y}年${m}月${dd}日` : new Date(Date.UTC(y, m - 1, dd)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
 };
-const href = (h?: string) => (h ? base + h : undefined);
+const href = (u: { href?: string; jaOnly?: boolean }) => (u.href ? (u.jaOnly ? u.href : base + u.href) : undefined);
 const T = ja
   ? { head: 'お知らせ', fresh: '新着', more: (n: number) => `ほか${n}件を見る`, less: 'とじる', all: '更新履歴をすべて見る', detail: 'くわしく' }
   : { head: 'News', fresh: 'New', more: (n: number) => `Show ${n} more`, less: 'Hide', all: 'See all updates', detail: 'Details' };
@@ -27,7 +27,7 @@ const T = ja
         <time datetime={first.date}>{label(first.date)}</time>
         {isNew(first.date) && <span class="nw-new">{T.fresh}</span>}
         <span class="nw-t">{ja ? first.ja : first.en}</span>
-        {first.href && <a href={href(first.href)}>{T.detail}</a>}
+        {first.href && <a href={href(first)}>{T.detail}</a>}
       </p>
       {rest.length > 0 && (
         <button type="button" class="nw-btn" id="nw-btn" aria-expanded="true" aria-controls="nw-more" hidden data-more={T.more(rest.length)} data-less={T.less}>{T.more(rest.length)}</button>
@@ -41,7 +41,7 @@ const T = ja
               <time datetime={u.date}>{label(u.date)}</time>
               {isNew(u.date) && <span class="nw-new">{T.fresh}</span>}
               <span class="nw-t">{ja ? u.ja : u.en}</span>
-              {u.href && <a href={href(u.href)}>{T.detail}</a>}
+              {u.href && <a href={href(u)}>{T.detail}</a>}
             </li>
           ))}
         </ul>
