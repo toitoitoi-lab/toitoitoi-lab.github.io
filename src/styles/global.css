@@ -1031,3 +1031,16 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .td-wfmt { border: 1px solid var(--line); padding: 10px 14px 14px; margin: 10px 0; }
 .td-wfmt legend { font-weight: 700; padding: 0 6px; }
 @media print { .td-det { border: 0; padding: 0; } .td-det > summary { display: none; } .td-wfmt { display: none; } }
+/* 立ち止まる：手立て */
+.td-te { margin: 20px 0; }
+.td-te h3 { font-size: 1.3rem; margin: 0 0 4px; }
+.td-te-list { padding-left: 1.6em; margin: 8px 0 0; }
+.td-te-list > li { margin: 0 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.td-te-h { margin: 0 0 4px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.td-te-win { font-weight: 700; font-size: 1.1rem; }
+.td-te-kind { font-size: 0.85rem; padding: 0 0.6em; border: 1.5px solid var(--accent-text); border-radius: 6px; color: var(--accent-text); }
+.td-te-first { margin: 0 0 6px; font-size: 1.1rem; font-weight: 700; word-break: auto-phrase; }
+.td-te-list .td-det { margin: 4px 0 0; }
+.td-det-lg { margin: 10px 0; }
+.td-det-lg > summary { font-size: 1.05rem; }
+.td-det-lg .td-r:first-of-type { border-top: 0; }
