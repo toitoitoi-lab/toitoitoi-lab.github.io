@@ -169,12 +169,12 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       return L;
     }
     // 明日からの手立て：見立てに自信がなくても、そのままやれる順に並べる（あなたが変えること → 入口 → 負担を減らす）
-    type Te = { win: string; kind: string; first: string; sign: string; next: string };
+    type Te = { win: string; kind: string; first: string; sign: string; next: string; at: string[] };
     function tedate(R: ChRes[]): Te[] {
       const out: Te[] = [];
-      R.filter((r) => r.rel === 'chui').forEach((r) => out.push({ win: r.c.name, kind: 'あなたが変えること', first: r.c.tedate.chui, sign: r.c.tedate.weak.sign, next: r.c.tedate.weak.next }));
-      R.filter((r) => r.cStrong).forEach((r) => out.push({ win: r.c.name, kind: '入口にする', ...r.c.tedate.strong }));
-      R.filter((r) => r.cWeak && r.rel !== 'chui').forEach((r) => out.push({ win: r.c.name, kind: '負担を減らす', ...r.c.tedate.weak }));
+      R.filter((r) => r.rel === 'chui').forEach((r) => out.push({ win: r.c.name, kind: 'あなたが変えること', first: r.c.tedate.chui, sign: r.c.tedate.weak.sign, next: r.c.tedate.weak.next, at: r.c.weak.at.slice(0, 2) }));
+      R.filter((r) => r.cStrong).forEach((r) => out.push({ win: r.c.name, kind: '入口にする', ...r.c.tedate.strong, at: r.c.strong.at.slice(0, 2) }));
+      R.filter((r) => r.cWeak && r.rel !== 'chui').forEach((r) => out.push({ win: r.c.name, kind: '負担を減らす', ...r.c.tedate.weak, at: r.c.weak.at.slice(0, 2) }));
       return out;
     }
 
@@ -296,7 +296,7 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
 
     wd.addEventListener('click', async () => {
       if (!last) return;
-      const L = last, fmt = (document.querySelector<HTMLInputElement>('input[name="td-wf"]:checked')?.value || 'zu') as 'zu' | 'moji';
+      const L = { ...last, te: last.te.slice(0, 6) }, fmt = (document.querySelector<HTMLInputElement>('input[name="td-wf"]:checked')?.value || 'zu') as 'zu' | 'moji';
       note.textContent = 'ファイルを作っています…';
       try {
         const X = await import('docx');
@@ -321,30 +321,20 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
         const LV = ['あてはまらない', 'あまり', 'やや', 'あてはまる'];
         const chAlt = L.ch.map((r) => `${r.c.name}：あなた${r.s === null ? '未回答' : '「' + LV[r.s] + '」'}、子ども 得意${r.cs === null ? '未回答' : '「' + LV[r.cs] + '」'}・しんどさ${r.cw === null ? '未回答' : '「' + LV[r.cw] + '」'}${r.rel && REL_LABEL[r.rel] ? '（' + REL_LABEL[r.rel] + '）' : ''}`).join('。');
         const body: any[] = [];
+        const more = last.te.length > 6 ? `（${last.te.length}つのうち、はじめの6つ。残りはサイトの結果ページで）` : '';
         const head1 = [hd('支援の前に、立ち止まる', HeadingLevel.HEADING_1), para(`記入日：${label}　　記入した人：　　　　　　　子どもの呼び名（実名は書かない）：`)];
         if (zu) {
           body.push(...head1);
           // ② まとめ（表）
           body.push(hd('結論', HeadingLevel.HEADING_2), ...L.sum.map(dot));
-          if (L.te.length) { body.push(hd(`明日からの手立て（${L.te.length}つ）`, HeadingLevel.HEADING_2)); body.push(tbl([1500, 4700, 4000], ['窓', 'まずやること', 'うまくいっているサイン'], L.te.map((t) => [[t.win, new Paragraph({ children: [run(t.kind, { color: '4A33B0', size: size - 2 })] })], [t.first], [t.sign]]))); }
+          if (L.te.length) { body.push(hd(`明日からの手立て（${L.te.length}つ）${more}`, HeadingLevel.HEADING_2)); body.push(tbl([1400, 3900, 3000, 1900], ['窓', 'まずやること', 'うまくいっているサイン', '道具（AT）の例'], L.te.map((t) => [[t.win, new Paragraph({ children: [run(t.kind, { color: '4A33B0', size: size - 2 })] })], [t.first], [t.sign], t.at.map(dot)]))); }
           // 6つの窓の目盛り（図）
           // ① 6つの窓の目盛り（図）
           const g = drawTracks(L.ch.map((r) => ({ name: r.c.name, tag: r.rel && REL_LABEL[r.rel] ? REL_LABEL[r.rel] : '', dot: r.s === null ? null : r.s / 3, band: r.cs === null && r.cw === null ? null : [0.5 - (r.cw ?? 0) / 6, 0.5 + (r.cs ?? 0) / 6] as [number, number], left: '苦手・しんどい', right: '得意' })), ['あなた', '子ども（帯が長いほど、得意としんどさの両方がある）']);
           body.push(hd('6つの窓', HeadingLevel.HEADING_2), new Paragraph({ children: [new ImageRun({ type: 'png', data: await g.png, transformation: { width: g.w, height: g.h }, altText: { name: '6つの窓の目盛り', title: '6つの窓の一覧', description: chAlt } })] }));
-          // ③ 窓ごとの支援（表）
-          const sup = L.ch.filter((r) => r.cStrong || r.cWeak);
-          if (sup.length) {
-            body.push(hd('窓ごとの支援', HeadingLevel.HEADING_2));
-            const W = [1300, 3450, 3450, 2000];
-            body.push(tbl(W, ['窓', 'この窓を入口にする', '負担を減らす・置きかえる', '道具（AT）の例'], sup.map((r) => [
-              [r.c.name, ...(r.rel && REL_LABEL[r.rel] ? [new Paragraph({ children: [run(REL_LABEL[r.rel], { color: '4A33B0', bold: true, size: size - 2 })] })] : [])],
-              r.cStrong ? r.c.strong.houhou.slice(0, 1).map(dot) : ['—'],
-              r.cWeak ? r.c.weak.houhou.slice(0, 1).map(dot) : ['—'],
-              [...(r.cStrong ? r.c.strong.at.slice(0, 2) : []), ...(r.cWeak ? r.c.weak.at.slice(0, 2) : [])].map(dot),
-            ])));
-            const rel = L.ch.filter((r) => r.rel === 'zure' || r.rel === 'chui' || r.rel === 'ryouhou');
-            if (rel.length) body.push(new Paragraph({ spacing: { before: 60, after: 0 }, children: [run('相談先の目安：' + rel.map((r) => `${r.c.name}→${r.c.soudan}`).join('／'), { size: size - 2 })] }));
-          }
+          const relS = L.ch.filter((r) => r.rel === 'zure' || r.rel === 'chui' || r.rel === 'ryouhou');
+          if (relS.length) body.push(new Paragraph({ spacing: { before: 60, after: 0 }, children: [run('相談先の目安：' + relS.map((r) => `${r.c.name}→${r.c.soudan}`).join('／'), { size: size - 2 })] }));
+          body.push(new Paragraph({ spacing: { before: 40, after: 0 }, children: [run('くわしい方法と「効かなければ」は、サイトの結果ページで読めます。', { size: size - 2, color: '555555' })] }));
           // ④ 関わり方のくせ（図＋表）
           if (L.ax.length) {
             const g2 = drawTracks(L.ax.map((r) => ({ name: r.a.name, tag: r.st, dot: r.s === null ? null : (r.s + 3) / 6, dot2: r.c === null ? null : (r.c + 3) / 6, left: '左の端', right: '右の端' })), ['あなた', '子ども']);
@@ -360,7 +350,7 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
           body.push(...head1, para(`診断ではありません。結論、明日からの手立て${L.te.length}つ、相談先の順に書いてあります。`));
           body.push(hd('結論', HeadingLevel.HEADING_2), ...L.sum.map(bullet));
           if (L.te.length) {
-            body.push(hd(`明日からの手立て（${L.te.length}つ）`, HeadingLevel.HEADING_2), para('まず1つ、1〜2週間試します。'));
+            body.push(hd(`明日からの手立て（${L.te.length}つ）${more}`, HeadingLevel.HEADING_2), para('まず1つ、1〜2週間試します。'));
             L.te.forEach((t, i) => { body.push(hd(`${i + 1}. ${t.win}：${t.kind}`, HeadingLevel.HEADING_3), para(t.first), para('うまくいっているサイン：' + t.sign), para('効かなければ：' + t.next)); });
           }
           const sd = rel.filter((r) => r.rel === 'zure' || r.rel === 'ryouhou' || r.rel === 'chui');
