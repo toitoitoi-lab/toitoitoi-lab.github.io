@@ -1044,3 +1044,6 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .td-det-lg { margin: 10px 0; }
 .td-det-lg > summary { font-size: 1.05rem; }
 .td-det-lg .td-r:first-of-type { border-top: 0; }
+.td-keep { margin: 24px 0 8px; border-top: 1px solid var(--line); padding-top: 12px; }
+.td-keep h3 { font-size: 1.15rem; margin: 0 0 8px; }
+@media print { .td-keep { display: none; } }

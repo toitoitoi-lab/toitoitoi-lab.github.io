@@ -57,20 +57,25 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
     <h2 id="kekka">3. 結果：手立てを見る</h2>
     <p class="td-acts">
       <button type="button" class="btn btn-solid" id="td-go">結果を見る</button>
-      <button type="button" class="btn" id="td-print" hidden>印刷する</button>
-      <button type="button" class="btn" id="td-word" hidden>Word形式で保存（編集できます）</button>
       <button type="button" class="btn" id="td-reset">最初からやり直す</button>
     </p>
-    <fieldset class="td-wfmt" id="td-wfmt" hidden>
-      <legend>Wordの形式</legend>
-      <div class="opts td-opts">
-        <label><input type="radio" name="td-wf" value="zu" checked /><span>図と表で短く（A4 2枚まで）</span></label>
-        <label><input type="radio" name="td-wf" value="moji" /><span>文字で短く（読み上げ向け・A4 1枚ほど）</span></label>
-      </div>
-    </fieldset>
-    <p class="note td-save-note" id="td-save-note" hidden>印刷した紙や、保存したファイルは、あなたの手元（端末）に残ります。実名など、子どもが誰か分かることを書き足すときは、職場の個人情報のルールに従ってください。</p>
     <p class="note" id="td-note" aria-live="polite"></p>
     <div id="td-out"></div>
+    <div class="td-keep" id="td-keep" hidden>
+      <h3>結果を残す（印刷・Word）</h3>
+      <fieldset class="td-wfmt" id="td-wfmt">
+        <legend>Wordの形式</legend>
+        <div class="opts td-opts">
+          <label><input type="radio" name="td-wf" value="zu" checked /><span>図と表で短く（A4 2枚まで）</span></label>
+          <label><input type="radio" name="td-wf" value="moji" /><span>文字で短く（読み上げ向け・A4 2枚まで）</span></label>
+        </div>
+      </fieldset>
+      <p class="td-acts">
+        <button type="button" class="btn" id="td-word">Word形式で保存（編集できます）</button>
+        <button type="button" class="btn" id="td-print">印刷する</button>
+      </p>
+      <p class="note td-save-note" id="td-save-note">印刷した紙や、保存したファイルは、あなたの手元（端末）に残ります。実名など、子どもが誰か分かることを書き足すときは、職場の個人情報のルールに従ってください。</p>
+    </div>
 
     <h2 id="q-b">さらに：関わり方のくせ（任意）</h2>
     <details class="td-more">
@@ -117,8 +122,8 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
     type Ax = { id: string; name: string; l: string; r: string; adv: Record<string, Adv> };
     const D = JSON.parse(document.getElementById('td-data')!.textContent!) as { ch: Ch[]; ax: Ax[] };
     const $ = (id: string) => document.getElementById(id)!;
-    const out = $('td-out'), note = $('td-note'), pr = $('td-print'), wd = $('td-word'), sn = $('td-save-note'), wf = $('td-wfmt');
-    const showSave = (v: boolean) => { pr.hidden = wd.hidden = sn.hidden = wf.hidden = !v; if (v) { const m = document.querySelector<HTMLInputElement>(`input[name="td-wf"][value="${document.documentElement.dataset.detail === 'open' ? 'moji' : 'zu'}"]`); if (m) m.checked = true; } };
+    const out = $('td-out'), note = $('td-note'), pr = $('td-print'), wd = $('td-word'), keep = $('td-keep');
+    const showSave = (v: boolean) => { keep.hidden = !v; if (v) { const m = document.querySelector<HTMLInputElement>(`input[name="td-wf"][value="${document.documentElement.dataset.detail === 'open' ? 'moji' : 'zu'}"]`); if (m) m.checked = true; } };
     const val = (name: string): number | null => { const e = document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`); return e ? Number(e.value) : null; };
     const h = (tag: string, cls?: string | null, text?: string | null) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
