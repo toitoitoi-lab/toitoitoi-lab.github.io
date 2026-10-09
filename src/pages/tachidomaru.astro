@@ -247,7 +247,7 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
     // ── Word（.docx）。この端末の中で作って保存する（サイトには送らない） ──
     // zu = 図と表で短く（A4 2枚まで）／ moji = 文字で詳しく（読み上げ向け）
     function drawTracks(rows: { name: string; tag: string; dot: number | null; band?: [number, number] | null; dot2?: number | null; left: string; right: string }[], legend: string[]): { png: Promise<Uint8Array>; w: number; h: number } {
-      const S = 2, W = 680, RH = 34, TOP = 46, H = TOP + rows.length * RH + 8;
+      const S = 2, W = 680, RH = 28, TOP = 42, H = TOP + rows.length * RH + 8;
       const cv = document.createElement('canvas'); cv.width = W * S; cv.height = H * S; const x = cv.getContext('2d')!; x.scale(S, S);
       const F = (sz: number, b = false) => `${b ? '700 ' : ''}${sz}px "BIZ UDPGothic", "BIZ UDPゴシック", "Hiragino Sans", "Noto Sans JP", sans-serif`;
       x.fillStyle = '#fff'; x.fillRect(0, 0, W, H);
@@ -255,7 +255,7 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
       // 凡例
       x.font = F(12); x.fillStyle = '#333'; let lx = 0;
       legend.forEach((t, i) => { const cx = lx + 8; if (i === 0) { x.fillStyle = VI; x.beginPath(); x.arc(cx, 10, 6, 0, 7); x.fill(); } else if (legend.length > 1 && rows.some((r) => r.band)) { x.strokeStyle = '#111'; x.lineWidth = 2; x.fillStyle = 'rgba(0,0,0,.12)'; x.beginPath(); x.roundRect(lx, 5, 22, 10, 5); x.fill(); x.stroke(); } else { x.strokeStyle = '#111'; x.lineWidth = 2.5; x.fillStyle = '#fff'; x.beginPath(); x.arc(cx, 10, 6, 0, 7); x.fill(); x.stroke(); } x.fillStyle = '#333'; x.fillText(t, lx + 28, 14); lx += 28 + x.measureText(t).width + 22; });
-      x.fillStyle = '#555'; x.font = F(11); x.textAlign = 'left'; x.fillText('← ' + rows[0].left, L, 36); x.textAlign = 'right'; x.fillText(rows[0].right + ' →', R, 36); x.textAlign = 'left';
+      x.fillStyle = '#555'; x.font = F(11); x.textAlign = 'left'; x.fillText('← ' + rows[0].left, L, 34); x.textAlign = 'right'; x.fillText(rows[0].right + ' →', R, 34); x.textAlign = 'left';
       rows.forEach((r, i) => {
         const y = TOP + i * RH + RH / 2;
         x.strokeStyle = '#ddd'; x.lineWidth = 1; x.beginPath(); x.moveTo(0, y - RH / 2); x.lineTo(W, y - RH / 2); x.stroke();
@@ -287,13 +287,13 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
         const lines = (n: number) => Array.from({ length: n }, () => new Paragraph({ spacing: { before: zu ? 260 : 300 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: '999999', space: 1 } }, children: [] }));
         const small = (text: string) => new TextRun({ text, font: FONT, size: 16, color: '555555' });
         const bd = { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB' }, B = { top: bd, bottom: bd, left: bd, right: bd };
-        const cellP = (items: (string | Paragraph)[], w: number, head = false) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: B, verticalAlign: VerticalAlign.TOP, margins: { top: 40, bottom: 40, left: 80, right: 80 }, shading: head ? { type: ShadingType.CLEAR, fill: 'F0F0F0', color: 'auto' } : undefined, children: items.length ? items.map((t) => typeof t === 'string' ? new Paragraph({ spacing: { after: 0, line: 250 }, children: [run(t, { bold: head, size: size - (zu ? 0 : 2) })] }) : t) : [new Paragraph({ children: [] })] });
+        const cellP = (items: (string | Paragraph)[], w: number, head = false) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: B, verticalAlign: VerticalAlign.TOP, margins: { top: 30, bottom: 30, left: 70, right: 70 }, shading: head ? { type: ShadingType.CLEAR, fill: 'F0F0F0', color: 'auto' } : undefined, children: items.length ? items.map((t) => typeof t === 'string' ? new Paragraph({ spacing: { after: 0, line: zu ? 228 : 250 }, children: [run(t, { bold: head, size: size - (zu ? 0 : 2) })] }) : t) : [new Paragraph({ children: [] })] });
         const cell = (t: string, w: number, head = false) => cellP([t], w, head);
         const tbl = (W: number[], head: string[], rows: (string | (string | Paragraph)[])[][]) => new Table({ width: { size: W.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: W, rows: [
           new TableRow({ tableHeader: true, children: head.map((t, i) => cell(t, W[i], true)) }),
           ...rows.map((r) => new TableRow({ cantSplit: true, children: r.map((t, i) => Array.isArray(t) ? cellP(t, W[i]) : cell(t, W[i], i === 0)) })),
         ] });
-        const dot = (t: string) => new Paragraph({ spacing: { after: 0, line: 240 }, indent: { left: 160, hanging: 160 }, children: [run('・' + t)] });
+        const dot = (t: string) => new Paragraph({ spacing: { after: 0, line: 228 }, indent: { left: 160, hanging: 160 }, children: [run('・' + t)] });
         const LV = ['あてはまらない', 'あまり', 'やや', 'あてはまる'];
         const chAlt = L.ch.map((r) => `${r.c.name}：あなた${r.s === null ? '未回答' : '「' + LV[r.s] + '」'}、子ども 得意${r.cs === null ? '未回答' : '「' + LV[r.cs] + '」'}・しんどさ${r.cw === null ? '未回答' : '「' + LV[r.cw] + '」'}${r.rel && REL_LABEL[r.rel] ? '（' + REL_LABEL[r.rel] + '）' : ''}`).join('。');
         const body: any[] = [];
@@ -311,11 +311,11 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
           const sup = L.ch.filter((r) => r.cStrong || r.cWeak);
           if (sup.length) {
             body.push(hd('窓ごとの支援', HeadingLevel.HEADING_2));
-            const W = [1500, 3500, 3500, 1700];
+            const W = [1300, 3450, 3450, 2000];
             body.push(tbl(W, ['窓', 'この窓を入口にする', '負担を減らす・置きかえる', '道具（AT）の例'], sup.map((r) => [
               [r.c.name, ...(r.rel && REL_LABEL[r.rel] ? [new Paragraph({ children: [run(REL_LABEL[r.rel], { color: '4A33B0', bold: true, size: size - 2 })] })] : [])],
-              r.cStrong ? r.c.strong.houhou.map(dot) : ['—'],
-              r.cWeak ? r.c.weak.houhou.map(dot) : ['—'],
+              r.cStrong ? r.c.strong.houhou.slice(0, 2).map(dot) : ['—'],
+              r.cWeak ? r.c.weak.houhou.slice(0, 2).map(dot) : ['—'],
               [...(r.cStrong ? r.c.strong.at.slice(0, 2) : []), ...(r.cWeak ? r.c.weak.at.slice(0, 2) : [])].map(dot),
             ])));
             const rel = L.ch.filter((r) => r.rel === 'zure' || r.rel === 'chui' || r.rel === 'ryouhou');
@@ -326,9 +326,10 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
             const g2 = drawTracks(L.ax.map((r) => ({ name: r.a.name, tag: r.st, dot: r.s === null ? null : (r.s + 3) / 6, dot2: r.c === null ? null : (r.c + 3) / 6, left: '左の端', right: '右の端' })), ['あなた', '子ども']);
             const axAlt = L.ax.map((r) => `${r.a.name}（左：${r.a.l}／右：${r.a.r}）：あなた ${r.s === null ? '未回答' : r.s === 0 ? '中間' : (r.s < 0 ? r.a.l : r.a.r) + '寄り'}、子ども ${r.c === null ? '未回答' : r.c === 0 ? '中間' : (r.c < 0 ? r.a.l : r.a.r) + '寄り'}${r.st ? '（' + r.st + '）' : ''}`).join('。');
             body.push(hd('関わり方のくせ', HeadingLevel.HEADING_2), new Paragraph({ children: [new ImageRun({ type: 'png', data: await g2.png, transformation: { width: g2.w, height: g2.h }, altText: { name: '関わり方のくせの目盛り', title: '関わり方のくせ', description: axAlt } })] }));
-            body.push(tbl([1700, 2300, 6200], ['軸', '左の端 ／ 右の端', '気をつけたいこと'], L.ax.map((r) => [r.a.name, `${r.a.l} ／ ${r.a.r}`, r.adv ? r.adv.ki : '—'])));
+            body.push(tbl([1500, 2500, 6200], ['軸', '左の端 ／ 右の端', '気をつけたいこと'], L.ax.map((r) => [r.a.name, `${r.a.l} ／ ${r.a.r}`, r.adv ? r.adv.ki : '—'])));
           }
-          body.push(hd('やってみること', HeadingLevel.HEADING_2), ...lines(4), hd('相談する人・相談したいこと', HeadingLevel.HEADING_2), ...lines(3));
+          body.push(new Paragraph({ spacing: { before: 60, after: 0 }, children: [run('この表は要点です。すべての方法と説明は、「文字で詳しく」の形式で保存できます。', { size: size - 2, color: '555555' })] }));
+          body.push(hd('やってみること', HeadingLevel.HEADING_2), ...lines(3), hd('相談する人・相談したいこと', HeadingLevel.HEADING_2), ...lines(2));
         } else {
           body.push(...head1, para('診断ではありません。支援を考える前に、いったん立ち止まるための記録です。このファイルは自由に書きかえられます。'));
           body.push(hd('まとめ', HeadingLevel.HEADING_2), ...L.sum.map(bullet));
