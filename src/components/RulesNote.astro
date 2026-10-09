@@ -1,6 +1,6 @@
 ---
 // 利用ルールを、使う直前の場所で一行だけ知らせる（野暮ったくならないよう、箱にせず細い線だけ）
-interface Props { lang?: 'ja' | 'en'; ctx: 'shien' | 'print' | 'kenshu' | 'riyou' | 'apps' }
+interface Props { lang?: 'ja' | 'en'; ctx: 'shien' | 'print' | 'kenshu' | 'riyou' | 'apps' | 'check' }
 const { lang = 'ja', ctx } = Astro.props;
 const ja = lang === 'ja';
 const base = ja ? '' : '/en';
@@ -9,6 +9,8 @@ const C = {
   apps: { ja: ['使う前に', 'アプリには架空のデータだけを入れます。仕事で使うときは、職場のルールに従う。'], en: ['Before you use', 'Enter only fictional data in the apps. At work, follow your workplace’s rules.'], at: 'r4' },
   print: { ja: ['配るときは', '出典（ページの上下の表示）を消さずに使ってください。'], en: ['When sharing', 'Keep the source line at the top and bottom of each page.'], at: 'r2' },
   kenshu: { ja: ['研修で使うとき', '資料や画面を研修で使う範囲は、利用ルールに沿ってご相談ください。'], en: ['For training', 'Please ask within the terms of use about using materials or screens in training.'], at: 'r8' },
+  // 様子を選ぶだけのチェック（支援の前に、立ち止まる）：実在の子について使う前提。名前は入れない・送られない
+  check: { ja: ['使う前に', '目の前の児童生徒の様子で答えて構いません。名前や、だれか分かることは入れません（入力欄もありません）。答えと結果は、このサイトに送られず、保存もされません。印刷や保存をして残すときは、職場の個人情報のルールに従ってください。'], en: ['Before you use', 'You may answer about a real child. Do not enter names or anything that identifies them (there are no text fields). Answers and results are never sent to this site or stored. If you print or save the result, follow your workplace’s personal-data rules.'], at: 'r4-check' },
   riyou: { ja: ['利用の前に', '授業・校内研修・お便りなどで使える範囲は、利用ルールで確かめられます。'], en: ['Before using', 'You can check what is allowed in lessons, school training or newsletters in the terms of use.'], at: 'summary' },
 }[ctx];
 const [k, text] = ja ? C.ja : C.en;

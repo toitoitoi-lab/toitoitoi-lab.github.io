@@ -16,10 +16,10 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
     <p class="lead-text">チェックに答えると、<strong>その子に届きやすい支援の入口</strong>と、<strong>明日からの手立て</strong>が出ます。見る・聞く・話す・動く・感じる・見通すの6つの窓で、あなたと子どもを見比べます。所要は5分ほどです。</p>
     <ul class="td-pts">
       <li><strong>診断ではありません。</strong>優劣もありません。見立てに自信がなくても、結果はそのまま明日の手立てになります。</li>
-      <li><strong>名前は入れません。</strong>答えや結果は、このサイトに送られず、保存もされません。</li>
+      <li><strong>名前は入れません。</strong>目の前の子どもの様子で答えます。答えや結果は、このサイトに送られず、保存もされません。</li>
       <li><strong>得意としんどさは、表裏一体です。</strong>同じ窓に、両方があることもあります。</li>
     </ul>
-    <RulesNote lang="ja" ctx="shien" />
+    <RulesNote lang="ja" ctx="check" />
 
     <nav class="toc" aria-label="このページの目次"><ol>
       <li><a href="#q-s">1. あなた（支援する人）について</a></li>
@@ -327,7 +327,7 @@ const QB = (who: 's' | 'c') => AXES.flatMap((a) => (['l', 'r'] as const).map((si
         const chAlt = L.ch.map((r) => `${r.c.name}：あなた${r.s === null ? '未回答' : '「' + LV[r.s] + '」'}、子ども 得意${r.cs === null ? '未回答' : '「' + LV[r.cs] + '」'}・しんどさ${r.cw === null ? '未回答' : '「' + LV[r.cw] + '」'}${r.rel && REL_LABEL[r.rel] ? '（' + REL_LABEL[r.rel] + '）' : ''}`).join('。');
         const body: any[] = [];
         const more = last.te.length > 6 ? `（${last.te.length}つのうち、はじめの6つ。残りはサイトの結果ページで）` : '';
-        const head1 = [hd('支援の前に、立ち止まる', HeadingLevel.HEADING_1), para(`記入日：${label}　　記入した人：　　　　　　　子どもの呼び名（実名は書かない）：`)];
+        const head1 = [hd('支援の前に、立ち止まる', HeadingLevel.HEADING_1), para(`記入日：${label}　　記入した人：　　　　　　　子どもの呼び名：　　　　　　（名前など、だれか分かることを書き足すと個人情報になります。職場のルールに従ってください）`)];
         if (zu) {
           body.push(...head1);
           // ② まとめ（表）
