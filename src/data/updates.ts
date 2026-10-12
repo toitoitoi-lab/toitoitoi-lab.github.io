@@ -7,6 +7,12 @@ export type Update = { date: string; ja: string; en: string; href?: string; jaOn
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-10-12',
+    ja: '「支援の前に、立ち止まる」の質問を、「意図」ではなく「最近の事実」で答える形に変えました。「窓」を「わかり方（子ども）」「伝え方（あなた）」に言いかえ、予想外の反応があったときの動きと、同僚に見てもらう観察シート（A4 1枚）を加えました。',
+    en: '“Pause before you support” now asks about recent facts, not intentions, and uses the terms “how a child understands” and “how you convey”. Added a section on what you do when a child reacts unexpectedly, and a one-page observation sheet for a colleague (Japanese only for now).',
+    href: '/tachidomaru/', jaOnly: true,
+  },
+  {
     date: '2026-10-10',
     ja: '「支援の前に、立ち止まる」を、結論と「明日からの手立て」が先に出る形にしました。Wordは図と表（A4 2枚）か、文字で短く（A4 1枚ほど）を選べます。表示設定に「説明の量」を追加しました。',
     en: '“Pause before you support” now leads with the conclusion and concrete next steps. Word export comes in a chart-and-table version (2 pages) or a short text version. Added an “amount of explanation” display setting.',
@@ -14,8 +20,8 @@ export const UPDATES: Update[] = [
   },
   {
     date: '2026-10-10',
-    ja: '「支援の前に、立ち止まる」を追加しました。見る・聞く・話す・動く・感じる・見通すの6つの窓から、支援する人と子どもの得意としんどさを見比べ、支援の方法を考えるチェックです。Word形式で保存して書き込めます。',
-    en: 'Added “Pause before you support”: a check that compares a supporter’s and a child’s strengths and difficulties through six windows — seeing, hearing, speaking, moving, sensing and planning — and suggests ways to support (Japanese only for now).',
+    ja: '「支援の前に、立ち止まる」を追加しました。子どもの「わかり方」と、支援する人の「伝え方」を見比べ、支援の方法を考えるチェックです。Word形式で保存して書き込めます。',
+    en: 'Added “Pause before you support”: a check that compares how a child best takes in information with how a supporter usually conveys it, and suggests ways to support (Japanese only for now).',
     href: '/tachidomaru/', jaOnly: true,
   },
   {

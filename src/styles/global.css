@@ -934,12 +934,17 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .td-tbl td:nth-child(2) { color: var(--accent-text); font-weight: 700; }
 .td-qs { display: grid; gap: 12px; margin-top: 16px; }
 .td-q { border: 1px solid var(--line); padding: 14px 16px 16px; margin: 0; }
-.td-q legend { font-weight: 700; padding: 0 6px; line-height: 1.5; word-break: auto-phrase; }
+.td-q legend { font-weight: 700; padding: 0 0 6px; line-height: 1.6; word-break: auto-phrase; float: left; width: 100%; }
+.td-q legend + .opts { clear: both; }
 .td-n { display: inline-flex; align-items: center; justify-content: center; min-width: 1.8em; height: 1.8em; margin-right: 0.5em; border-radius: 8px; background: var(--accent-fill); color: var(--on-accent); font-size: 0.85em; }
 .td-opts { margin-top: 10px; }
 .td-opts label { cursor: pointer; }
 .td-opts input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .td-opts input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+.td-opts-v { flex-direction: column; align-items: stretch; }
+.td-opts-v label { display: block; }
+.td-opts-v span { width: 100%; box-sizing: border-box; padding: 10px 16px; line-height: 1.5; font-weight: 500; }
+.td-q + .td-q { margin-top: 12px; }
 .td-acts { display: flex; flex-wrap: wrap; gap: 10px; }
 .td-sum { border: 2px solid var(--accent-text); border-radius: 16px; padding: 16px 20px; margin: 16px 0 24px; }
 .td-sum h3 { margin: 0 0 8px; font-size: 1.1rem; }
@@ -965,7 +970,7 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 @media print { .td .site-header, .td-acts, .td .toc { display: none; } .td-q { break-inside: avoid; } .td-r { break-inside: avoid; } }
 @media (forced-colors: active) { .td-mk { forced-color-adjust: none; border-color: CanvasText; background: Canvas; } .td-mk-s { background: Highlight; border-color: Highlight; } }
 
-/* 立ち止まる：6つの窓版の追加分 */
+/* 立ち止まる：6つのわかり方版の追加分 */
 .td-mado { display: flex; flex-wrap: wrap; gap: 8px 10px; list-style: none; padding: 0; margin: 12px 0; }
 .td-mado li { border: 2px solid var(--line); border-radius: 999px; padding: 6px 16px; margin: 0; }
 .td-sub { color: var(--sub); font-weight: 400; font-size: 0.9em; }
@@ -1002,7 +1007,7 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .td-map td:nth-child(2) { color: inherit; font-weight: 400; }
 .td-map th, .td-map td { white-space: nowrap; }
 @media (max-width: 480px) { .td-map th, .td-map td { padding: 8px 8px; font-size: 0.92rem; } }
-/* 立ち止まる：6つの窓の一覧（目盛り） */
+/* 立ち止まる：6つのわかり方と伝え方の一覧（目盛り） */
 .td-mapv { margin: 8px 0 24px; }
 .td-mapv h3 { font-size: 1.2rem; margin: 0 0 6px; }
 .td-key { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 10px; font-size: 0.88rem; color: var(--sub); }
