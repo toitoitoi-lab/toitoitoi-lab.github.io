@@ -2,72 +2,58 @@
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import RulesNote from '../components/RulesNote.astro';
-import { CHANNELS, AXES, SCALE_S, SCALE_C, REFRAME, TOSSA_FIRST, TOSSA_TIMING, TOSSA_PREP } from '../data/tachidomaru';
+import { CHANNELS, AXES, SCALE_S, SCALE_C, REFRAME } from '../data/tachidomaru';
 const title = '支援の前に、立ち止まる';
-const desc = '子どもの「わかり方」と、あなたの「伝え方」を、ふだんの事実で見比べて、明日からの手立てと道具を考えるチェックです。診断ではありません。';
-const json = JSON.stringify({ ch: CHANNELS, ax: AXES, sS: SCALE_S, sC: SCALE_C, tf: TOSSA_FIRST, tt: TOSSA_TIMING, tp: TOSSA_PREP });
+const desc = 'あなたの得意と、子どもに届くわかり方をスライダーで置くと、2つが重なる所（ベン図）と、合わない所をICT・AIで補う明日の手立てが出ます。診断ではありません。';
+const json = JSON.stringify({ ch: CHANNELS, ax: AXES, sS: SCALE_S, sC: SCALE_C });
 const QB = (who: 's' | 'c') => AXES.map((a) => ({ id: `b${who}-${a.id}`, name: a.name, l: a[who].l, r: a[who].r }));
+const SL = [
+  { who: 's', id: 'q-s', left: 'しんどい', right: '楽しい・得意' },
+  { who: 'c', id: 'q-c', left: '負担', right: 'のってくる・届く' },
+] as const;
 ---
 <Base title={title} lang="ja" current="tachiba" description={desc}>
   <div class="wrap page prose td">
     <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '立場から探す', href: '/#tachiba' }, { label: title }]} />
     <p class="kk-kicker" lang="en" aria-hidden="true">Before you support</p>
     <h1>{title}</h1>
-    <p class="lead-text">チェックに答えると、<strong>その子の「わかり方」に合う伝え方</strong>と、<strong>明日からの手立て</strong>が出ます。子どもの「わかり方」と、あなたの「伝え方」を、ふだんの様子で見比べます。所要は5分ほどです。</p>
+    <p class="lead-text">あなたの得意と、子どもに届くわかり方。<strong>2つが重なる所から、支援を始めます。</strong>重ならない所は、大人が子どもに合わせ、<strong>ICT・AIで補います</strong>。先生も楽しくないと、支援は続きません。所要は3分ほどです。</p>
     <ul class="td-pts">
+      <li><strong>スライダーを「こんなもんかな」と置くだけです。</strong>4段階で止まります。読み上げでは「3：まあまあ得意」のように、数字と言葉で伝わります。矢印キーでも動かせます。</li>
       <li><strong>診断ではありません。</strong>優劣もありません。見立てに自信がなくても、結果はそのまま明日の手立てになります。</li>
-      <li><strong>答えは「意図」ではなく「事実」です。</strong>「どうしたいか」ではなく、「ふだん実際にしていること・見ている様子」を選びます。</li>
-      <li><strong>名前は入れません。</strong>目の前の子どもの様子で答えます。答えや結果は、このサイトに送られず、保存もされません。</li>
+      <li><strong>名前は入れません。</strong>答えや結果は、このサイトに送られず、保存もされません。</li>
     </ul>
     <RulesNote lang="ja" ctx="check" />
 
     <nav class="toc" aria-label="このページの目次"><ol>
-      <li><a href="#q-s">1. あなた（支援する人）が、ふだんしていること</a></li>
-      <li><a href="#q-t">2. 予想外の反応があったとき</a></li>
-      <li><a href="#q-c">3. 子どものふだんの様子</a></li>
-      <li><a href="#kekka">4. 結果：手立てを見る</a></li>
+      <li><a href="#q-s">1. あなたの得意</a></li>
+      <li><a href="#q-c">2. 子どもに届くわかり方</a></li>
+      <li><a href="#kekka">3. 結果：重なりを見る</a></li>
       <li><a href="#q-b">さらに：関わり方のくせ（任意）</a></li>
-      <li><a href="#mado">くわしく知りたいとき（わかり方と伝え方・行動の裏側・観察シート）</a></li>
+      <li><a href="#mado">くわしく知りたいとき</a></li>
     </ol></nav>
 
-    <h2 id="q-s">1. あなた（支援する人）が、ふだんしていること</h2>
-    <p>先生・放課後等デイサービスの職員・家族など、支援する人が答えます。<strong>今週や最近の指導・支援を思い出しながら、ふだんの自分のやり方</strong>に近いものを選びます。「そうしたい」ではなく、「実際にしている」かどうかです。おおまかで構いません。</p>
-    <div class="td-qs">
-      {CHANNELS.map((c, i) => (
-        <fieldset class="td-q">
-          <legend><span class="td-n">{i + 1}</span><span class="td-tagm">{c.tsutae}</span>{c.s}</legend>
-          <div class="opts td-opts">{SCALE_S.map((s, v) => <label><input type="radio" name={`s-${c.id}`} value={v} /><span>{s}</span></label>)}</div>
-        </fieldset>
-      ))}
-    </div>
-
-    <h2 id="q-t">2. 予想外の反応があったとき</h2>
-    <p>授業や活動で、子どもが予想外の反応をしたときを思い出します（今週など、新しい記憶からで構いません）。<strong>実際にしたこと</strong>を選びます。答えなくても、結果は出ます。</p>
-    <fieldset class="td-q">
-      <legend><span class="td-n">a</span>そのとき、最初にしたことは？（あてはまるものすべて）</legend>
-      <div class="opts td-opts td-opts-v">{TOSSA_FIRST.map((q) => <label><input type="checkbox" name="tt-first" value={q.id} /><span>{q.text}</span></label>)}</div>
-    </fieldset>
-    <fieldset class="td-q">
-      <legend><span class="td-n">b</span>その動きは、間に合いましたか？（近いものを1つ）</legend>
-      <div class="opts td-opts td-opts-v">{TOSSA_TIMING.map((q) => <label><input type="radio" name="tt-timing" value={q.id} /><span>{q.text}</span></label>)}</div>
-    </fieldset>
-    <p class="note">予想外は誰にでも起きます。差が出るのは、そのときの準備があるかどうかです。「間に合わなかった」も、そのまま選んで構いません。</p>
-
-    <h2 id="q-c">3. 子どものふだんの様子</h2>
-    <p><strong>ふだん見ている事実</strong>から答えます。本人が答えられるときは、一緒に答えても構いません。わかり方ごとに、「うまくいく場面」と「負担になる場面」を別々に答えます。両方あてはまることもあります。一人の子について、一回ずつ使います。</p>
-    <div class="td-qs">
-      {CHANNELS.map((c, i) => (
-        <div class="td-qg">
-          <p class="td-qgh"><span class="td-n">{i + 1}</span>{c.wakari}<span class="td-sub">（{c.sub}）</span></p>
-          <fieldset class="td-q"><legend><span class="td-kind td-kind-s">うまくいく</span>{c.cS}</legend>
-            <div class="opts td-opts">{SCALE_C.map((s, v) => <label><input type="radio" name={`cs-${c.id}`} value={v} /><span>{s}</span></label>)}</div></fieldset>
-          <fieldset class="td-q"><legend><span class="td-kind td-kind-w">負担になる</span>{c.cW}</legend>
-            <div class="opts td-opts">{SCALE_C.map((s, v) => <label><input type="radio" name={`cw-${c.id}`} value={v} /><span>{s}</span></label>)}</div></fieldset>
+    {SL.map((g) => (
+      <section>
+        <h2 id={g.id}>{g.who === 's' ? '1. あなたの得意（楽しく、自然にできる伝え方）' : '2. 子どもに届くわかり方（ふだんの様子）'}</h2>
+        <p>{g.who === 's' ? '今週や最近の指導・支援を思い出しながら、ふだんの自分に近い所に置きます。「やっていて楽しいか・自然にできるか」で考えます。' : 'ふだん見ている様子から置きます。本人と一緒に置いても構いません。一人の子について、一回ずつ使います。'}</p>
+        <div class="td-sls">
+          {CHANNELS.map((c, i) => (
+            <div class="td-sl td-un">
+              <label class="td-sl-l" for={`${g.who}-${c.id}`}><span class="td-n">{i + 1}</span><strong>{g.who === 's' ? c.tsutae : c.wakari}</strong><span class="td-sl-ex">{g.who === 's' ? c.exS : c.exC}</span></label>
+              <div class="td-sl-row">
+                <span class="td-sl-end" aria-hidden="true">{g.left}</span>
+                <input type="range" class="td-range" id={`${g.who}-${c.id}`} min="1" max="4" step="1" value="2" data-scale={g.who} aria-valuetext="未回答" />
+                <span class="td-sl-end" aria-hidden="true">{g.right}</span>
+              </div>
+              <p class="td-sl-v" aria-hidden="true">未回答</p>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </section>
+    ))}
 
-    <h2 id="kekka">4. 結果：手立てを見る</h2>
+    <h2 id="kekka">3. 結果：重なりを見る</h2>
     <p class="td-acts">
       <button type="button" class="btn btn-solid" id="td-go">結果を見る</button>
       <button type="button" class="btn" id="td-reset">最初からやり直す</button>
@@ -75,19 +61,12 @@ const QB = (who: 's' | 'c') => AXES.map((a) => ({ id: `b${who}-${a.id}`, name: a
     <p class="note" id="td-note" aria-live="polite"></p>
     <div id="td-out"></div>
     <div class="td-keep" id="td-keep" hidden>
-      <h3>結果を残す（印刷・Word）</h3>
-      <fieldset class="td-wfmt" id="td-wfmt">
-        <legend>Wordの形式</legend>
-        <div class="opts td-opts">
-          <label><input type="radio" name="td-wf" value="zu" checked /><span>図と表で短く（A4 2枚まで）</span></label>
-          <label><input type="radio" name="td-wf" value="moji" /><span>文字で短く（読み上げ向け・A4 2枚まで）</span></label>
-        </div>
-      </fieldset>
+      <h3>結果を残す</h3>
       <p class="td-acts">
-        <button type="button" class="btn" id="td-word">Word形式で保存（編集できます）</button>
+        <button type="button" class="btn" id="td-word">Word形式で保存（A4 1枚・編集できます）</button>
         <button type="button" class="btn" id="td-print">印刷する</button>
       </p>
-      <p class="note td-save-note" id="td-save-note">印刷した紙や、保存したファイルは、あなたの手元（端末）に残ります。実名など、子どもが誰か分かることを書き足すときは、職場の個人情報のルールに従ってください。</p>
+      <p class="note">印刷した紙や、保存したファイルは、あなたの手元（端末）に残ります。実名など、子どもが誰か分かることを書き足すときは、職場の個人情報のルールに従ってください。</p>
     </div>
 
     <h2 id="q-b">さらに：関わり方のくせ（任意）</h2>
@@ -102,14 +81,17 @@ const QB = (who: 's' | 'c') => AXES.map((a) => ({ id: `b${who}-${a.id}`, name: a
 
     <h2 id="mado">くわしく知りたいとき</h2>
     <details class="td-det td-det-lg" data-auto>
-      <summary>「わかり方」と「伝え方」とは</summary>
-      <p>子どもの<strong>わかり方</strong>は、その子がいちばん負担少なく、情報を受け取れる形です。大人の<strong>伝え方</strong>は、ふだん実際によくとっている、伝える形です。この2つが合うと伝わりやすく、ずれると、どちらも苦しくなります。<strong>手立て</strong>（写真カード・声がけ・タイマーなど）は、その場でとる行動や道具で、わかり方・伝え方とは別のものです。</p>
-      <ul class="td-mado">
-        {CHANNELS.map((c) => <li><strong>{c.wakari}</strong><span class="td-sub">（あなた：{c.tsutae}）</span></li>)}
+      <summary>ベン図の見方</summary>
+      <ul>
+        <li><strong>重なり（まん中）</strong>：あなたも楽しく、この子にも届く伝え方です。ここから始めます。</li>
+        <li><strong>この子に届くだけ（右）</strong>：あなたは得意ではないけれど、この子には届きます。大人が子どもに合わせる所です。苦手な分は、ICT・AIや道具で補います。</li>
+        <li><strong>あなたの得意だけ（左）</strong>：この子には届きにくい、または負担です。やめるのではなく、形を変えて使います。</li>
+        <li>スライダーの3以上を「得意」「届く」として見ています。</li>
       </ul>
+      <p>子どもの「わかり方」は、その子がいちばん負担少なく、情報を受け取れる形です。あなたの「伝え方」は、ふだん楽しく、自然にとっている伝える形です。</p>
     </details>
     <details class="td-det td-det-lg" data-auto>
-      <summary>行動の裏側を見る（同じ行動が、強みでもあり弱みでもある）</summary>
+      <summary>行動の裏側を見る（同じ行動が、強みでもあり負担でもある）</summary>
       <p>目に見える行動は、「問題」と見える前に、その子の学び方のあらわれです。</p>
       <div class="td-tbl-wrap">
         <table class="td-tbl">
@@ -119,366 +101,231 @@ const QB = (who: 's' | 'c') => AXES.map((a) => ({ id: `b${who}-${a.id}`, name: a
       </div>
     </details>
     <details class="td-det td-det-lg" data-auto>
-      <summary>同僚に見てもらう（観察シート・A4 1枚）</summary>
-      <p>自分の伝え方は、自分では見えにくいものです。授業のあと、同僚に5分で○を付けてもらう紙を作れます。<strong>サイトにも誰にも送りません。</strong>名前を書く欄はありません。自分の答えと、紙を見比べます。</p>
-      <p class="td-acts"><button type="button" class="btn" id="td-obs">観察シートをWordで保存</button></p>
-    </details>
-    <details class="td-det td-det-lg" data-auto>
       <summary>使い方のヒント</summary>
       <ul>
-        <li>「ずれ」は、あなたの弱い面ではなく、<strong>その伝え方が得意な人に相談するところ</strong>です。同僚・家族・放課後の支援者など、立場の違う人ほど、得意な伝え方も違います。</li>
-        <li>「使いすぎ注意」は、あなたがよく使う伝え方です。よく使う分、つい使いすぎて、この子には負担になることがあります。</li>
-        <li>手立ては1〜2週間試して、「うまくいっているサイン」が出なければ「効かなければ」へ進みます。子どもは変わります。学期ごと・担当が変わるたびに、やり直してください。</li>
+        <li>AIに頼むときは、<strong>子どもの名前や、だれか分かることは入れません。</strong>「小学3年くらいの子に」のように、一般的な言い方で頼みます。</li>
+        <li>重なりがないときも、心配いりません。大人が子どもに合わせ、道具で補えば、支援はつながります。得意な同僚に、やり方を見せてもらうのも近道です。</li>
+        <li>手立ては1〜2週間試して、「うまくいっているサイン」が出なければ次へ進みます。子どもは変わります。学期ごと・担当が変わるたびに、置き直してください。</li>
       </ul>
     </details>
   </div>
   <script type="application/json" id="td-data" set:html={json}></script>
   <script>
     type Td = { first: string; sign: string; next: string };
-    type Ch = { id: string; name: string; sub: string; wakari: string; tsutae: string; s: string; cS: string; cW: string; strong: { houhou: string[]; at: string[] }; weak: { houhou: string[]; at: string[] }; hyouri: string; soudan: string; tedate: { strong: Td; weak: Td; chui: string } };
+    type Ch = { id: string; name: string; sub: string; wakari: string; tsutae: string; exS: string; exC: string; kS: string; kC: string; kF: string; ai: string[]; aiFirst: string; strong: { houhou: string[]; at: string[] }; weak: { houhou: string[]; at: string[] }; soudan: string; tedate: { strong: Td; weak: Td; chui: string } };
     type Adv = { ikasu: string; ki: string; soudan: string };
-    type Ax = { id: string; name: string; l: string; r: string; s: { l: string; r: string }; c: { l: string; r: string }; adv: Record<string, Adv> };
-    const D = JSON.parse(document.getElementById('td-data')!.textContent!) as { ch: Ch[]; ax: Ax[]; sS: string[]; sC: string[]; tf: { id: string; text: string; ch: string }[]; tt: { id: string; text: string }[]; tp: Record<string, Td> };
+    type Ax = { id: string; name: string; l: string; r: string; adv: Record<string, Adv> };
+    const D = JSON.parse(document.getElementById('td-data')!.textContent!) as { ch: Ch[]; ax: Ax[]; sS: string[]; sC: string[] };
     const $ = (id: string) => document.getElementById(id)!;
-    const out = $('td-out'), note = $('td-note'), pr = $('td-print'), wd = $('td-word'), keep = $('td-keep');
-    const showSave = (v: boolean) => { keep.hidden = !v; if (v) { const m = document.querySelector<HTMLInputElement>(`input[name="td-wf"][value="${document.documentElement.dataset.detail === 'open' ? 'moji' : 'zu'}"]`); if (m) m.checked = true; } };
-    const val = (name: string): number | null => { const e = document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`); return e ? Number(e.value) : null; };
+    const out = $('td-out'), note = $('td-note'), keep = $('td-keep');
     const h = (tag: string, cls?: string | null, text?: string | null) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-    const q = (names: string[]) => names.map((n) => `「${n}」`).join('');
+    const q = (l: string[]) => l.map((x) => `「${x}」`).join('');
+    const detOpen = () => document.documentElement.dataset.detail === 'open';
 
-    type Rel = 'kasanari' | 'zure' | 'chui' | 'ryouhou' | 'sonota';
-    type ChRes = { c: Ch; s: number | null; cs: number | null; cw: number | null; sStrong: boolean | null; cStrong: boolean; cWeak: boolean; rel: Rel | null; relText: string; youSt: string; kidSt: string };
-    function chResult(c: Ch): ChRes {
-      const s = val('s-' + c.id), cs = val('cs-' + c.id), cw = val('cw-' + c.id);
-      const sStrong = s === null ? null : s >= 2, cStrong = (cs ?? 0) >= 2, cWeak = (cw ?? 0) >= 2;
-      let rel: Rel | null = null, relText = '';
-      const wk = `「${c.wakari}」`, ts = `「${c.tsutae}」`;
-      if (sStrong !== null && (cStrong || cWeak)) {
-        if (sStrong && cStrong && !cWeak) { rel = 'kasanari'; relText = `合っている：この子は${wk}場面でうまくいきます。あなたは、ふだん${ts}をよく使っています。そのまま入口に使えます。同じ伝え方ばかりにならないよう、ほかの伝え方も一つ添えます。`; }
-        else if (!sStrong && cStrong && !cWeak) { rel = 'zure'; relText = `ずれ：この子は${wk}場面でうまくいきますが、あなたは${ts}をあまり使っていません。下の方法や道具で補うか、${c.soudan}に、やり方を見せてもらいます。`; }
-        else if (sStrong && cWeak) { rel = 'chui'; relText = `使いすぎ注意：あなたがよく使う${ts}は、この子には負担になりやすい伝え方${cStrong ? 'でもあります' : 'です'}。量を減らし、この子の「わかり方」に合う伝え方に置きかえます。`; }
-        else if (!sStrong && cWeak) { rel = 'ryouhou'; relText = `どちらも負担：${ts}は、あなたもあまり使わず、この子にも負担になりやすい伝え方です。無理に使わず、道具（AT）や、${c.soudan}の力を借ります。`; }
-      } else if (sStrong !== null) { rel = 'sonota'; relText = sStrong ? `あなたがよく使う${ts}です。この子は、このわかり方では、目立った「うまくいく」「負担になる」がありません。` : 'この子は、このわかり方では、目立った「うまくいく」「負担になる」がありません。'; }
-      const youSt = s === null ? '未回答' : sStrong ? 'よく使う' : 'あまり使わない';
-      const kidSt = cs === null && cw === null ? '未回答' : cStrong && cWeak ? 'うまくいく場面と負担の両方' : cStrong ? 'うまくいく' : cWeak ? '負担になる' : 'どちらも目立たない';
-      return { c, s, cs, cw, sStrong, cStrong, cWeak, rel, relText, youSt, kidSt };
+    // ── スライダー：触るまでは「未回答」。値は4段階（1〜4）、読み上げは数字＋言葉 ──
+    const ranges = Array.from(document.querySelectorAll<HTMLInputElement>('.td-range'));
+    const label = (el: HTMLInputElement) => { const sc = el.dataset.scale === 's' ? D.sS : D.sC; return el.dataset.touched ? `${el.value}：${sc[Number(el.value) - 1]}` : '未回答'; };
+    const paint = (el: HTMLInputElement) => { const t = label(el); el.setAttribute('aria-valuetext', t); const box = el.closest('.td-sl')!; box.querySelector('.td-sl-v')!.textContent = t; box.classList.toggle('td-un', !el.dataset.touched); };
+    ranges.forEach((el) => { const touch = () => { el.dataset.touched = '1'; paint(el); }; el.addEventListener('input', touch); el.addEventListener('change', touch); el.addEventListener('pointerup', touch); paint(el); });
+    const gv = (id: string): number | null => { const el = document.getElementById(id) as HTMLInputElement; return el.dataset.touched ? Number(el.value) : null; };
+
+    type Cat = 'kasanari' | 'awaseru' | 'katachi' | 'hikaeru' | 'sonota';
+    type R = { c: Ch; s: number | null; k: number | null; cat: Cat | null };
+    const res = (c: Ch): R => {
+      const s = gv('s-' + c.id), k = gv('c-' + c.id);
+      let cat: Cat | null = null;
+      if (s !== null && k !== null) cat = s >= 3 && k >= 3 ? 'kasanari' : k >= 3 ? 'awaseru' : s >= 3 ? 'katachi' : k === 1 ? 'hikaeru' : 'sonota';
+      return { c, s, k, cat };
+    };
+    type BC = 'kasanari' | 'awaseru' | 'katachi' | 'tamesu';
+    const BOX: Record<BC, { t: string; sub: string }> = {
+      kasanari: { t: '重なり：ここから始める', sub: 'あなたも楽しく、この子にも届く伝え方です。' },
+      awaseru: { t: '子どもに合わせる：ICT・AIで補う', sub: 'この子には届くけれど、あなたは得意ではない伝え方です。苦手な分は、道具に任せます。' },
+      katachi: { t: '形を変える', sub: 'あなたの得意ですが、この子には届きにくい伝え方です。やめずに、形を変えて使います。' },
+      tamesu: { t: 'まず試す：届きそうな所から', sub: 'はっきり届く所は、まだ見えていません。いちばん届きそうな所から試し、のってくる所を探します。' },
+    };
+    type Te = { cat: BC; c: Ch; first: string; tools: string[]; sign: string; next: string };
+    const tedate = (L: R[]): Te[] => {
+      const o: Te[] = [];
+      L.filter((r) => r.cat === 'kasanari').forEach((r) => o.push({ cat: 'kasanari', c: r.c, first: r.c.tedate.strong.first, tools: r.c.strong.at.slice(0, 2), sign: r.c.tedate.strong.sign, next: r.c.tedate.strong.next }));
+      L.filter((r) => r.cat === 'awaseru').forEach((r) => o.push({ cat: 'awaseru', c: r.c, first: r.c.aiFirst, tools: r.c.ai, sign: r.c.tedate.strong.sign, next: r.c.tedate.strong.next }));
+      L.filter((r) => r.cat === 'katachi').forEach((r) => o.push({ cat: 'katachi', c: r.c, first: r.c.tedate.chui, tools: r.c.weak.at.slice(0, 2), sign: r.c.tedate.weak.sign, next: r.c.tedate.weak.next }));
+      // 重なりも、届く所もないとき：いちばん届きそうな所（子どもの値が高く、あなたも使いやすい順）から試す
+      if (!o.some((t) => t.cat !== 'katachi')) { const c = L.filter((r) => r.k !== null && r.k >= 2).sort((a, b) => (b.k! * 10 + (b.s ?? 0)) - (a.k! * 10 + (a.s ?? 0)))[0]; if (c) o.unshift({ cat: 'tamesu', c: c.c, first: (c.s ?? 0) >= 3 ? c.c.tedate.strong.first : c.c.aiFirst, tools: (c.s ?? 0) >= 3 ? c.c.strong.at.slice(0, 2) : c.c.ai, sign: c.c.tedate.strong.sign, next: c.c.tedate.strong.next }); }
+      return o;
+    };
+    const summary = (L: R[]) => {
+      const n = (f: (r: R) => boolean) => L.filter(f).map((r) => r.c.name);
+      const ka = n((r) => r.cat === 'kasanari'), aw = n((r) => r.cat === 'awaseru'), kt = n((r) => r.cat === 'katachi'), hk = n((r) => r.cat === 'hikaeru');
+      const kS = n((r) => (r.k ?? 0) >= 3);
+      const o: string[] = [];
+      if (ka.length) o.push(`重なりは${q(ka)}。ここから始めます。あなたも楽しく、この子にも届きます。`);
+      else if (kS.length) o.push(`重なりは、まだありません。この子に届く${q(kS)}に、大人が合わせます。`);
+      else o.push(`この子に届くわかり方が、まだはっきりしません。いちばん届きそうな所から試し、のってくる所を探します。`);
+      if (aw.length) o.push(`${q(aw)}は、この子に届くけれど、あなたは得意ではありません。ICT・AIで補います。`);
+      if (kt.length) o.push(`あなたの得意な${q(kt)}は、この子には届きにくい伝え方です。形を変えて使います。`);
+      if (hk.length) o.push(`${q(hk)}は、この子の負担になりやすいので、控えめにします。`);
+      return o;
+    };
+
+    // ── ベン図（SVG）。左＝あなたの得意だけ、まん中＝重なり、右＝この子に届くだけ ──
+    type Z = { left: string[]; mid: string[]; right: string[] };
+    // 図の中は短い名前（話す・伝える→話す）。読み上げ（aria-label）も同じ名前
+    const sn = (r: R) => r.c.name.split('・')[0];
+    const zones = (L: R[]): Z => ({
+      left: L.filter((r) => (r.s ?? 0) >= 3 && !((r.k ?? 0) >= 3)).map(sn),
+      mid: L.filter((r) => (r.s ?? 0) >= 3 && (r.k ?? 0) >= 3).map(sn),
+      right: L.filter((r) => (r.k ?? 0) >= 3 && !((r.s ?? 0) >= 3)).map(sn),
+    });
+    const vennAlt = (z: Z) => `ベン図。重なり：${z.mid.join('、') || 'なし'}。あなたの得意だけ：${z.left.join('、') || 'なし'}。この子に届くだけ：${z.right.join('、') || 'なし'}。`;
+    function vennSvg(z: Z) {
+      const NS = 'http://www.w3.org/2000/svg', W = 640, H = 330;
+      const s = document.createElementNS(NS, 'svg'); s.setAttribute('viewBox', `0 0 ${W} ${H}`); s.setAttribute('class', 'td-venn-svg'); s.setAttribute('aria-hidden', 'true');
+      const el = (tag: string, a: Record<string, string | number>, text?: string) => { const e = document.createElementNS(NS, tag); Object.entries(a).forEach(([k, v]) => e.setAttribute(k, String(v))); if (text) e.textContent = text; s.appendChild(e); return e; };
+      el('circle', { cx: 245, cy: 180, r: 140, class: 'td-vc td-vc-s' });
+      el('circle', { cx: 395, cy: 180, r: 140, class: 'td-vc td-vc-c' });
+      el('text', { x: 150, y: 28, class: 'td-vt', 'text-anchor': 'middle' }, 'あなたの得意');
+      el('text', { x: 490, y: 28, class: 'td-vt', 'text-anchor': 'middle' }, 'この子に届く');
+      el('text', { x: 320, y: 325, class: 'td-vk', 'text-anchor': 'middle' }, '↑ 重なり');
+      const col = (x: number, items: string[], cls: string) => { const top = 180 - ((items.length - 1) * 30) / 2 + 8; items.forEach((t, i) => el('text', { x, y: top + i * 30, class: cls, 'text-anchor': 'middle' }, t)); if (!items.length) el('text', { x, y: 186, class: 'td-vn', 'text-anchor': 'middle' }, '—'); };
+      col(168, z.left, 'td-vi'); col(320, z.mid, 'td-vi td-vi-m'); col(472, z.right, 'td-vi');
+      return s;
     }
-    const REL_LABEL: Record<Rel, string> = { kasanari: '合っている', zure: 'ずれ', chui: '使いすぎ注意', ryouhou: 'どちらも負担', sonota: '' };
 
-    // 第2部（2択）：左・右のどちらに近いか
+    // ── 関わり方のくせ（2択） ──
     type AxRes = { a: Ax; s: 'l' | 'r' | null; c: 'l' | 'r' | null; st: string; adv: Adv | null; partial: string };
     function axResult(a: Ax): AxRes | null {
       const pick = (who: string) => { const e = document.querySelector<HTMLInputElement>(`input[name="b${who}-${a.id}"]:checked`); return e ? (e.value as 'l' | 'r') : null; };
       const s = pick('s'), c = pick('c'); if (!s && !c) return null;
-      const st = s && c ? (s === c ? '合っている' : 'ずれ') : '';
+      const st = s && c ? (s === c ? '重なり' : 'ずれ') : '';
       const key = s && c ? s + c : s ? s + s : c ? c + c : null;
       const partial = key && (!s || !c) ? `${s ? '子ども' : 'あなた'}は、この軸では答えていません。答えたほうに合わせた文です。` : '';
       return { a, s, c, st, adv: key ? a.adv[key] : null, partial };
     }
-
-    // 予想外のとき：最初にとった動き（事実）と、間に合ったか
-    type Tossa = { used: Ch[]; rel: 'ok' | 'zure' | 'none'; text: string; timing: string; timeText: string; ent: Ch | null };
-    function tossaResult(R: ChRes[]): Tossa | null {
-      const ids = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="tt-first"]:checked')).map((e) => e.value);
-      const tm = document.querySelector<HTMLInputElement>('input[name="tt-timing"]:checked')?.value || '';
-      if (!ids.length && !tm) return null;
-      const chs = Array.from(new Set(ids.map((id) => D.tf.find((x) => x.id === id)!.ch)));
-      const used = chs.map((id) => D.ch.find((c) => c.id === id)!);
-      const entR = R.find((r) => r.cStrong && !r.cWeak) || R.find((r) => r.cStrong), ent = entR ? entR.c : null;
-      const isW = (c: Ch) => R.some((r) => r.c.id === c.id && r.cWeak), isE = (c: Ch) => R.some((r) => r.c.id === c.id && r.cStrong && !r.cWeak);
-      const clash = used.filter(isW), okc = used.filter(isE);
-      const names = (l: Ch[]) => q(l.map((c) => c.tsutae));
-      let rel: Tossa['rel'] = 'none', text = '';
-      if (used.length) {
-        if (clash.length) { rel = 'zure'; text = `とっさの一手が、この子の負担になる伝え方とずれています。あなたはとっさに${names(clash)}を使いました。${ent ? `次にとっさのときは、この子の「${ent.wakari}」に合わせて、「${ent.tsutae}」に替えます。` : '次は、いちばん負担の少ない伝え方を探します。'}`; }
-        else if (okc.length) { rel = 'ok'; text = `とっさの一手が、この子のわかり方と合っています。${names(okc)}を続けます。`; }
-        else if (ent) { rel = 'zure'; text = `とっさの一手が、この子の入口とずれています。あなたは${names(used)}を使いました。この子は「${ent.wakari}」場面でうまくいきます。次は「${ent.tsutae}」を先に試します。`; }
-        else { text = `とっさの一手（${names(used)}）を選びました。この子の入口がまだはっきりしないので、まず「うまくいく場面」を探します。`; }
-      }
-      const timeText = tm === 'sign' ? '崩れる前のサインで動けています。' : tm === 'after' ? '崩れてから動いています。崩れる前のサインを決めておくと、間に合いやすくなります。' : tm === 'late' ? '活動が終わってから気づいています。まず、どこで反応が変わったかを書き留めます。' : '';
-      return { used, rel, text, timing: tm, timeText, ent };
-    }
-
-    let last: { ch: ChRes[]; ax: AxRes[]; sum: string[]; te: Te[]; ts: Tossa | null } | null = null;
-
-    // 結論：入口／負担／あなたの動き（／予想外のとき）
-    function summary(R: ChRes[], T: Tossa | null) {
-      const pick = (f: (r: ChRes) => boolean, k: 'wakari' | 'tsutae') => R.filter(f).map((r) => r.c[k]);
-      const ent = pick((r) => r.cStrong, 'wakari'), hv = pick((r) => r.cWeak, 'wakari');
-      const chui = pick((r) => r.rel === 'chui', 'tsutae'), zure = pick((r) => r.rel === 'zure', 'wakari'), both = pick((r) => r.rel === 'ryouhou', 'tsutae');
-      const L: string[] = [];
-      L.push(ent.length ? `この子がうまくいく入口は${q(ent)}。ここから始めます。` : '入口になるわかり方は、まだはっきりしません。下の手立てを試しながら探します。');
-      L.push(hv.length ? `負担が大きいのは${q(hv)}。量を減らすか、入口の伝え方に置きかえます。` : '負担の大きいわかり方は、目立ちません。');
-      if (chui.length) L.push(`あなたがよく使う${q(chui)}は、この子には負担になりやすい伝え方です。控えめにします。`);
-      else if (zure.length) L.push(`この子の入口${q(zure)}は、あなたがあまり使わない伝え方です。得意な人に、やり方を見せてもらいます。`);
-      else if (both.length) L.push(`${q(both)}は、あなたにも、この子にも負担です。道具と、得意な人の力を借ります。`);
-      else L.push('あなたがふだん使う伝え方で、この子に届きます。');
-      if (T && T.text) L.push(T.text);
-      if (T && T.timeText) L.push(T.timeText);
-      return L;
-    }
-    // 明日からの手立て：見立てに自信がなくても、そのままやれる順に並べる（あなたが変えること → 入口 → 負担を減らす）
-    type Te = { win: string; kind: string; first: string; sign: string; next: string; at: string[] };
-    function tedate(R: ChRes[], T: Tossa | null): Te[] {
-      const out: Te[] = [];
-      if (T && T.rel === 'zure' && T.ent) {
-        const used = q(T.used.map((c) => c.tsutae)), e = T.ent;
-        out.push({ win: 'とっさのとき', kind: 'あなたが変えること', first: `次に予想外の反応があったら、${used}の前に、「${e.tsutae}」を試す。手元に「${e.strong.at[0]}」を1つ置いておく。`, sign: '予想外の反応のあと、この子が落ち着いて動き出す。', next: '「見せる」「待つ」など、ほかの伝え方も一つずつ試す。同僚に、その場面を見てもらう。', at: e.strong.at.slice(0, 2) });
-      }
-      if (T && T.timing && T.timing !== 'sign' && D.tp[T.timing]) out.push({ win: 'とっさのとき', kind: '間に合わせる準備', ...D.tp[T.timing], at: T.ent ? T.ent.strong.at.slice(0, 2) : [] });
-      R.filter((r) => r.rel === 'chui').forEach((r) => out.push({ win: r.c.wakari, kind: 'あなたが変えること', first: r.c.tedate.chui, sign: r.c.tedate.weak.sign, next: r.c.tedate.weak.next, at: r.c.weak.at.slice(0, 2) }));
-      R.filter((r) => r.cStrong).forEach((r) => out.push({ win: r.c.wakari, kind: '入口にする', ...r.c.tedate.strong, at: r.c.strong.at.slice(0, 2) }));
-      R.filter((r) => r.cWeak && r.rel !== 'chui').forEach((r) => out.push({ win: r.c.wakari, kind: '負担を減らす', ...r.c.tedate.weak, at: r.c.weak.at.slice(0, 2) }));
-      return out;
-    }
-
-    const LVS = D.sS, LVC = D.sC;
-    function mapView(R: ChRes[]) {
-      const sec = h('section', 'td-mapv'); sec.setAttribute('aria-labelledby', 'td-mapv-h');
-      const t = h('h3', null, '6つのわかり方と伝え方の一覧'); t.id = 'td-mapv-h'; sec.appendChild(t);
-      const key = h('p', 'td-key'); key.setAttribute('aria-hidden', 'true');
-      key.innerHTML = '<span class="td-key-i"><span class="td-dot"></span>あなた（その伝え方を、ふだん使う程度）</span><span class="td-key-i"><span class="td-band"></span>子ども（帯が長いほど、うまくいく場面と負担になる場面の両方がある）</span>';
-      sec.appendChild(key);
-      const ends = h('div', 'td-mv-ends'); ends.setAttribute('aria-hidden', 'true'); const mid = h('span', 'td-mv-mid'); mid.append(h('span', null, '← 負担になる・使わない'), h('span', null, 'うまくいく・よく使う →')); ends.append(h('span'), mid, h('span')); sec.appendChild(ends);
-      R.forEach((r) => {
-        const row = h('div', 'td-mv');
-        const nm = h('span', 'td-mv-n', r.c.name); row.appendChild(nm);
-        const tr = h('div', 'td-mv-t'); tr.setAttribute('role', 'img');
-        const line = h('div', 'td-mv-l'); tr.appendChild(line);
-        if (r.cs !== null || r.cw !== null) {
-          const a = 50 - ((r.cw ?? 0) / 3) * 50, b = 50 + ((r.cs ?? 0) / 3) * 50;
-          const band = h('span', 'td-mv-b' + (b - a < 4 ? ' td-mv-b0' : '')); band.style.left = a + '%'; band.style.width = Math.max(b - a, 0) + '%'; line.appendChild(band);
-        }
-        if (r.s !== null) { const d = h('span', 'td-mv-d'); d.style.left = (r.s / 3) * 100 + '%'; line.appendChild(d); }
-        const you = r.s === null ? 'あなた：未回答' : `あなた：「${r.c.tsutae}」をふだん「${LVS[r.s]}」`;
-        const kid = r.cs === null && r.cw === null ? '子ども：未回答' : `子ども：「${r.c.wakari}」でうまくいく場面「${LVC[r.cs ?? 0]}」、負担になる場面「${LVC[r.cw ?? 0]}」`;
-        tr.setAttribute('aria-label', `${r.c.name}。${you}。${kid}。${r.rel && REL_LABEL[r.rel] ? '組み合わせ：' + REL_LABEL[r.rel] + '。' : ''}`);
-        row.appendChild(tr);
-        const tg = h('span', 'td-mv-tag' + (r.rel ? ' td-tag-' + r.rel : ''), r.rel && REL_LABEL[r.rel] ? REL_LABEL[r.rel] : ''); tg.setAttribute('aria-hidden', 'true'); row.appendChild(tg);
-        sec.appendChild(row);
-      });
-      return sec;
-    }
-    function renderCh(r: ChRes) {
-      const c = r.c, box = h('section', 'td-r'); box.setAttribute('aria-labelledby', 'td-r-' + c.id);
-      const head = h('div', 'td-rh'); const t = h('h3', null, `${c.wakari}（${c.sub}）`); t.id = 'td-r-' + c.id; head.appendChild(t);
-      if (r.rel && r.rel !== 'sonota') head.appendChild(h('span', 'td-tag td-tag-' + r.rel, REL_LABEL[r.rel]));
-      box.appendChild(head);
-      const st = h('p', 'td-st'); st.append(h('span', 'td-st-k', `あなた（${c.tsutae}）`), h('span', null, r.youSt), h('span', 'td-st-k', '子ども'), h('span', null, r.kidSt)); box.appendChild(st);
-      if (r.relText) box.appendChild(h('p', 'td-rel', r.relText));
-      if (r.cStrong && r.cWeak) box.appendChild(h('p', 'td-hyouri', '表裏一体：' + c.hyouri));
-      const list = (head: string, items: string[], at: string[]) => { const d = h('div', 'td-blk'); d.appendChild(h('h4', null, head)); const ul = h('ul'); items.forEach((x) => ul.appendChild(h('li', null, x))); d.appendChild(ul); const p = h('p', 'td-at'); p.append(h('span', 'td-at-k', '道具（AT）の例'), document.createTextNode(at.join('／'))); d.appendChild(p); return d; };
-      if (r.cStrong) box.appendChild(list(`この子の「${c.wakari}」を入口にする支援`, c.strong.houhou, c.strong.at));
-      if (r.cWeak) box.appendChild(list('負担を減らす・別の伝え方に置きかえる支援', c.weak.houhou, c.weak.at));
-      if (r.rel === 'zure' || r.rel === 'ryouhou' || r.rel === 'chui') box.appendChild(h('p', 'td-at', '相談するなら：' + c.soudan));
-      return box;
-    }
     function renderAx(r: AxRes) {
-      const a = r.a, box = h('section', 'td-r'); const head = h('div', 'td-rh'); head.appendChild(h('h3', null, a.name)); if (r.st) head.appendChild(h('span', 'td-tag ' + (r.st === 'ずれ' ? 'td-tag-zure' : 'td-tag-sonota'), r.st)); box.appendChild(head);
-      const desc = (x: 'l' | 'r' | null, who: string) => who + '：' + (x === null ? '未回答' : (x === 'l' ? a.l : a.r) + '寄り');
-      box.appendChild(h('p', 'td-st', `左「${a.l}」— 右「${a.r}」。${desc(r.s, 'あなた')}。${desc(r.c, '子ども')}。`));
-      if (r.adv) { const det = h('details', 'td-det') as HTMLDetailsElement; det.setAttribute('data-auto', ''); det.open = document.documentElement.dataset.detail === 'open'; det.appendChild(h('summary', null, '強みの生かし方・気をつけたいこと・相談')); box.appendChild(det); const dl = h('dl', 'td-adv'); if (r.partial) dl.appendChild(h('p', 'note', r.partial)); ([['あなたの強みを生かすと', r.adv.ikasu], ['気をつけたいこと', r.adv.ki], ['相談するなら', r.adv.soudan]] as const).forEach(([k, v]) => { dl.appendChild(h('dt', null, k)); dl.appendChild(h('dd', null, v)); }); det.appendChild(dl); }
+      const a = r.a, box = h('section', 'td-r'); const head = h('div', 'td-rh'); head.appendChild(h('h4', null, a.name)); if (r.st) head.appendChild(h('span', 'td-tag ' + (r.st === 'ずれ' ? 'td-tag-zure' : 'td-tag-sonota'), r.st)); box.appendChild(head);
+      const d = (x: 'l' | 'r' | null, who: string) => who + '：' + (x === null ? '未回答' : (x === 'l' ? a.l : a.r) + '寄り');
+      box.appendChild(h('p', 'td-st', `${d(r.s, 'あなた')}。${d(r.c, '子ども')}。`));
+      if (r.adv) { if (r.partial) box.appendChild(h('p', 'note', r.partial)); const dl = h('dl', 'td-adv'); ([['強みを生かすと', r.adv.ikasu], ['気をつけたいこと', r.adv.ki]] as const).forEach(([k, v]) => { dl.appendChild(h('dt', null, k)); dl.appendChild(h('dd', null, v)); }); box.appendChild(dl); }
       return box;
     }
+
+    let last: { L: R[]; sum: string[]; te: Te[]; z: Z; ax: AxRes[]; words: { s: string[]; c: string[]; f: string[] } } | null = null;
 
     $('td-go').addEventListener('click', () => {
       out.innerHTML = '';
-      const ch = D.ch.map(chResult);
-      const any = ch.some((r) => r.s !== null || r.cs !== null || r.cw !== null);
-      if (!any) { note.textContent = 'まだ答えがありません。「1. あなたが、ふだんしていること」から選んでください。'; last = null; showSave(false); return; }
-      const miss = ch.some((r) => r.s === null || r.cs === null || r.cw === null);
-      note.textContent = miss ? '未回答の項目があります。答えた分だけで表示しています。' : '';
-      const ax = D.ax.map(axResult).filter(Boolean) as AxRes[];
-      const ts = tossaResult(ch), sum = summary(ch, ts), te = tedate(ch, ts);
-      last = { ch, ax, sum, te, ts };
+      const L = D.ch.map(res);
+      if (!L.some((r) => r.s !== null || r.k !== null)) { note.textContent = 'まだスライダーを置いていません。「1. あなたの得意」から置いてください。'; last = null; keep.hidden = true; return; }
+      note.textContent = L.some((r) => r.s === null || r.k === null) ? '置いていないスライダーがあります。置いた分だけで表示しています。' : '';
+      const sum = summary(L), te = tedate(L), z = zones(L), ax = D.ax.map(axResult).filter(Boolean) as AxRes[];
+      const words = { s: L.filter((r) => (r.s ?? 0) >= 3).map((r) => r.c.kS), c: L.filter((r) => (r.k ?? 0) >= 3).map((r) => r.c.kC), f: L.filter((r) => r.k === 1).map((r) => r.c.kF) };
+      last = { L, sum, te, z, ax, words };
+
+      // 結論
       const sb = h('div', 'td-sum'); const sh = h('h3', null, '結論'); sh.id = 'td-sum-h'; sh.tabIndex = -1; sb.appendChild(sh); const ul = h('ul'); sum.forEach((x) => ul.appendChild(h('li', null, x))); sb.appendChild(ul); out.appendChild(sb);
-      if (te.length) {
-        const sec = h('section', 'td-te'); sec.setAttribute('aria-labelledby', 'td-te-h');
-        const th = h('h3', null, `明日からの手立て（${te.length}つ）`); th.id = 'td-te-h'; sec.appendChild(th);
-        sec.appendChild(h('p', 'note', 'まず1つ、1〜2週間試します。「うまくいっているサイン」が出なければ、「効かなければ」へ進みます。'));
-        const ol = h('ol', 'td-te-list');
-        te.forEach((t) => {
-          const li = h('li'); const hd = h('p', 'td-te-h'); hd.append(h('span', 'td-te-win', t.win), h('span', 'td-te-kind', t.kind)); li.appendChild(hd);
-          li.appendChild(h('p', 'td-te-first', t.first));
-          const d = h('details', 'td-det') as HTMLDetailsElement; d.setAttribute('data-auto', ''); d.open = document.documentElement.dataset.detail === 'open';
-          d.appendChild(h('summary', null, 'うまくいっているサイン・効かなければ'));
-          const dl = h('dl', 'td-adv'); dl.append(h('dt', null, 'うまくいっているサイン'), h('dd', null, t.sign), h('dt', null, '効かなければ'), h('dd', null, t.next)); d.appendChild(dl); li.appendChild(d);
-          ol.appendChild(li);
+      // ベン図
+      const fig = h('figure', 'td-venn'); fig.setAttribute('role', 'img'); fig.setAttribute('aria-label', vennAlt(z)); fig.appendChild(vennSvg(z)); out.appendChild(fig);
+      // 3つの箱（明日の一手）
+      (['tamesu', 'kasanari', 'awaseru', 'katachi'] as const).forEach((cat) => {
+        const items = te.filter((t) => t.cat === cat); if (!items.length) return;
+        const sec = h('section', 'td-box td-box-' + cat); const id = 'td-box-' + cat; sec.setAttribute('aria-labelledby', id);
+        const t = h('h3', null, BOX[cat].t); t.id = id; sec.append(t, h('p', 'td-box-sub', BOX[cat].sub));
+        items.forEach((it) => {
+          const art = h('div', 'td-box-i'); art.appendChild(h('p', 'td-box-n', `${it.c.name}（あなた：${it.c.tsutae}／この子：${it.c.wakari}）`));
+          const p = h('p', 'td-te-first'); p.append(h('span', 'td-te-k', '明日の一手'), document.createTextNode(it.first)); art.appendChild(p);
+          art.appendChild(h('p', 'td-at', (cat === 'awaseru' ? 'ICT・AIの例：' : '道具の例：') + it.tools.join('／')));
+          const d = h('details', 'td-det') as HTMLDetailsElement; d.setAttribute('data-auto', ''); d.open = detOpen(); d.appendChild(h('summary', null, 'うまくいっているサイン・次に試すこと'));
+          const dl = h('dl', 'td-adv'); dl.append(h('dt', null, 'うまくいっているサイン'), h('dd', null, it.sign), h('dt', null, '次に試すこと'), h('dd', null, it.next)); d.appendChild(dl); art.appendChild(d);
+          sec.appendChild(art);
         });
-        sec.appendChild(ol); out.appendChild(sec);
+        out.appendChild(sec);
+      });
+      // 強みのことば（客観的な言いかえ）
+      if (words.s.length || words.c.length || words.f.length) {
+        const sec = h('section', 'td-words'); sec.setAttribute('aria-labelledby', 'td-words-h');
+        const t = h('h3', null, '強みのことば'); t.id = 'td-words-h'; sec.appendChild(t);
+        sec.appendChild(h('p', 'note', '置いたスライダーを、行動の言葉に言いかえました。個別の指導計画や引き継ぎに、そのまま使えます（名前は入れずに）。'));
+        const blk = (head: string, l: string[]) => { if (!l.length) return; sec.appendChild(h('h4', null, head)); const u = h('ul'); l.forEach((x) => u.appendChild(h('li', null, x))); sec.appendChild(u); };
+        blk('あなたの強み', words.s); blk('この子の強み', words.c); blk('この子の負担になりやすいこと', words.f);
+        const cp = h('button', 'btn', 'ことばをコピー') as HTMLButtonElement; cp.type = 'button';
+        cp.addEventListener('click', async () => { const txt = [words.s.length ? '【支援する人の強み】\n' + words.s.join('\n') : '', words.c.length ? '【子どもの強み】\n' + words.c.join('\n') : '', words.f.length ? '【負担になりやすいこと】\n' + words.f.join('\n') : ''].filter(Boolean).join('\n\n'); try { await navigator.clipboard.writeText(txt); note.textContent = 'ことばをコピーしました。'; } catch { note.textContent = 'コピーできませんでした。文字を選んでコピーしてください。'; } });
+        const pa = h('p', 'td-acts'); pa.appendChild(cp); sec.appendChild(pa);
+        out.appendChild(sec);
       }
-      out.appendChild(mapView(ch));
-      const rel = ch.filter((r) => r.cStrong || r.cWeak || r.rel === 'chui');
-      if (rel.length) { const dd = h('details', 'td-det td-det-lg') as HTMLDetailsElement; dd.setAttribute('data-auto', ''); dd.open = document.documentElement.dataset.detail === 'open'; dd.appendChild(h('summary', null, `わかり方ごとのくわしい支援と道具（${rel.length}つ）`)); rel.forEach((r) => dd.appendChild(renderCh(r))); out.appendChild(dd); }
       if (ax.length) { out.appendChild(h('h3', 'td-sec', '関わり方のくせ')); ax.forEach((r) => out.appendChild(renderAx(r))); }
-      showSave(true);
-      // 見出し「4. 結果」を画面のいちばん上に。読み上げは「結論」から始まる
+      keep.hidden = false;
       $('kekka').scrollIntoView({ block: 'start' });
       (document.getElementById('td-sum-h') as HTMLElement).focus({ preventScroll: true });
     });
-    pr.addEventListener('click', () => window.print());
+    $('td-print').addEventListener('click', () => window.print());
     $('td-reset').addEventListener('click', () => {
-      document.querySelectorAll<HTMLInputElement>('.td input[type=radio], .td input[type=checkbox]').forEach((i) => (i.checked = false));
-      out.innerHTML = ''; note.textContent = ''; last = null; showSave(false); $('q-s').scrollIntoView();
+      ranges.forEach((el) => { delete el.dataset.touched; el.value = '2'; paint(el); });
+      document.querySelectorAll<HTMLInputElement>('.td input[type=radio]').forEach((i) => (i.checked = false));
+      out.innerHTML = ''; note.textContent = ''; last = null; keep.hidden = true; $('q-s').scrollIntoView();
     });
 
-    // ── Word（.docx）。この端末の中で作って保存する（サイトには送らない） ──
-    // zu = 図と表で短く（A4 2枚まで）／ moji = 文字で詳しく（読み上げ向け）
-    function drawTracks(rows: { name: string; tag: string; dot: number | null; band?: [number, number] | null; dot2?: number | null; left: string; right: string }[], legend: string[]): { png: Promise<Uint8Array>; w: number; h: number } {
-      const S = 2, W = 680, RH = 28, TOP = 42, H = TOP + rows.length * RH + 8;
-      const cv = document.createElement('canvas'); cv.width = W * S; cv.height = H * S; const x = cv.getContext('2d')!; x.scale(S, S);
+    // ── Word（.docx・A4 1枚）。この端末の中で作って保存する（サイトには送らない） ──
+    function vennPng(z: Z): { png: Promise<Uint8Array>; w: number; h: number } {
+      const S = 2, W = 520, H = 250; const cv = document.createElement('canvas'); cv.width = W * S; cv.height = H * S; const x = cv.getContext('2d')!; x.scale(S, S);
       const F = (sz: number, b = false) => `${b ? '700 ' : ''}${sz}px "BIZ UDPGothic", "BIZ UDPゴシック", "Hiragino Sans", "Noto Sans JP", sans-serif`;
       x.fillStyle = '#fff'; x.fillRect(0, 0, W, H);
-      const L = 128, R = W - 110, len = R - L, VI = '#4A33B0';
-      // 凡例
-      x.font = F(12); x.fillStyle = '#333'; let lx = 0;
-      legend.forEach((t, i) => { const cx = lx + 8; if (i === 0) { x.fillStyle = VI; x.beginPath(); x.arc(cx, 10, 6, 0, 7); x.fill(); } else if (legend.length > 1 && rows.some((r) => r.band)) { x.strokeStyle = '#111'; x.lineWidth = 2; x.fillStyle = 'rgba(0,0,0,.12)'; x.beginPath(); x.roundRect(lx, 5, 22, 10, 5); x.fill(); x.stroke(); } else { x.strokeStyle = '#111'; x.lineWidth = 2.5; x.fillStyle = '#fff'; x.beginPath(); x.arc(cx, 10, 6, 0, 7); x.fill(); x.stroke(); } x.fillStyle = '#333'; x.fillText(t, lx + 28, 14); lx += 28 + x.measureText(t).width + 22; });
-      x.fillStyle = '#555'; x.font = F(11); x.textAlign = 'left'; x.fillText('← ' + rows[0].left, L, 34); x.textAlign = 'right'; x.fillText(rows[0].right + ' →', R, 34); x.textAlign = 'left';
-      rows.forEach((r, i) => {
-        const y = TOP + i * RH + RH / 2;
-        x.strokeStyle = '#ddd'; x.lineWidth = 1; x.beginPath(); x.moveTo(0, y - RH / 2); x.lineTo(W, y - RH / 2); x.stroke();
-        x.font = F(13, true); x.fillStyle = '#111'; x.fillText(r.name, 0, y + 5);
-        x.fillStyle = '#ccc'; x.fillRect(L, y - 2, len, 4); x.fillStyle = '#999'; x.fillRect(L + len / 2 - 1, y - 8, 2, 16);
-        if (r.band) { const a = L + r.band[0] * len, b = L + r.band[1] * len, w = Math.max(b - a, 12), ax = b - a < 12 ? (a + b) / 2 - 6 : a; x.fillStyle = 'rgba(0,0,0,.12)'; x.strokeStyle = '#111'; x.lineWidth = 2.5; x.beginPath(); x.roundRect(ax, y - 7, w, 14, 7); x.fill(); x.stroke(); }
-        if (r.dot2 != null) { x.strokeStyle = '#111'; x.lineWidth = 2.5; x.fillStyle = '#fff'; x.beginPath(); x.arc(L + r.dot2 * len, y, 7, 0, 7); x.fill(); x.stroke(); }
-        if (r.dot != null) { x.fillStyle = VI; x.beginPath(); x.arc(L + r.dot * len, y, 8, 0, 7); x.fill(); x.strokeStyle = '#fff'; x.lineWidth = 2; x.stroke(); }
-        if (r.tag) { x.font = F(12, true); x.fillStyle = r.tag === '合っている' ? '#555' : VI; x.textAlign = 'right'; x.fillText(r.tag, W, y + 4); x.textAlign = 'left'; }
-      });
-      const png = new Promise<Uint8Array>((res) => cv.toBlob((bl) => bl!.arrayBuffer().then((ab) => res(new Uint8Array(ab))), 'image/png'));
+      const C = (cx: number, dash: boolean) => { x.beginPath(); x.arc(cx, 138, 105, 0, Math.PI * 2); x.fillStyle = 'rgba(74,51,176,.10)'; x.fill(); x.setLineDash(dash ? [7, 5] : []); x.strokeStyle = '#4A33B0'; x.lineWidth = 2.5; x.stroke(); x.setLineDash([]); };
+      C(205, false); C(315, true);
+      x.textAlign = 'center'; x.fillStyle = '#111'; x.font = F(15, true); x.fillText('あなたの得意', 130, 22); x.fillText('この子に届く', 390, 22);
+      x.font = F(12, true); x.fillStyle = '#4A33B0'; x.fillText('↑ 重なり', 260, 246);
+      const col = (cx: number, items: string[], bold: boolean) => { const top = 138 - ((Math.max(items.length, 1) - 1) * 21) / 2 + 5; x.font = F(14, bold); x.fillStyle = '#111'; (items.length ? items : ['—']).forEach((t, i) => x.fillText(t, cx, top + i * 21)); };
+      col(145, z.left, false); col(260, z.mid, true); col(375, z.right, false);
+      const png = new Promise<Uint8Array>((ok) => cv.toBlob((b) => b!.arrayBuffer().then((ab) => ok(new Uint8Array(ab))), 'image/png'));
       return { png, w: W, h: H };
     }
-
-    wd.addEventListener('click', async () => {
+    $('td-word').addEventListener('click', async () => {
       if (!last) return;
-      const L = { ...last, te: last.te.slice(0, 6) }, fmt = (document.querySelector<HTMLInputElement>('input[name="td-wf"]:checked')?.value || 'zu') as 'zu' | 'moji';
       note.textContent = 'ファイルを作っています…';
       try {
         const X = await import('docx');
-        const { Document, Packer, Paragraph, TextRun, HeadingLevel, Header, Footer, AlignmentType, PageNumber, BorderStyle, LevelFormat, Table, TableRow, TableCell, WidthType, ShadingType, ImageRun, VerticalAlign } = X;
-        const FONT = 'BIZ UDPゴシック', zu = fmt === 'zu', size = zu ? 18 : 21;
+        const { Document, Packer, Paragraph, TextRun, HeadingLevel, Header, Footer, AlignmentType, PageNumber, BorderStyle, Table, TableRow, TableCell, WidthType, ShadingType, ImageRun, VerticalAlign } = X;
+        const FONT = 'BIZ UDPゴシック', size = 18;
         const now = new Date(), pad = (n: number) => String(n).padStart(2, '0');
-        const label = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`, file = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+        const dl = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`, file = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
         const run = (text: string, o: Record<string, unknown> = {}) => new TextRun({ text, font: FONT, size, ...o });
-        const para = (text: string, o: Record<string, unknown> = {}) => new Paragraph({ spacing: { after: zu ? 40 : 100, line: zu ? 260 : 320 }, children: [run(text)], ...o });
-        const hd = (text: string, lv: any) => new Paragraph({ heading: lv, spacing: { before: zu ? 140 : 240, after: zu ? 40 : 80 }, children: [new TextRun({ text, font: FONT, bold: true, size: lv === HeadingLevel.HEADING_1 ? size + 10 : lv === HeadingLevel.HEADING_2 ? size + 4 : size + 2 })] });
-        const bullet = (text: string) => new Paragraph({ numbering: { reference: 'b', level: 0 }, spacing: { after: zu ? 0 : 40, line: zu ? 250 : 300 }, children: [run(text)] });
-        const lines = (n: number) => Array.from({ length: n }, () => new Paragraph({ spacing: { before: zu ? 260 : 300 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: '999999', space: 1 } }, children: [] }));
-        const small = (text: string) => new TextRun({ text, font: FONT, size: 16, color: '555555' });
+        const para = (text: string, o: Record<string, unknown> = {}) => new Paragraph({ spacing: { after: 30, line: 250 }, children: [run(text)], ...o });
+        const hd = (text: string, big = false) => new Paragraph({ heading: big ? HeadingLevel.HEADING_1 : HeadingLevel.HEADING_2, spacing: { before: big ? 0 : 110, after: 30 }, children: [new TextRun({ text, font: FONT, bold: true, size: big ? 28 : 21 })] });
+        const dot = (t: string) => new Paragraph({ spacing: { after: 0, line: 240 }, indent: { left: 180, hanging: 180 }, children: [run('・' + t)] });
         const bd = { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB' }, B = { top: bd, bottom: bd, left: bd, right: bd };
-        const cellP = (items: (string | Paragraph)[], w: number, head = false) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: B, verticalAlign: VerticalAlign.TOP, margins: { top: 30, bottom: 30, left: 70, right: 70 }, shading: head ? { type: ShadingType.CLEAR, fill: 'F0F0F0', color: 'auto' } : undefined, children: items.length ? items.map((t) => typeof t === 'string' ? new Paragraph({ spacing: { after: 0, line: zu ? 228 : 250 }, children: [run(t, { bold: head, size: size - (zu ? 0 : 2) })] }) : t) : [new Paragraph({ children: [] })] });
-        const cell = (t: string, w: number, head = false) => cellP([t], w, head);
-        const tbl = (W: number[], head: string[], rows: (string | (string | Paragraph)[])[][]) => new Table({ width: { size: W.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: W, rows: [
-          new TableRow({ tableHeader: true, children: head.map((t, i) => cell(t, W[i], true)) }),
-          ...rows.map((r) => new TableRow({ cantSplit: true, children: r.map((t, i) => Array.isArray(t) ? cellP(t, W[i]) : cell(t, W[i], i === 0)) })),
-        ] });
-        const dot = (t: string) => new Paragraph({ spacing: { after: 0, line: 228 }, indent: { left: 160, hanging: 160 }, children: [run('・' + t)] });
-        const chAlt = L.ch.map((r) => `${r.c.wakari}：あなた「${r.c.tsutae}」${r.s === null ? '未回答' : '「' + LVS[r.s] + '」'}、子ども うまくいく場面${r.cs === null ? '未回答' : '「' + LVC[r.cs] + '」'}・負担になる場面${r.cw === null ? '未回答' : '「' + LVC[r.cw] + '」'}${r.rel && REL_LABEL[r.rel] ? '（' + REL_LABEL[r.rel] + '）' : ''}`).join('。');
-        const body: any[] = [];
-        const more = last.te.length > 6 ? `（${last.te.length}つのうち、はじめの6つ。残りはサイトの結果ページで）` : '';
-        const head1 = [hd('支援の前に、立ち止まる', HeadingLevel.HEADING_1), para(`記入日：${label}　　記入した人：　　　　　　　子どもの呼び名：　　　　　　（名前など、だれか分かることを書き足すと個人情報になります。職場のルールに従ってください）`)];
-        if (zu) {
-          body.push(...head1);
-          // ② まとめ（表）
-          body.push(hd('結論', HeadingLevel.HEADING_2), ...L.sum.map(dot));
-          if (L.te.length) { body.push(hd(`明日からの手立て（${L.te.length}つ）${more}`, HeadingLevel.HEADING_2)); body.push(tbl([1400, 3900, 3000, 1900], ['わかり方', 'まずやること', 'うまくいっているサイン', '道具（AT）の例'], L.te.map((t) => [[t.win, new Paragraph({ children: [run(t.kind, { color: '4A33B0', size: size - 2 })] })], [t.first], [t.sign], t.at.map(dot)]))); }
-          // 6つのわかり方と伝え方の目盛り（図）
-          const g = drawTracks(L.ch.map((r) => ({ name: r.c.name, tag: r.rel && REL_LABEL[r.rel] ? REL_LABEL[r.rel] : '', dot: r.s === null ? null : r.s / 3, band: r.cs === null && r.cw === null ? null : [0.5 - (r.cw ?? 0) / 6, 0.5 + (r.cs ?? 0) / 6] as [number, number], left: '負担になる・使わない', right: 'うまくいく・よく使う' })), ['あなた（その伝え方を、ふだん使う程度）', '子ども（帯が長いほど、うまくいくと負担の両方がある）']);
-          body.push(hd('わかり方と伝え方', HeadingLevel.HEADING_2), new Paragraph({ children: [new ImageRun({ type: 'png', data: await g.png, transformation: { width: g.w, height: g.h }, altText: { name: 'わかり方と伝え方の目盛り', title: '6つのわかり方と伝え方の一覧', description: chAlt } })] }));
-          const relS = L.ch.filter((r) => r.rel === 'zure' || r.rel === 'chui' || r.rel === 'ryouhou');
-          if (relS.length) body.push(new Paragraph({ spacing: { before: 60, after: 0 }, children: [run('相談先の目安：' + relS.map((r) => `${r.c.tsutae}→${r.c.soudan}`).join('／'), { size: size - 2 })] }));
-          body.push(new Paragraph({ spacing: { before: 40, after: 0 }, children: [run('くわしい方法と「効かなければ」は、サイトの結果ページで読めます。', { size: size - 2, color: '555555' })] }));
-          // ④ 関わり方のくせ（図＋表）
-          if (L.ax.length) {
-            const g2 = drawTracks(L.ax.map((r) => ({ name: r.a.name, tag: r.st, dot: r.s === null ? null : r.s === 'l' ? 0.12 : 0.88, dot2: r.c === null ? null : r.c === 'l' ? 0.12 : 0.88, left: '左の端', right: '右の端' })), ['あなた', '子ども']);
-            const axAlt = L.ax.map((r) => `${r.a.name}（左：${r.a.l}／右：${r.a.r}）：あなた ${r.s === null ? '未回答' : (r.s === 'l' ? r.a.l : r.a.r) + '寄り'}、子ども ${r.c === null ? '未回答' : (r.c === 'l' ? r.a.l : r.a.r) + '寄り'}${r.st ? '（' + r.st + '）' : ''}`).join('。');
-            body.push(hd('関わり方のくせ', HeadingLevel.HEADING_2), new Paragraph({ children: [new ImageRun({ type: 'png', data: await g2.png, transformation: { width: g2.w, height: g2.h }, altText: { name: '関わり方のくせの目盛り', title: '関わり方のくせ', description: axAlt } })] }));
-            body.push(tbl([1500, 2500, 6200], ['軸', '左の端 ／ 右の端', '気をつけたいこと'], L.ax.map((r) => [r.a.name, `${r.a.l} ／ ${r.a.r}`, r.adv ? r.adv.ki : '—'])));
-          }
-          body.push(new Paragraph({ spacing: { before: 60, after: 0 }, children: [run('この表は要点です。すべての方法と説明は、サイトの結果ページで読めます。', { size: size - 2, color: '555555' })] }));
-          body.push(hd('やってみること', HeadingLevel.HEADING_2), ...lines(3), hd('相談する人・相談したいこと', HeadingLevel.HEADING_2), ...lines(2));
-        } else {
-          // 文字で短く（読み上げ向け）：結論 → 手立て → 相談先。関係のないわかり方は出さない
-          const rel = L.ch.filter((r) => r.cStrong || r.cWeak || r.rel === 'chui');
-          body.push(...head1, para(`診断ではありません。結論、明日からの手立て${L.te.length}つ、相談先の順に書いてあります。`));
-          body.push(hd('結論', HeadingLevel.HEADING_2), ...L.sum.map(bullet));
-          if (L.te.length) {
-            body.push(hd(`明日からの手立て（${L.te.length}つ）${more}`, HeadingLevel.HEADING_2), para('まず1つ、1〜2週間試します。'));
-            L.te.forEach((t, i) => { body.push(hd(`${i + 1}. ${t.win}：${t.kind}`, HeadingLevel.HEADING_3), para(t.first), para('うまくいっているサイン：' + t.sign), para('効かなければ：' + t.next)); });
-          }
-          const sd = rel.filter((r) => r.rel === 'zure' || r.rel === 'ryouhou' || r.rel === 'chui');
-          if (sd.length) body.push(hd('相談先', HeadingLevel.HEADING_2), ...sd.map((r) => bullet(`${r.c.name}：${r.c.soudan}`)));
-          if (L.ax.length) {
-            body.push(hd('関わり方のくせ', HeadingLevel.HEADING_2));
-            L.ax.forEach((r) => { if (r.adv) body.push(bullet(`${r.a.name}${r.st ? '（' + r.st + '）' : ''}：${r.adv.ki}`)); });
-          }
-          if (!(L.te.length >= 5 && L.ax.length)) body.push(hd('やってみること（自由に書く）', HeadingLevel.HEADING_2), ...lines(3)); // 内容が多いときは、2枚に収めるため書き込み欄を省く
-        }
-        const SRC = 'https://toitoitoi-lab.github.io/tachidomaru/';
+        const cell = (t: string, w: number, head = false) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: B, verticalAlign: VerticalAlign.TOP, margins: { top: 30, bottom: 30, left: 70, right: 70 }, shading: head ? { type: ShadingType.CLEAR, fill: 'F0F0F0', color: 'auto' } : undefined, children: [new Paragraph({ spacing: { after: 0, line: 228 }, children: [run(t, { bold: head })] })] });
+        const KIND: Record<string, string> = { kasanari: '重なり：始める', awaseru: '合わせる：ICT・AI', katachi: '形を変える', tamesu: 'まず試す' };
+        const te = last.te.slice(0, 5), more = last.te.length > 5 ? `（${last.te.length}つのうち5つ。残りはサイトの結果ページで）` : '';
+        const W = [1700, 1200, 4700, 2600];
+        const body: any[] = [
+          hd('支援の前に、立ち止まる', true),
+          para(`記入日：${dl}　　記入した人：　　　　　　　子どもの呼び名：　　　　　　（名前など、だれか分かることを書き足すと個人情報になります。職場のルールに従ってください）`),
+          hd('結論'), ...last.sum.map(dot),
+        ];
+        const g = vennPng(last.z);
+        body.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 60, after: 0 }, children: [new ImageRun({ type: 'png', data: await g.png, transformation: { width: Math.round(g.w * 0.78), height: Math.round(g.h * 0.78) }, altText: { name: 'ベン図', title: 'あなたの得意とこの子に届くわかり方の重なり', description: vennAlt(last.z) } })] }));
+        if (te.length) body.push(hd(`明日の一手${more}`), new Table({ width: { size: W.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: W, rows: [
+          new TableRow({ tableHeader: true, children: ['区分', 'わかり方', 'まずやること', '道具・ICT・AIの例'].map((t, i) => cell(t, W[i], true)) }),
+          ...te.map((t) => new TableRow({ cantSplit: true, children: [cell(KIND[t.cat], W[0]), cell(t.c.name, W[1]), cell(t.first, W[2]), cell(t.tools.slice(0, 2).join('／'), W[3])] })),
+        ] }));
+        const w = last.words;
+        if (w.s.length || w.c.length || w.f.length) { body.push(hd('強みのことば')); if (w.s.length) body.push(para('あなたの強み：' + w.s.join('。') + '。')); if (w.c.length) body.push(para('この子の強み：' + w.c.join('。') + '。')); if (w.f.length) body.push(para('負担になりやすいこと：' + w.f.join('。') + '。')); }
+        if (last.ax.length) { body.push(hd('関わり方のくせ')); last.ax.forEach((r) => { if (r.adv) body.push(dot(`${r.a.name}${r.st ? '（' + r.st + '）' : ''}：${r.adv.ki}`)); }); }
+        body.push(para('AIに頼むときは、子どもの名前や、だれか分かることは入れません。', { spacing: { before: 80, after: 0 } }));
+        const small = (text: string) => new TextRun({ text, font: FONT, size: 15, color: '555555' });
         const doc = new Document({
           creator: 'toi toi toi', title: 'toi toi toi｜支援の前に、立ち止まる',
-          numbering: { config: [{ reference: 'b', levels: [{ level: 0, format: LevelFormat.BULLET, text: '・', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 420, hanging: 280 } } } }] }] },
           sections: [{
-            properties: { page: { size: { width: 11906, height: 16838 }, margin: zu ? { top: 850, bottom: 850, left: 850, right: 850, header: 400, footer: 400 } : { top: 1150, bottom: 1100, left: 1150, right: 1150, header: 500, footer: 500 } } },
-            headers: { default: new Header({ children: [new Paragraph({ border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`toi toi toi｜支援の前に、立ち止まる　　出力：${label}　　診断ではありません`)] })] }) },
-            footers: { default: new Footer({ children: [
-              new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, tabStops: [{ type: 'right', position: zu ? 10200 : 9500 }], children: [small(`出典：toi toi toi ${SRC}　© toi toi toi（圓井健史）　利用ルール：https://toitoitoi-lab.github.io/rules/`), new TextRun({ children: ['\t', PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], font: FONT, size: 16, color: '555555' })] }),
-            ] }) },
+            properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 760, bottom: 760, left: 850, right: 850, header: 360, footer: 360 } } },
+            headers: { default: new Header({ children: [new Paragraph({ border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`toi toi toi｜支援の前に、立ち止まる　　出力：${dl}　　診断ではありません`)] })] }) },
+            footers: { default: new Footer({ children: [new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, tabStops: [{ type: 'right', position: 10200 }], children: [small('出典：toi toi toi https://toitoitoi-lab.github.io/tachidomaru/　© toi toi toi（圓井健史）'), new TextRun({ children: ['\t', PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], font: FONT, size: 15, color: '555555' })] })] }) },
             children: body,
           }],
         });
         const blob = await Packer.toBlob(doc);
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `toitoitoi_tachidomaru_${zu ? 'zu' : 'moji'}_${file}.docx`; a.style.display = 'none';
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `toitoitoi_tachidomaru_${file}.docx`; a.style.display = 'none';
         document.body.appendChild(a); a.click(); setTimeout(() => { a.remove(); URL.revokeObjectURL(a.href); }, 30000);
-        note.textContent = zu ? 'Word形式（図と表）のファイルを保存しました。' : 'Word形式（文字で短く）のファイルを保存しました。';
+        note.textContent = 'Word形式のファイルを保存しました。';
       } catch (e) { console.error(e); note.textContent = 'ファイルを作れませんでした。印刷（PDFとして保存）をお使いください。'; }
-    });
-
-    // ── 観察シート（同僚用・A4 1枚）。サイトには送らない。名前の欄はない ──
-    $('td-obs').addEventListener('click', async () => {
-      note.textContent = '観察シートを作っています…';
-      try {
-        const X = await import('docx');
-        const { Document, Packer, Paragraph, TextRun, HeadingLevel, Header, Footer, BorderStyle, Table, TableRow, TableCell, WidthType, ShadingType, VerticalAlign } = X;
-        const FONT = 'BIZ UDPゴシック', size = 19;
-        const now = new Date(), pad = (n: number) => String(n).padStart(2, '0');
-        const file = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
-        const run = (text: string, o: Record<string, unknown> = {}) => new TextRun({ text, font: FONT, size, ...o });
-        const para = (text: string, o: Record<string, unknown> = {}) => new Paragraph({ spacing: { after: 60, line: 270 }, children: [run(text)], ...o });
-        const hd = (text: string, lv: any) => new Paragraph({ heading: lv, spacing: { before: 160, after: 60 }, children: [new TextRun({ text, font: FONT, bold: true, size: lv === HeadingLevel.HEADING_1 ? 32 : 24 })] });
-        const bd = { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB' }, B = { top: bd, bottom: bd, left: bd, right: bd };
-        const cell = (text: string, w: number, head = false) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: B, verticalAlign: VerticalAlign.CENTER, margins: { top: 60, bottom: 60, left: 80, right: 80 }, shading: head ? { type: ShadingType.CLEAR, fill: 'F0F0F0', color: 'auto' } : undefined, children: [new Paragraph({ spacing: { after: 0, line: 260 }, children: [run(text, { bold: head })] })] });
-        const W = [5600, 2400, 2200];
-        const table = new Table({ width: { size: 10200, type: WidthType.DXA }, columnWidths: W, rows: [
-          new TableRow({ tableHeader: true, children: ['この授業・活動で見られたこと（実際にしたこと）', '見られた回数（見た場面の中で）', 'メモ'].map((x, i) => cell(x, W[i], true)) }),
-          ...D.ch.map((c) => new TableRow({ cantSplit: true, children: [cell(`${c.tsutae}：${c.s}`, W[0]), cell('　　　回', W[1]), cell('', W[2])] })),
-        ] });
-        const box = (txt: string) => para('□　' + txt, { indent: { left: 200, hanging: 200 } });
-        const lines = (n: number) => Array.from({ length: n }, () => new Paragraph({ spacing: { before: 280 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: '999999', space: 1 } }, children: [] }));
-        const doc = new Document({
-          creator: 'toi toi toi', title: 'toi toi toi｜観察シート',
-          sections: [{
-            properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 850, bottom: 850, left: 850, right: 850, header: 400, footer: 400 } } },
-            headers: { default: new Header({ children: [new Paragraph({ border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [new TextRun({ text: 'toi toi toi｜支援の前に、立ち止まる　観察シート（同僚用）', font: FONT, size: 16, color: '555555' })] })] }) },
-            footers: { default: new Footer({ children: [new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [new TextRun({ text: '出典：toi toi toi https://toitoitoi-lab.github.io/tachidomaru/　このシートはサイトに送られません。名前は書きません。', font: FONT, size: 16, color: '555555' })] })] }) },
-            children: [
-              hd('観察シート（同僚に見てもらう）', HeadingLevel.HEADING_1),
-              para('お願い：授業・活動を見て、あてはまるところに○や回数を書いてください（数分でかまいません）。子どもの名前や、だれか分かることは書きません。感想や評価ではなく、見たことだけを書きます。'),
-              para('見てもらった日：　　　月　　　日　　　見る場面（例：1時間目の国語）：'),
-              hd('1. 伝え方（見られた回数）', HeadingLevel.HEADING_2), table,
-              hd('2. 予想外の反応があったとき', HeadingLevel.HEADING_2),
-              para('見られたら、最初にした動きに○（複数可）。'),
-              ...D.tf.map((x) => box(x.text)),
-              para('その動きは、間に合っていたか？（1つ）'),
-              ...D.tt.map((x) => box(x.text)),
-              hd('3. ひとこと（見えたこと）', HeadingLevel.HEADING_2), ...lines(3),
-            ],
-          }],
-        });
-        const blob = await Packer.toBlob(doc);
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `toitoitoi_kansatsu_${file}.docx`; a.style.display = 'none';
-        document.body.appendChild(a); a.click(); setTimeout(() => { a.remove(); URL.revokeObjectURL(a.href); }, 30000);
-        note.textContent = '観察シート（Word）を保存しました。';
-      } catch (e) { console.error(e); note.textContent = '観察シートを作れませんでした。'; }
     });
   </script>
 </Base>

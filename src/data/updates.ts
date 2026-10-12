@@ -7,9 +7,9 @@ export type Update = { date: string; ja: string; en: string; href?: string; jaOn
 
 export const UPDATES: Update[] = [
   {
-    date: '2026-10-12',
-    ja: '「支援の前に、立ち止まる」の質問を、「意図」ではなく「ふだんの事実（していること・見ている様子）」で答える形に変えました。「窓」を「わかり方（子ども）」「伝え方（あなた）」に言いかえ、予想外の反応があったときの動きと、同僚に見てもらう観察シート（A4 1枚）を加えました。',
-    en: '“Pause before you support” now asks about everyday facts, not intentions, and uses the terms “how a child understands” and “how you convey”. Added a section on what you do when a child reacts unexpectedly, and a one-page observation sheet for a colleague (Japanese only for now).',
+    date: '2026-10-13',
+    ja: '「支援の前に、立ち止まる」を作り直しました。スライダーで、あなたの得意と子どもに届くわかり方を置くと、2つが重なる所（ベン図）、ICT・AIで補う所、強みを行動の言葉にした「強みのことば」が出ます。',
+    en: 'Rebuilt “Pause before you support”: set sliders for your strengths and how the child understands best, and see where they overlap (a Venn diagram), where ICT and AI can fill the gap, and your strengths put into plain words (Japanese only for now).',
     href: '/tachidomaru/', jaOnly: true,
   },
   {
