@@ -19,7 +19,7 @@ const SL = [
     <h1>{title}</h1>
     <p class="lead-text">あなたの得意と、子どもに届くわかり方。<strong>2つが重なる所から、支援を始めます。</strong>重ならない所は、大人が子どもに合わせ、<strong>ICT・AIで補います</strong>。先生も楽しくないと、支援は続きません。所要は3分ほどです。</p>
     <ul class="td-pts">
-      <li><strong>スライダーを「こんなもんかな」と置くだけです。</strong>4段階で止まります。読み上げでは「3：まあまあ得意」のように、数字と言葉で伝わります。矢印キーでも動かせます。</li>
+      <li><strong>スライダーを「こんなもんかな」と置くだけです。</strong>6段階で止まります（まん中がないので、どちらかに寄せて置きます）。読み上げでは「4：どちらかといえば得意」のように、数字と言葉で伝わります。矢印キーでも動かせます。</li>
       <li><strong>診断ではありません。</strong>優劣もありません。見立てに自信がなくても、結果はそのまま明日の手立てになります。</li>
       <li><strong>名前は入れません。</strong>答えや結果は、このサイトに送られず、保存もされません。</li>
     </ul>
@@ -43,7 +43,8 @@ const SL = [
               <label class="td-sl-l" for={`${g.who}-${c.id}`}><span class="td-n">{i + 1}</span><strong>{g.who === 's' ? c.tsutae : c.wakari}</strong><span class="td-sl-ex">{g.who === 's' ? c.exS : c.exC}</span></label>
               <div class="td-sl-row">
                 <span class="td-sl-end" aria-hidden="true">{g.left}</span>
-                <input type="range" class="td-range" id={`${g.who}-${c.id}`} min="1" max="4" step="1" value="2" data-scale={g.who} aria-valuetext="未回答" />
+                <input type="range" class="td-range" id={`${g.who}-${c.id}`} min="1" max="6" step="1" value="3" data-scale={g.who} aria-valuetext="未回答" />
+                <div class="td-ticks" aria-hidden="true">{[1, 2, 3, 4, 5, 6].map((n) => <span>{n}</span>)}</div>
                 <span class="td-sl-end" aria-hidden="true">{g.right}</span>
               </div>
               <p class="td-sl-v" aria-hidden="true">未回答</p>
@@ -86,7 +87,7 @@ const SL = [
         <li><strong>重なり（まん中）</strong>：あなたも楽しく、この子にも届く伝え方です。ここから始めます。</li>
         <li><strong>この子に届くだけ（右）</strong>：あなたは得意ではないけれど、この子には届きます。大人が子どもに合わせる所です。苦手な分は、ICT・AIや道具で補います。</li>
         <li><strong>あなたの得意だけ（左）</strong>：この子には届きにくい、または負担です。やめるのではなく、形を変えて使います。</li>
-        <li>スライダーの3以上を「得意」「届く」として見ています。</li>
+        <li>スライダーは6段階です。4以上（右半分）を「得意」「届く」、2以下を「負担が大きい」として見ています。</li>
       </ul>
       <p>子どもの「わかり方」は、その子がいちばん負担少なく、情報を受け取れる形です。あなたの「伝え方」は、ふだん楽しく、自然にとっている伝える形です。</p>
     </details>
@@ -122,7 +123,8 @@ const SL = [
     const q = (l: string[]) => l.map((x) => `「${x}」`).join('');
     const detOpen = () => document.documentElement.dataset.detail === 'open';
 
-    // ── スライダー：触るまでは「未回答」。値は4段階（1〜4）、読み上げは数字＋言葉 ──
+    // ── スライダー：触るまでは「未回答」。値は6段階（1〜6・まん中なし）、読み上げは数字＋言葉。HI 以上＝得意・届く、LO 以下＝負担 ──
+    const HI = 4, LO = 2;
     const ranges = Array.from(document.querySelectorAll<HTMLInputElement>('.td-range'));
     const label = (el: HTMLInputElement) => { const sc = el.dataset.scale === 's' ? D.sS : D.sC; return el.dataset.touched ? `${el.value}：${sc[Number(el.value) - 1]}` : '未回答'; };
     const paint = (el: HTMLInputElement) => { const t = label(el); el.setAttribute('aria-valuetext', t); const box = el.closest('.td-sl')!; box.querySelector('.td-sl-v')!.textContent = t; box.classList.toggle('td-un', !el.dataset.touched); };
@@ -134,7 +136,7 @@ const SL = [
     const res = (c: Ch): R => {
       const s = gv('s-' + c.id), k = gv('c-' + c.id);
       let cat: Cat | null = null;
-      if (s !== null && k !== null) cat = s >= 3 && k >= 3 ? 'kasanari' : k >= 3 ? 'awaseru' : s >= 3 ? 'katachi' : k === 1 ? 'hikaeru' : 'sonota';
+      if (s !== null && k !== null) cat = s >= HI && k >= HI ? 'kasanari' : k >= HI ? 'awaseru' : s >= HI ? 'katachi' : k <= LO ? 'hikaeru' : 'sonota';
       return { c, s, k, cat };
     };
     type BC = 'kasanari' | 'awaseru' | 'katachi' | 'tamesu';
@@ -151,13 +153,13 @@ const SL = [
       L.filter((r) => r.cat === 'awaseru').forEach((r) => o.push({ cat: 'awaseru', c: r.c, first: r.c.aiFirst, tools: r.c.ai, sign: r.c.tedate.strong.sign, next: r.c.tedate.strong.next }));
       L.filter((r) => r.cat === 'katachi').forEach((r) => o.push({ cat: 'katachi', c: r.c, first: r.c.tedate.chui, tools: r.c.weak.at.slice(0, 2), sign: r.c.tedate.weak.sign, next: r.c.tedate.weak.next }));
       // 重なりも、届く所もないとき：いちばん届きそうな所（子どもの値が高く、あなたも使いやすい順）から試す
-      if (!o.some((t) => t.cat !== 'katachi')) { const c = L.filter((r) => r.k !== null && r.k >= 2).sort((a, b) => (b.k! * 10 + (b.s ?? 0)) - (a.k! * 10 + (a.s ?? 0)))[0]; if (c) o.unshift({ cat: 'tamesu', c: c.c, first: (c.s ?? 0) >= 3 ? c.c.tedate.strong.first : c.c.aiFirst, tools: (c.s ?? 0) >= 3 ? c.c.strong.at.slice(0, 2) : c.c.ai, sign: c.c.tedate.strong.sign, next: c.c.tedate.strong.next }); }
+      if (!o.some((t) => t.cat !== 'katachi')) { const c = L.filter((r) => r.k !== null && r.k >= 3).sort((a, b) => (b.k! * 10 + (b.s ?? 0)) - (a.k! * 10 + (a.s ?? 0)))[0]; if (c) o.unshift({ cat: 'tamesu', c: c.c, first: (c.s ?? 0) >= HI ? c.c.tedate.strong.first : c.c.aiFirst, tools: (c.s ?? 0) >= HI ? c.c.strong.at.slice(0, 2) : c.c.ai, sign: c.c.tedate.strong.sign, next: c.c.tedate.strong.next }); }
       return o;
     };
     const summary = (L: R[]) => {
       const n = (f: (r: R) => boolean) => L.filter(f).map((r) => r.c.name);
       const ka = n((r) => r.cat === 'kasanari'), aw = n((r) => r.cat === 'awaseru'), kt = n((r) => r.cat === 'katachi'), hk = n((r) => r.cat === 'hikaeru');
-      const kS = n((r) => (r.k ?? 0) >= 3);
+      const kS = n((r) => (r.k ?? 0) >= HI);
       const o: string[] = [];
       if (ka.length) o.push(`重なりは${q(ka)}。ここから始めます。あなたも楽しく、この子にも届きます。`);
       else if (kS.length) o.push(`重なりは、まだありません。この子に届く${q(kS)}に、大人が合わせます。`);
@@ -173,9 +175,9 @@ const SL = [
     // 図の中は短い名前（話す・伝える→話す）。読み上げ（aria-label）も同じ名前
     const sn = (r: R) => r.c.name.split('・')[0];
     const zones = (L: R[]): Z => ({
-      left: L.filter((r) => (r.s ?? 0) >= 3 && !((r.k ?? 0) >= 3)).map(sn),
-      mid: L.filter((r) => (r.s ?? 0) >= 3 && (r.k ?? 0) >= 3).map(sn),
-      right: L.filter((r) => (r.k ?? 0) >= 3 && !((r.s ?? 0) >= 3)).map(sn),
+      left: L.filter((r) => (r.s ?? 0) >= HI && !((r.k ?? 0) >= HI)).map(sn),
+      mid: L.filter((r) => (r.s ?? 0) >= HI && (r.k ?? 0) >= HI).map(sn),
+      right: L.filter((r) => (r.k ?? 0) >= HI && !((r.s ?? 0) >= HI)).map(sn),
     });
     const vennAlt = (z: Z) => `ベン図。重なり：${z.mid.join('、') || 'なし'}。あなたの得意だけ：${z.left.join('、') || 'なし'}。この子に届くだけ：${z.right.join('、') || 'なし'}。`;
     function vennSvg(z: Z) {
@@ -218,7 +220,7 @@ const SL = [
       if (!L.some((r) => r.s !== null || r.k !== null)) { note.textContent = 'まだスライダーを置いていません。「1. あなたの得意」から置いてください。'; last = null; keep.hidden = true; return; }
       note.textContent = L.some((r) => r.s === null || r.k === null) ? '置いていないスライダーがあります。置いた分だけで表示しています。' : '';
       const sum = summary(L), te = tedate(L), z = zones(L), ax = D.ax.map(axResult).filter(Boolean) as AxRes[];
-      const words = { s: L.filter((r) => (r.s ?? 0) >= 3).map((r) => r.c.kS), c: L.filter((r) => (r.k ?? 0) >= 3).map((r) => r.c.kC), f: L.filter((r) => r.k === 1).map((r) => r.c.kF) };
+      const words = { s: L.filter((r) => (r.s ?? 0) >= HI).map((r) => r.c.kS), c: L.filter((r) => (r.k ?? 0) >= HI).map((r) => r.c.kC), f: L.filter((r) => r.k !== null && r.k <= LO).map((r) => r.c.kF) };
       last = { L, sum, te, z, ax, words };
 
       // 結論
@@ -259,7 +261,7 @@ const SL = [
     });
     $('td-print').addEventListener('click', () => window.print());
     $('td-reset').addEventListener('click', () => {
-      ranges.forEach((el) => { delete el.dataset.touched; el.value = '2'; paint(el); });
+      ranges.forEach((el) => { delete el.dataset.touched; el.value = '3'; paint(el); });
       document.querySelectorAll<HTMLInputElement>('.td input[type=radio]').forEach((i) => (i.checked = false));
       out.innerHTML = ''; note.textContent = ''; last = null; keep.hidden = true; $('q-s').scrollIntoView();
     });
