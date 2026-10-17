@@ -11,18 +11,24 @@ const T = ja
       notReady: 'フォームは準備中です。準備ができしだい、ここから送れるようになります。',
       step1: '1. 用件を選んでください', step2: '2. 内容を書いてください',
       purposes: [
-        { v: 'soudan', t: '困りごとの相談', d: '学び・支援・道具の使い方について' },
-        { v: 'kenshu', t: '研修の依頼', d: '校内研修・勉強会など（主にオンライン）' },
+        { v: 'soudan', t: '困りごとの相談', d: '支援や学びの場面での困りごと、道具の使い方' },
+        { v: 'app', t: 'アプリの不具合・要望', d: '「動かない」「こうしてほしい」' },
+        { v: 'kenshu', t: '研修・講演の依頼', d: '校内研修・勉強会など（主にオンライン）' },
         { v: 'riyou', t: '記事・教材を使いたい', d: '研修での配布・転載などの事前連絡' },
-        { v: 'iken', t: 'サイトへの意見', d: '「こんな方法もあるよ」「ここが分かりにくい」' },
+        { v: 'renkei', t: '共有・取材・連携', d: '実践の共有、取材、いっしょに取り組みたいこと' },
+        { v: 'iken', t: '感想・サイトへの意見', d: '「こんな方法もあるよ」「ここが分かりにくい」' },
       ],
       name: '呼び名', nameHelp: 'ニックネームでもかまいません。', optional: '任意', required: '必須',
-      email: '返信先のメールアドレス',
+      email: '返信先のメールアドレス', emailHelp: '返信がいらないときは、空のままでかまいません。',
+      urgency: '急ぎ度', urgencies: [{ v: 'kyu', t: '今まさに現場で困っている' }, { v: 'week', t: '今週中だと助かる' }, { v: 'itsu', t: 'いつでもよい' }],
+      replyQ: '返信', replies: [{ v: 'yes', t: '返信がほしい' }, { v: 'no', t: '返信はいらない' }],
+      wakari: '関係するわかり方（いくつでも）', wakaris: ['見る', '聞く', '話す', '動く', '感じる', '見通す'],
+      target: 'アプリ・ページの名前', targetHelp: '例：ことむすび／「支援の前に、立ち止まる」のページ',
       role: 'あなたの立場', roles: ['先生・支援者', '本人', '家族', 'その他'],
       komari: '近い困りごと（いくつでも）',
       event: '日程・対象・人数・形式', eventHelp: '例：11月ごろ／校内の教員30人／オンライン（Zoom・Teams など）',
       pages: '使いたいページ・使う場面・配り方', pagesHelp: '例：「読む」のページ／校内研修の資料として／印刷して20部配布',
-      body: { soudan: '相談したいこと', kenshu: 'ご依頼の内容', riyou: '使い方について、ほかに伝えたいこと', iken: 'ご意見' } as Record<string, string>,
+      body: { soudan: '相談したいこと', app: '起きていること・ほしい機能', kenshu: 'ご依頼の内容', riyou: '使い方について、ほかに伝えたいこと', renkei: 'ご相談の内容', iken: 'ご感想・ご意見' } as Record<string, string>,
       bodyDefault: '内容',
       privacy: '児童生徒の名前・学校名・診断名・写真など、だれか分かることは書かないでください。「小学4年生、文字を書くのに時間がかかる」のように、ぼかして書いてください。',
       voice: '書くのが大変なときは、キーボードのマイクのボタンを押すと、話して入力できます。',
@@ -31,7 +37,7 @@ const T = ja
       toConfirm: '確認する', confirmTitle: '3. 送る内容を確認してください', edit: 'もどって直す', send: '送信する', sending: '送信しています…',
       doneTitle: '送信しました', done: 'お問い合わせありがとうございます。内容を確認して、1週間ほどを目安にお返事します。',
       again: '別のお問い合わせをする',
-      errTitle: '入力を確認してください', errPurpose: '用件を選んでください。', errEmail: 'メールアドレスの形を確認してください（例：name@example.jp）。', errBody: '内容を書いてください。', errAgree: '同意のチェックを入れてください。',
+      errTitle: '入力を確認してください', errPurpose: '用件を選んでください。', errUrgency: '急ぎ度を選んでください。', errReply: '返信が必要かどうかを選んでください。', errEmail: 'メールアドレスの形を確認してください（例：name@example.jp）。', errBody: '内容を書いてください。', errAgree: '同意のチェックを入れてください。',
       sendFail: '送信できませんでした。時間をおいて、もう一度お試しください。', draft: '書きかけの内容は、このブラウザに一時保存されます。送信すると消えます。',
       hp: 'この欄は空のままにしてください',
     }
@@ -39,18 +45,24 @@ const T = ja
       notReady: 'The form is being prepared. You will be able to send messages here soon.',
       step1: '1. What is this about?', step2: '2. Your message',
       purposes: [
-        { v: 'soudan', t: 'Ask about a difficulty', d: 'Learning, support or using tools' },
-        { v: 'kenshu', t: 'Training', d: 'In-school training or study groups (mainly online)' },
+        { v: 'soudan', t: 'Ask about a difficulty', d: 'Support or learning situations, or using tools' },
+        { v: 'app', t: 'App problem or request', d: '"It does not work" or "please add…"' },
+        { v: 'kenshu', t: 'Training or talks', d: 'In-school training or study groups (mainly online)' },
         { v: 'riyou', t: 'Using articles or materials', d: 'Prior contact for handouts or republishing' },
-        { v: 'iken', t: 'Feedback on the site', d: '"Here is another method" or "this is unclear"' },
+        { v: 'renkei', t: 'Sharing, interviews, collaboration', d: 'Share practice, interviews, or work together' },
+        { v: 'iken', t: 'Comments on the site', d: '"Here is another method" or "this is unclear"' },
       ],
       name: 'What should we call you?', nameHelp: 'A nickname is fine.', optional: 'optional', required: 'required',
-      email: 'Email for our reply',
+      email: 'Email for our reply', emailHelp: 'Leave empty if you do not need a reply.',
+      urgency: 'How urgent', urgencies: [{ v: 'kyu', t: 'I am stuck right now' }, { v: 'week', t: 'This week would help' }, { v: 'itsu', t: 'Any time' }],
+      replyQ: 'Reply', replies: [{ v: 'yes', t: 'I would like a reply' }, { v: 'no', t: 'No reply needed' }],
+      wakari: 'Related ways of understanding (choose any)', wakaris: ['Seeing', 'Hearing', 'Speaking', 'Moving', 'Sensing', 'Planning'],
+      target: 'App or page name', targetHelp: 'e.g. KOTOMUSUBI / the "Pause before you support" page',
       role: 'You are', roles: ['A teacher or supporter', 'A learner', 'Family', 'Other'],
       komari: 'Related needs (choose any)',
       event: 'Date, audience, number of people, format', eventHelp: 'e.g. around November / 30 teachers / online (Zoom, Teams, etc.)',
       pages: 'Which pages, where, and how they will be shared', pagesHelp: 'e.g. the "Reading" page / in-school training / 20 printed copies',
-      body: { soudan: 'Your question', kenshu: 'About your request', riyou: 'Anything else about how you will use it', iken: 'Your feedback' } as Record<string, string>,
+      body: { soudan: 'Your question', app: 'What happens, or what you would like', kenshu: 'About your request', riyou: 'Anything else about how you will use it', renkei: 'About your idea', iken: 'Your comments' } as Record<string, string>,
       bodyDefault: 'Message',
       privacy: 'Please do not write anything that identifies a student, such as names, school names, diagnoses or photos. Describe things generally, e.g. "a 4th grader who takes a long time to write".',
       voice: 'If typing is hard, press the microphone button on your keyboard to speak instead.',
@@ -59,11 +71,12 @@ const T = ja
       toConfirm: 'Review', confirmTitle: '3. Check your message', edit: 'Go back and edit', send: 'Send', sending: 'Sending…',
       doneTitle: 'Sent', done: 'Thank you for your message. We will read it and aim to reply within about a week.',
       again: 'Send another message',
-      errTitle: 'Please check the form', errPurpose: 'Please choose what this is about.', errEmail: 'Please check your email address (e.g. name@example.com).', errBody: 'Please write your message.', errAgree: 'Please tick the agreement box.',
+      errTitle: 'Please check the form', errPurpose: 'Please choose what this is about.', errUrgency: 'Please choose how urgent it is.', errReply: 'Please choose whether you need a reply.', errEmail: 'Please check your email address (e.g. name@example.com).', errBody: 'Please write your message.', errAgree: 'Please tick the agreement box.',
       sendFail: 'The message could not be sent. Please try again later.', draft: 'Your draft is kept in this browser for now and cleared when you send.',
       hp: 'Leave this field empty',
     };
 const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
+const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見通す'];
 ---
 <div class="cf" data-backend={BACKEND_URL} data-lang={lang}>
   {!BACKEND_URL && <div class="notice"><p>{T.notReady}</p></div>}
@@ -90,6 +103,20 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
     <fieldset class="cf-step" id="cf-step2">
       <legend><h2>{T.step2}</h2></legend>
 
+      <fieldset class="cf-field" id="cf-urgency">
+        <legend>{T.urgency}<span class="cf-tag cf-req">{T.required}</span></legend>
+        <div class="cf-chips">
+          {T.urgencies.map((u) => <label class="cf-chip"><input type="radio" name="urgency" value={u.v} /><span>{u.t}</span></label>)}
+        </div>
+      </fieldset>
+
+      <fieldset class="cf-field" id="cf-reply">
+        <legend>{T.replyQ}<span class="cf-tag cf-req">{T.required}</span></legend>
+        <div class="cf-chips">
+          {T.replies.map((u) => <label class="cf-chip"><input type="radio" name="reply" value={u.v} /><span>{u.t}</span></label>)}
+        </div>
+      </fieldset>
+
       <div class="cf-field">
         <label for="cf-name">{T.name}<span class="cf-tag">{T.optional}</span></label>
         <p class="cf-help" id="cf-name-help">{T.nameHelp}</p>
@@ -97,11 +124,12 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
       </div>
 
       <div class="cf-field">
-        <label for="cf-email">{T.email}<span class="cf-tag cf-req">{T.required}</span></label>
-        <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="200" required aria-required="true" />
+        <label for="cf-email">{T.email}<span class="cf-tag cf-req" id="cf-email-tag" data-req={T.required} data-opt={T.optional}>{T.required}</span></label>
+        <p class="cf-help" id="cf-email-help">{T.emailHelp}</p>
+        <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="200" aria-describedby="cf-email-help" />
       </div>
 
-      <fieldset class="cf-field cf-only" data-for="soudan">
+      <fieldset class="cf-field">
         <legend>{T.role}<span class="cf-tag">{T.optional}</span></legend>
         <div class="cf-chips">
           {T.roles.map((r) => <label class="cf-chip"><input type="radio" name="role" value={r} /><span>{r}</span></label>)}
@@ -114,6 +142,19 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
           {komari.map((k) => <label class="cf-chip"><input type="checkbox" name="komari" value={k} /><span>{k}</span></label>)}
         </div>
       </fieldset>
+
+      <fieldset class="cf-field cf-only" data-for="soudan app">
+        <legend>{T.wakari}<span class="cf-tag">{T.optional}</span></legend>
+        <div class="cf-chips">
+          {T.wakaris.map((w, i) => <label class="cf-chip"><input type="checkbox" name="wakari" value={WAKARI_KEYS[i]} /><span>{w}</span></label>)}
+        </div>
+      </fieldset>
+
+      <div class="cf-field cf-only" data-for="app">
+        <label for="cf-target">{T.target}<span class="cf-tag">{T.optional}</span></label>
+        <p class="cf-help" id="cf-target-help">{T.targetHelp}</p>
+        <input id="cf-target" name="target" type="text" maxlength="200" aria-describedby="cf-target-help" />
+      </div>
 
       <div class="cf-field cf-only" data-for="kenshu">
         <label for="cf-event">{T.event}<span class="cf-tag">{T.optional}</span></label>
@@ -169,7 +210,7 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
     <p><button type="button" class="btn" id="cf-again">{T.again}</button></p>
   </section>
 
-  <script type="application/json" id="cf-text" set:html={JSON.stringify({ errPurpose: T.errPurpose, errEmail: T.errEmail, errBody: T.errBody, errAgree: T.errAgree, sendFail: T.sendFail, purposes: Object.fromEntries(T.purposes.map((p) => [p.v, p.t])), labels: { purpose: ja ? '用件' : 'About', name: T.name, email: T.email, role: T.role, komari: T.komari, event: T.event, pages: T.pages }, none: ja ? '（なし）' : '(none)' }).replace(/</g, '\\u003c')}></script>
+  <script type="application/json" id="cf-text" set:html={JSON.stringify({ errPurpose: T.errPurpose, errUrgency: T.errUrgency, errReply: T.errReply, errEmail: T.errEmail, urgencies: Object.fromEntries(T.urgencies.map((u) => [u.v, u.t])), replies: Object.fromEntries(T.replies.map((u) => [u.v, u.t])), wakari: Object.fromEntries(WAKARI_KEYS.map((k, i) => [k, T.wakaris[i]])), errBody: T.errBody, errAgree: T.errAgree, sendFail: T.sendFail, purposes: Object.fromEntries(T.purposes.map((p) => [p.v, p.t])), labels: { purpose: ja ? '用件' : 'About', urgency: T.urgency, reply: T.replyQ, name: T.name, email: T.email, role: T.role, komari: T.komari, wakari: T.wakari, target: T.target, event: T.event, pages: T.pages }, none: ja ? '（なし）' : '(none)' }).replace(/</g, '\\u003c')}></script>
 </div>
 
 <script is:inline>
@@ -185,19 +226,27 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
   var started = Date.now(), DRAFT = 't3-contact-draft', payload = null;
 
   function purpose() { var r = form.querySelector('input[name=purpose]:checked'); return r ? r.value : ''; }
+  function radio(n) { var r = form.querySelector('input[name=' + n + ']:checked'); return r ? r.value : ''; }
+  function replyV() { return radio('reply'); }
+  function checks(n) { return Array.prototype.map.call(form.querySelectorAll('input[name=' + n + ']:checked'), function (c) { return c.value; }); }
   function update() {
     var p = purpose();
-    form.querySelectorAll('.cf-only').forEach(function (el) { el.hidden = el.dataset.for !== p; });
+    form.querySelectorAll('.cf-only').forEach(function (el) { el.hidden = el.dataset.for.split(' ').indexOf(p) < 0; });
+    var needMail = replyV() === 'yes', tag = document.getElementById('cf-email-tag');
+    tag.textContent = needMail ? tag.dataset.req : tag.dataset.opt; tag.classList.toggle('cf-req', needMail);
+    if (needMail) { f('email').setAttribute('aria-required', 'true'); } else { f('email').removeAttribute('aria-required'); }
     bodyLabel.textContent = labels[p] || bodyLabel.dataset.default;
     var n = f('body').value.length; document.getElementById('cf-count').textContent = n + ' / 4000';
   }
   function collect() {
     var p = purpose();
     return {
-      action: 'contact', lang: lang, purpose: p,
+      action: 'contact', lang: lang, purpose: p, urgency: radio('urgency'), reply: radio('reply'),
       name: f('name').value.trim(), email: f('email').value.trim(),
-      role: p === 'soudan' ? ((form.querySelector('input[name=role]:checked') || {}).value || '') : '',
-      komari: p === 'soudan' ? Array.prototype.map.call(form.querySelectorAll('input[name=komari]:checked'), function (c) { return c.value; }) : [],
+      role: radio('role'),
+      komari: p === 'soudan' ? checks('komari') : [],
+      wakari: (p === 'soudan' || p === 'app') ? checks('wakari') : [],
+      target: p === 'app' ? f('target').value.trim() : '',
       event: p === 'kenshu' ? f('event').value.trim() : '',
       pages: p === 'riyou' ? f('pages').value.trim() : '',
       body: f('body').value.trim(), agree: f('agree').checked, website: f('website').value,
@@ -209,15 +258,18 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
     var d = null; try { d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); } catch (e) {}
     if (!d) return;
     if (d.purpose) { var r = form.querySelector('input[name=purpose][value="' + d.purpose + '"]'); if (r) r.checked = true; }
-    ['name', 'email', 'event', 'pages', 'body'].forEach(function (k) { if (d[k] && f(k)) f(k).value = d[k]; });
-    if (d.role) { var ro = form.querySelector('input[name=role][value="' + d.role + '"]'); if (ro) ro.checked = true; }
-    (d.komari || []).forEach(function (v) { form.querySelectorAll('input[name=komari]').forEach(function (c) { if (c.value === v) c.checked = true; }); });
+    ['name', 'email', 'target', 'event', 'pages', 'body'].forEach(function (k) { if (d[k] && f(k)) f(k).value = d[k]; });
+    ['role', 'urgency', 'reply'].forEach(function (n) { if (d[n]) { var ro = form.querySelector('input[name=' + n + '][value="' + d[n] + '"]'); if (ro) ro.checked = true; } });
+    ['komari', 'wakari'].forEach(function (n) { (d[n] || []).forEach(function (v) { form.querySelectorAll('input[name=' + n + ']').forEach(function (c) { if (c.value === v) c.checked = true; }); }); });
   }
   function setInvalid(el, bad) { if (el) el.setAttribute('aria-invalid', bad ? 'true' : 'false'); }
   function validate(d) {
     var errs = [];
     if (!d.purpose) errs.push([T.errPurpose, form.querySelector('input[name=purpose]')]);
-    var okMail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email); setInvalid(f('email'), !okMail); if (!okMail) errs.push([T.errEmail, f('email')]);
+    if (!d.urgency) errs.push([T.errUrgency, form.querySelector('input[name=urgency]')]);
+    if (!d.reply) errs.push([T.errReply, form.querySelector('input[name=reply]')]);
+    var needMail = d.reply === 'yes' || d.email !== '';
+    var okMail = !needMail || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email); setInvalid(f('email'), !okMail); if (!okMail) errs.push([T.errEmail, f('email')]);
     setInvalid(f('body'), !d.body); if (!d.body) errs.push([T.errBody, f('body')]);
     if (!d.agree) errs.push([T.errAgree, f('agree')]);
     return errs;
@@ -244,9 +296,13 @@ const komari = KOMARI.map((k) => (ja ? k.ja.title : k.en.title));
     if (errs.length) { showErrors(errs); return; }
     errBox.hidden = true; payload = d;
     var dl = document.getElementById('cf-dl'); dl.innerHTML = '';
+    var sep = lang === 'ja' ? '、' : ', ';
     row(dl, T.labels.purpose, T.purposes[d.purpose]);
-    row(dl, T.labels.name, d.name); row(dl, T.labels.email, d.email);
-    if (d.purpose === 'soudan') { row(dl, T.labels.role, d.role); row(dl, T.labels.komari, d.komari.join(lang === 'ja' ? '、' : ', ')); }
+    row(dl, T.labels.urgency, T.urgencies[d.urgency]); row(dl, T.labels.reply, T.replies[d.reply]);
+    row(dl, T.labels.name, d.name); row(dl, T.labels.email, d.email); row(dl, T.labels.role, d.role);
+    if (d.purpose === 'soudan') row(dl, T.labels.komari, d.komari.join(sep));
+    if (d.purpose === 'soudan' || d.purpose === 'app') row(dl, T.labels.wakari, d.wakari.map(function (k) { return T.wakari[k] || k; }).join(sep));
+    if (d.purpose === 'app') row(dl, T.labels.target, d.target);
     if (d.purpose === 'kenshu') row(dl, T.labels.event, d.event);
     if (d.purpose === 'riyou') row(dl, T.labels.pages, d.pages);
     row(dl, bodyLabel.textContent, d.body);
