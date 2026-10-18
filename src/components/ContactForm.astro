@@ -9,7 +9,7 @@ const base = ja ? '' : '/en';
 const T = ja
   ? {
       notReady: 'フォームは準備中です。準備ができしだい、ここから送れるようになります。',
-      step1: '1. 用件を選んでください', step2: '2. 内容を書いてください',
+      step1: '1. 用件を選んでください（いくつでも）', step2: '2. 内容を書いてください',
       purposes: [
         { v: 'soudan', t: '困りごとの相談', d: '支援や学びの場面での困りごと、道具の使い方' },
         { v: 'app', t: 'アプリの不具合・要望', d: '「動かない」「こうしてほしい」' },
@@ -37,13 +37,13 @@ const T = ja
       toConfirm: '確認する', confirmTitle: '3. 送る内容を確認してください', edit: 'もどって直す', send: '送信する', sending: '送信しています…',
       doneTitle: '送信しました', done: 'お問い合わせありがとうございます。内容を確認して、1週間ほどを目安にお返事します。',
       again: '別のお問い合わせをする',
-      errTitle: '入力を確認してください', errPurpose: '用件を選んでください。', errUrgency: '急ぎ度を選んでください。', errReply: '返信が必要かどうかを選んでください。', errEmail: 'メールアドレスの形を確認してください（例：name@example.jp）。', errBody: '内容を書いてください。', errAgree: '同意のチェックを入れてください。',
+      errTitle: '入力を確認してください', errPurpose: '用件を1つ以上選んでください。', errUrgency: '急ぎ度を選んでください。', errReply: '返信が必要かどうかを選んでください。', errEmail: 'メールアドレスの形を確認してください（例：name@example.jp）。', errBody: '内容を書いてください。', errAgree: '同意のチェックを入れてください。',
       sendFail: '送信できませんでした。時間をおいて、もう一度お試しください。', draft: '書きかけの内容は、このブラウザに一時保存されます。送信すると消えます。',
       hp: 'この欄は空のままにしてください',
     }
   : {
       notReady: 'The form is being prepared. You will be able to send messages here soon.',
-      step1: '1. What is this about?', step2: '2. Your message',
+      step1: '1. What is this about? (choose any)', step2: '2. Your message',
       purposes: [
         { v: 'soudan', t: 'Ask about a difficulty', d: 'Support or learning situations, or using tools' },
         { v: 'app', t: 'App problem or request', d: '"It does not work" or "please add…"' },
@@ -71,7 +71,7 @@ const T = ja
       toConfirm: 'Review', confirmTitle: '3. Check your message', edit: 'Go back and edit', send: 'Send', sending: 'Sending…',
       doneTitle: 'Sent', done: 'Thank you for your message. We will read it and aim to reply within about a week.',
       again: 'Send another message',
-      errTitle: 'Please check the form', errPurpose: 'Please choose what this is about.', errUrgency: 'Please choose how urgent it is.', errReply: 'Please choose whether you need a reply.', errEmail: 'Please check your email address (e.g. name@example.com).', errBody: 'Please write your message.', errAgree: 'Please tick the agreement box.',
+      errTitle: 'Please check the form', errPurpose: 'Please choose at least one topic.', errUrgency: 'Please choose how urgent it is.', errReply: 'Please choose whether you need a reply.', errEmail: 'Please check your email address (e.g. name@example.com).', errBody: 'Please write your message.', errAgree: 'Please tick the agreement box.',
       sendFail: 'The message could not be sent. Please try again later.', draft: 'Your draft is kept in this browser for now and cleared when you send.',
       hp: 'Leave this field empty',
     };
@@ -92,7 +92,7 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
       <div class="cf-purposes">
         {T.purposes.map((p) => (
           <label class="cf-purpose">
-            <input type="radio" name="purpose" value={p.v} required />
+            <input type="checkbox" name="purpose" value={p.v} />
             <span class="cf-p-title">{p.t}</span>
             <span class="cf-p-desc">{p.d}</span>
           </label>
@@ -225,30 +225,32 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
   function f(n) { return form.elements.namedItem(n); }
   var started = Date.now(), DRAFT = 't3-contact-draft', payload = null;
 
-  function purpose() { var r = form.querySelector('input[name=purpose]:checked'); return r ? r.value : ''; }
+  // 用件は複数選べる。has(x)：x を選んでいるか
+  function purposes() { return Array.prototype.map.call(form.querySelectorAll('input[name=purpose]:checked'), function (c) { return c.value; }); }
+  function has(ps, x) { return ps.indexOf(x) >= 0; }
   function radio(n) { var r = form.querySelector('input[name=' + n + ']:checked'); return r ? r.value : ''; }
   function replyV() { return radio('reply'); }
   function checks(n) { return Array.prototype.map.call(form.querySelectorAll('input[name=' + n + ']:checked'), function (c) { return c.value; }); }
   function update() {
-    var p = purpose();
-    form.querySelectorAll('.cf-only').forEach(function (el) { el.hidden = el.dataset.for.split(' ').indexOf(p) < 0; });
+    var ps = purposes();
+    form.querySelectorAll('.cf-only').forEach(function (el) { el.hidden = !el.dataset.for.split(' ').some(function (x) { return has(ps, x); }); });
     var needMail = replyV() === 'yes', tag = document.getElementById('cf-email-tag');
     tag.textContent = needMail ? tag.dataset.req : tag.dataset.opt; tag.classList.toggle('cf-req', needMail);
     if (needMail) { f('email').setAttribute('aria-required', 'true'); } else { f('email').removeAttribute('aria-required'); }
-    bodyLabel.textContent = labels[p] || bodyLabel.dataset.default;
+    bodyLabel.textContent = (ps.length === 1 && labels[ps[0]]) || bodyLabel.dataset.default;
     var n = f('body').value.length; document.getElementById('cf-count').textContent = n + ' / 4000';
   }
   function collect() {
-    var p = purpose();
+    var ps = purposes();
     return {
-      action: 'contact', lang: lang, purpose: p, urgency: radio('urgency'), reply: radio('reply'),
+      action: 'contact', lang: lang, purpose: ps[0] || '', purposes: ps, urgency: radio('urgency'), reply: radio('reply'),
       name: f('name').value.trim(), email: f('email').value.trim(),
       role: radio('role'),
-      komari: p === 'soudan' ? checks('komari') : [],
-      wakari: (p === 'soudan' || p === 'app') ? checks('wakari') : [],
-      target: p === 'app' ? f('target').value.trim() : '',
-      event: p === 'kenshu' ? f('event').value.trim() : '',
-      pages: p === 'riyou' ? f('pages').value.trim() : '',
+      komari: has(ps, 'soudan') ? checks('komari') : [],
+      wakari: (has(ps, 'soudan') || has(ps, 'app')) ? checks('wakari') : [],
+      target: has(ps, 'app') ? f('target').value.trim() : '',
+      event: has(ps, 'kenshu') ? f('event').value.trim() : '',
+      pages: has(ps, 'riyou') ? f('pages').value.trim() : '',
       body: f('body').value.trim(), agree: f('agree').checked, website: f('website').value,
     };
   }
@@ -257,7 +259,7 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
   function loadDraft() {
     var d = null; try { d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); } catch (e) {}
     if (!d) return;
-    if (d.purpose) { var r = form.querySelector('input[name=purpose][value="' + d.purpose + '"]'); if (r) r.checked = true; }
+    (d.purposes || (d.purpose ? [d.purpose] : [])).forEach(function (v) { var r = form.querySelector('input[name=purpose][value="' + v + '"]'); if (r) r.checked = true; });
     ['name', 'email', 'target', 'event', 'pages', 'body'].forEach(function (k) { if (d[k] && f(k)) f(k).value = d[k]; });
     ['role', 'urgency', 'reply'].forEach(function (n) { if (d[n]) { var ro = form.querySelector('input[name=' + n + '][value="' + d[n] + '"]'); if (ro) ro.checked = true; } });
     ['komari', 'wakari'].forEach(function (n) { (d[n] || []).forEach(function (v) { form.querySelectorAll('input[name=' + n + ']').forEach(function (c) { if (c.value === v) c.checked = true; }); }); });
@@ -265,7 +267,7 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
   function setInvalid(el, bad) { if (el) el.setAttribute('aria-invalid', bad ? 'true' : 'false'); }
   function validate(d) {
     var errs = [];
-    if (!d.purpose) errs.push([T.errPurpose, form.querySelector('input[name=purpose]')]);
+    if (!d.purposes.length) errs.push([T.errPurpose, form.querySelector('input[name=purpose]')]);
     if (!d.urgency) errs.push([T.errUrgency, form.querySelector('input[name=urgency]')]);
     if (!d.reply) errs.push([T.errReply, form.querySelector('input[name=reply]')]);
     var needMail = d.reply === 'yes' || d.email !== '';
@@ -297,14 +299,14 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
     errBox.hidden = true; payload = d;
     var dl = document.getElementById('cf-dl'); dl.innerHTML = '';
     var sep = lang === 'ja' ? '、' : ', ';
-    row(dl, T.labels.purpose, T.purposes[d.purpose]);
+    row(dl, T.labels.purpose, d.purposes.map(function (x) { return T.purposes[x]; }).join(sep));
     row(dl, T.labels.urgency, T.urgencies[d.urgency]); row(dl, T.labels.reply, T.replies[d.reply]);
     row(dl, T.labels.name, d.name); row(dl, T.labels.email, d.email); row(dl, T.labels.role, d.role);
-    if (d.purpose === 'soudan') row(dl, T.labels.komari, d.komari.join(sep));
-    if (d.purpose === 'soudan' || d.purpose === 'app') row(dl, T.labels.wakari, d.wakari.map(function (k) { return T.wakari[k] || k; }).join(sep));
-    if (d.purpose === 'app') row(dl, T.labels.target, d.target);
-    if (d.purpose === 'kenshu') row(dl, T.labels.event, d.event);
-    if (d.purpose === 'riyou') row(dl, T.labels.pages, d.pages);
+    if (has(d.purposes, 'soudan')) row(dl, T.labels.komari, d.komari.join(sep));
+    if (has(d.purposes, 'soudan') || has(d.purposes, 'app')) row(dl, T.labels.wakari, d.wakari.map(function (k) { return T.wakari[k] || k; }).join(sep));
+    if (has(d.purposes, 'app')) row(dl, T.labels.target, d.target);
+    if (has(d.purposes, 'kenshu')) row(dl, T.labels.event, d.event);
+    if (has(d.purposes, 'riyou')) row(dl, T.labels.pages, d.pages);
     row(dl, bodyLabel.textContent, d.body);
     document.getElementById('cf-send-error').hidden = true;
     form.hidden = true; confirmBox.hidden = false; confirmBox.focus(); window.scrollTo(0, confirmBox.getBoundingClientRect().top + window.scrollY - 24);
