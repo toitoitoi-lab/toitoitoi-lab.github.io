@@ -2,7 +2,7 @@
 // ナビゲーション・サイトマップ・カードに自動で反映される。
 
 export const SITE = {
-  name: 'toi toi toi',
+  name: 'toi toi toi lab',
   url: 'https://toitoitoi-lab.github.io',
 };
 

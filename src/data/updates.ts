@@ -7,6 +7,11 @@ export type Update = { date: string; ja: string; en: string; href?: string; jaOn
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-10-18',
+    ja: 'サイト名を「toi toi toi lab」にしました。表示設定に「強調色」（ライム・イエロー・シアン）を加え、ライト・ダークのどちらでも選べるようにしました。',
+    en: 'The site is now called “toi toi toi lab”. Display settings now include an accent color (lime, yellow or cyan) for both light and dark.',
+  },
+  {
     date: '2026-10-13',
     ja: '「支援の前に、立ち止まる」を作り直しました。スライダーで、あなたの得意と子どもに届くわかり方を置くと、2つが重なる所（ベン図）、ICT・AIで補う所、強みを行動の言葉にした「強みのことば」が出ます。',
     en: 'Rebuilt “Pause before you support”: set sliders for your strengths and how the child understands best, and see where they overlap (a Venn diagram), where ICT and AI can fill the gap, and your strengths put into plain words (Japanese only for now).',

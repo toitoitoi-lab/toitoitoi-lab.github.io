@@ -315,11 +315,11 @@ const SL = [
         body.push(para('AIに頼むときは、子どもの名前や、だれか分かることは入れません。', { spacing: { before: 80, after: 0 } }));
         const small = (text: string) => new TextRun({ text, font: FONT, size: 15, color: '555555' });
         const doc = new Document({
-          creator: 'toi toi toi', title: 'toi toi toi｜支援の前に、立ち止まる',
+          creator: 'toi toi toi lab', title: 'toi toi toi lab｜支援の前に、立ち止まる',
           sections: [{
             properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 760, bottom: 760, left: 850, right: 850, header: 360, footer: 360 } } },
-            headers: { default: new Header({ children: [new Paragraph({ border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`toi toi toi｜支援の前に、立ち止まる　　出力：${dl}　　診断ではありません`)] })] }) },
-            footers: { default: new Footer({ children: [new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, tabStops: [{ type: 'right', position: 10200 }], children: [small('出典：toi toi toi https://toitoitoi-lab.github.io/tachidomaru/　© toi toi toi（圓井健史）'), new TextRun({ children: ['\t', PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], font: FONT, size: 15, color: '555555' })] })] }) },
+            headers: { default: new Header({ children: [new Paragraph({ border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, children: [small(`toi toi toi lab｜支援の前に、立ち止まる　　出力：${dl}　　診断ではありません`)] })] }) },
+            footers: { default: new Footer({ children: [new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'BBBBBB', space: 4 } }, tabStops: [{ type: 'right', position: 10200 }], children: [small('出典：toi toi toi lab https://toitoitoi-lab.github.io/tachidomaru/　© toi toi toi lab（圓井健史）'), new TextRun({ children: ['\t', PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], font: FONT, size: 15, color: '555555' })] })] }) },
             children: body,
           }],
         });

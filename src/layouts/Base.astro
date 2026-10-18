@@ -40,7 +40,8 @@ const nav = ja
 const t = ja
   ? { skipMain: '本文へ移動', skipMap: 'サイトマップへ移動', settings: '表示設定', sitemap: 'サイトマップ', close: '表示設定を閉じる',
       detail: '説明の量', dFold: 'たたむ（図と要点）', dOpen: '最初から開く（文字で詳しく）', dHint: '図や表のあるページで、くわしい説明を最初からたたむか、開いておくかを選べます。どちらでも、書かれている内容は同じです。読み上げ機能で文字を読む方や、文字で読みたい方は「最初から開く」が便利です。',
-      theme: '配色', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
+      theme: '明るさ', dark: 'ダーク', light: 'ライト', contrast: 'ハイコントラスト',
+      accent: '強調色', aLime: 'ライム（黄緑）', aYellow: 'イエロー（黄）', aCyan: 'シアン（水色）', aHint: 'ボタンや見出しの印に使う色です。ハイコントラストでは、いちばん見やすい黄色に固定されます。',
       font: '文字の形', ud: 'すっきり（UDゴシック）', kyo: '学校で習う形（教科書体）',
       size: '文字の大きさ', m: '標準', l: '大', xl: '特大', space: '文字の間隔', normal: '標準', wide: 'ひろめ',
       reset: '最初の設定にもどす', float: '操作ボタン', fRight: '右下', fLeft: '左下', fHide: 'かくす', fFree: '自由に動かす', fDock: '画面の最下部', fTop: '画面の最上部', fHint: '操作ボタンは、どのページにもある「もどる・上へ・下へ・トップ・表示設定」のボタンです。画面を見ずに、読み上げ機能で位置を覚えて操作する方には、「画面の最上部」か「画面の最下部」がおすすめです。いつも同じ位置にあり、画面の端をさわれば見つかります（「自由に動かす」は位置が変わるため、おすすめしません）。', orient: '操作ボタンの並べ方', oRow: '横に並べる', oCol: '縦に並べる', skipBar: '操作ボタンへ移動', keyHelp: 'キーボードでは、どこにいても Alt＋Shift＋M（Macは option＋shift＋M）で操作ボタンへ移動できます。「かくす」にしているときも呼び出せます。もう一度押すか Esc で、元の場所にもどります。', fbShown: '操作ボタンを一時的に表示しています', newTab: '（新しいタブで開きます）', fbMove: '動かす', fbMoveHelp: 'ドラッグするか、選んで矢印キーで動かせます', fbNav: '操作ボタン', fbBack: 'もどる', fbTop: '上へ', fbBottom: '下へ', fbHome: 'トップ', fbFold: 'たたむ', fbOpen: 'ひらく', fbOpenLong: '操作ボタンをひらく', saved: '設定はこのブラウザに保存され、どのページでも同じ表示になります。',
@@ -48,7 +49,8 @@ const t = ja
       disclaimer: '公立学校の教員が個人の活動として運営しています。所属機関の見解を示すものではありません。' }
   : { skipMain: 'Skip to main content', skipMap: 'Skip to sitemap', settings: 'Display', sitemap: 'Sitemap', close: 'Close display settings',
       detail: 'Amount of explanation', dFold: 'Folded (charts and key points)', dOpen: 'Open (full text)', dHint: 'On pages with charts and tables, choose whether detailed explanations start folded or open. The content is the same either way. “Open” is handy if you use a screen reader or prefer reading text.',
-      theme: 'Colors', dark: 'Dark', light: 'Light', contrast: 'High contrast',
+      theme: 'Brightness', dark: 'Dark', light: 'Light', contrast: 'High contrast',
+      accent: 'Accent color', aLime: 'Lime', aYellow: 'Yellow', aCyan: 'Cyan', aHint: 'Used for buttons and highlights. High contrast always uses yellow, the easiest to see.',
       font: 'Letter shapes', ud: 'Clear (UD Gothic)', kyo: 'As taught at school',
       size: 'Text size', m: 'Standard', l: 'Large', xl: 'Extra large', space: 'Spacing', normal: 'Standard', wide: 'Wide',
       reset: 'Reset to defaults', float: 'Action buttons', fRight: 'Bottom right', fLeft: 'Bottom left', fHide: 'Hide', fFree: 'Move freely', fDock: 'Bottom edge of the screen', fTop: 'Top edge of the screen', fHint: 'The action buttons (Back, Top of page, Bottom, Home, Display) are on every page. If you use a screen reader and find buttons by remembering where they are, choose "Top edge of the screen" or "Bottom edge of the screen". They always stay in the same place, and you can find them by touching the edge of the screen. ("Move freely" is not recommended, because the position can change.)', orient: 'Button layout', oRow: 'In a row', oCol: 'In a column', skipBar: 'Skip to action buttons', keyHelp: 'With a keyboard, press Alt+Shift+M (option+shift+M on a Mac) from anywhere to jump to the action buttons, even when they are hidden. Press it again, or Esc, to go back to where you were.', fbShown: 'Action buttons shown for now', newTab: ' (opens in a new tab)', fbMove: 'Move', fbMoveHelp: 'Drag it, or focus it and use the arrow keys', fbNav: 'Action buttons', fbBack: 'Back', fbTop: 'Top of page', fbBottom: 'Bottom', fbHome: 'Home', fbFold: 'Fold', fbOpen: 'Open', fbOpenLong: 'Open action buttons', saved: 'Your choices are saved in this browser and used on every page.',
@@ -57,6 +59,7 @@ const t = ja
 const sitemapHref = ja ? '/sitemap/' : '/en/sitemap/';
 const groups = [
   { name: 'theme', legend: t.theme, opts: [['dark', t.dark], ['light', t.light], ['contrast', t.contrast]] },
+  { name: 'accent', legend: t.accent, hint: t.aHint, opts: [['lime', t.aLime], ['yellow', t.aYellow], ['cyan', t.aCyan]] },
   { name: 'font', legend: t.font, opts: [['ud', t.ud], ['kyo', t.kyo]] },
   { name: 'size', legend: t.size, opts: [['m', t.m], ['l', t.l], ['xl', t.xl]] },
   { name: 'space', legend: t.space, opts: [['normal', t.normal], ['wide', t.wide]] },
@@ -66,7 +69,7 @@ const groups = [
 ];
 ---
 <!doctype html>
-<html lang={lang} data-theme="dark" data-font="ud" data-size="m" data-space="normal" data-float="right" data-orient="row" data-detail="fold" data-backend={BACKEND_URL || undefined}>
+<html lang={lang} data-theme="dark" data-accent="lime" data-font="ud" data-size="m" data-space="normal" data-float="right" data-orient="row" data-detail="fold" data-backend={BACKEND_URL || undefined}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -86,6 +89,7 @@ const groups = [
       var auto = 'dark';
       try { if (matchMedia('(prefers-contrast: more)').matches || matchMedia('(forced-colors: active)').matches) auto = 'contrast'; } catch (e) {}
       d.dataset.theme = get('theme', auto);
+      d.dataset.accent = get('accent', 'lime');
       d.dataset.font = get('font', 'ud');
       d.dataset.size = get('size', 'm');
       d.dataset.space = get('space', 'normal');
@@ -106,7 +110,7 @@ const groups = [
     <div class="wrap">
       <a class="logo" href={home}>
         <span class="logo-mark" aria-hidden="true">t3</span>
-        <span class="logo-text" lang="en">toi toi toi</span>
+        <span class="logo-text" lang="en">toi toi toi <span class="logo-lab">lab</span></span>
       </a>
       <nav class="main-nav" aria-label={ja ? 'メイン' : 'Main'}>
         <ul>
@@ -172,7 +176,7 @@ const groups = [
 
   <footer class="site-footer" id="site-footer" tabindex="-1">
     <div class="wrap">
-      <p>© <span lang="en">toi toi toi</span>　{t.disclaimer}</p>
+      <p>© 2026 <span lang="en">toi toi toi lab</span>　{t.disclaimer}</p>
       <ul>
         <li><a href={ja ? '/rules/' : '/en/rules/'}>{t.rules}</a></li>
         <li><a href={sitemapHref}>{t.sitemap}</a></li>
@@ -220,9 +224,9 @@ const groups = [
       var toggle = document.getElementById('settings-toggle');
       var close = document.getElementById('settings-close');
       var form = document.getElementById('settings-form');
-      var defaults = { theme: 'dark', font: 'ud', size: 'm', space: 'normal', float: 'right', orient: 'row', detail: 'fold' };
+      var defaults = { theme: 'dark', accent: 'lime', font: 'ud', size: 'm', space: 'normal', float: 'right', orient: 'row', detail: 'fold' };
       function sync() {
-        ['theme', 'font', 'size', 'space', 'float', 'orient'].forEach(function (k) {
+        ['theme', 'accent', 'font', 'size', 'space', 'float', 'orient'].forEach(function (k) {
           var el = form.querySelector('input[name="' + k + '"][value="' + d.dataset[k] + '"]');
           if (el) el.checked = true;
         });

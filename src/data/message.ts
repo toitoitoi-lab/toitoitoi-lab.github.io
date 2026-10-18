@@ -8,7 +8,7 @@ export const MESSAGE = {
     second: 'その方法を知っているか、知らないか。\nそれだけで、人生が変わることがあります。',
     date: '2026-09',
     dateLabel: '2026年9月',
-    sign: 'toi toi toi 運営者',
+    sign: 'toi toi toi lab 運営者',
     body: [
       'テクノロジーに救われる児童生徒や大人は、必ずいます。その方法を知っているか、知らないか。それだけで、人生が変わることがあります。',
       'だからといって、アナログの学びを軽く見ているわけではありません。紙と鉛筆の手ざわり、体を動かして確かめること。そこからしか身につかないものも、たしかにあります。',
@@ -24,7 +24,7 @@ export const MESSAGE = {
     second: 'Whether or not someone knows these methods\ncan change the course of their life.',
     date: '2026-09',
     dateLabel: 'September 2026',
-    sign: 'toi toi toi',
+    sign: 'toi toi toi lab',
     body: [
       'There are always children, students and adults whom technology can rescue. Whether or not someone knows these methods can change the course of their life.',
       'This does not mean looking down on analogue learning. The feel of pencil on paper, checking things with your own hands and body: some things can only be learned that way.',

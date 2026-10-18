@@ -1094,3 +1094,10 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 @media (max-width: 520px) { .td-sl-row .td-ticks { grid-column: 1 / -1; grid-row: 2; } .td-sl-row .td-sl-end { grid-row: 3; } }
 .td-un .td-range::-webkit-slider-thumb { opacity: 0; }
 .td-un .td-range::-moz-range-thumb { opacity: 0; }
+
+/* ===== 強調色（data-accent）。ハイコントラストは黄色に固定 ===== */
+:root[data-theme='dark'][data-accent='yellow'] { --accent-fill: #FFD60A; --accent-text: #FFD60A; --focus: #FFD60A; --glow: rgba(255, 214, 10, 0.14); --il-lime: #FFD60A; }
+:root[data-theme='dark'][data-accent='cyan'] { --accent-fill: #3FD8F0; --accent-text: #5EE3F5; --focus: #5EE3F5; --glow: rgba(63, 216, 240, 0.14); --il-lime: #3FD8F0; }
+:root[data-theme='light'][data-accent='yellow'] { --accent-fill: #FFD23F; --accent-text: #6B4E00; --glow: rgba(255, 210, 63, 0.20); --il-lime: #B38600; --il-check: #6B4E00; }
+:root[data-theme='light'][data-accent='cyan'] { --accent-fill: #7FE3F2; --accent-text: #00576A; --glow: rgba(127, 227, 242, 0.20); --il-lime: #0090A8; --il-check: #00576A; }
+.logo-lab { font-weight: 400; opacity: 0.8; margin-left: 0.15em; }
