@@ -19,9 +19,9 @@ const T = ja
         { v: 'iken', t: '感想・サイトへの意見', d: '「こんな方法もあるよ」「ここが分かりにくい」' },
       ],
       name: '呼び名', nameHelp: 'ニックネームでもかまいません。', optional: '任意', required: '必須',
-      email: '返信先のメールアドレス', emailHelp: '返信がいらないときは、空のままでかまいません。',
+      email: '返信先のメールアドレス', emailHelp: '返信がいらないときは、空のままでかまいません。お返事はお約束できませんが、書いてあれば、必要なときにご連絡することがあります。',
       urgency: '急ぎ度', urgencies: [{ v: 'kyu', t: '今まさに現場で困っている' }, { v: 'week', t: '今週中だと助かる' }, { v: 'itsu', t: 'いつでもよい' }, { v: 'nashi', t: '急ぎではない・返信もいらない（感想・ご報告、アプリやページに反映されればよい など）' }],
-      replyQ: '返信', replies: [{ v: 'yes', t: '返信がほしい' }, { v: 'no', t: '返信はいらない（読んでもらえればよい）' }],
+      replyQ: '返信', replies: [{ v: 'yes', t: 'できれば返信がほしい（お約束はできません）' }, { v: 'no', t: '返信はいらない（読んでもらえればよい）' }],
       wakari: '対象の子どもについて、関係しそうなこと（分かる範囲で・いくつでも）', wakaris: ['見ること（絵・文字・目で追う）', '聞くこと（声・音）', '話すこと・伝えること', '体や手を動かすこと', '感覚（音・光・さわられる）', '見通し（予定・手順）'],
       target: 'アプリ・ページの名前', targetHelp: '例：ことむすび／「支援の前に、立ち止まる」のページ',
       role: 'あなたの立場', roles: ['先生・支援者', '本人', '家族', 'その他'],
@@ -33,9 +33,9 @@ const T = ja
       privacy: '児童生徒の名前・学校名・診断名・写真など、だれか分かることは書かないでください。「小学4年生、文字を書くのに時間がかかる」のように、ぼかして書いてください。',
       voice: '書くのが大変なときは、キーボードのマイクのボタンを押すと、話して入力できます。',
       agree: '個人情報の扱い（利用ルール「4. 個人情報とプライバシー」）に同意します', agreeLink: '個人情報の扱いを読む', notRead: '利用ルール（特に「4. 個人情報とプライバシー」）を、まだ開いていません。下のリンクで内容を確認してから、同意してください。', errNotRead: '送る前に、「個人情報の扱いを読む」から利用ルールを開いて、内容を確認してください。',
-      reply: 'このサイトは、運営者が勤務時間の外に、個人の活動として運営しています。お問い合わせの確認と返信は、本業に差し障らない範囲で行うため、お返事に時間がかかることがあります。どうぞご了承ください。返信は1週間ほどを目安にしています。緊急のご相談には対応できません。命や安全に関わるときは、お住まいの地域の相談窓口や、よりそいホットライン（0120-279-338・24時間）などにご連絡ください。',
+      reply: 'このサイトは、運営者が勤務時間の外に、個人の活動として運営しています。いただいた内容は、すべて読み、サイトやアプリづくりの参考にさせていただきます。本業に差し障らない範囲で運営しているため、<strong>お返事はお約束できません</strong>。返信が必要と判断したときに、メールアドレスがあればご連絡することがあります。どうぞご了承ください。緊急のご相談には対応できません。命や安全に関わるときは、お住まいの地域の相談窓口や、よりそいホットライン（0120-279-338・24時間）などにご連絡ください。',
       toConfirm: '確認する', confirmTitle: '3. 送る内容を確認してください', edit: 'もどって直す', send: '送信する', sending: '送信しています…',
-      doneTitle: '送信しました', done: 'お問い合わせありがとうございます。内容を確認して、1週間ほどを目安にお返事します。',
+      doneTitle: '送信しました', done: 'お問い合わせありがとうございました。読ませていただき、サイトやアプリづくりの参考にさせていただきます。',
       again: '別のお問い合わせをする',
       errTitle: '入力を確認してください', errPurpose: '用件を1つ以上選んでください。', errUrgency: '急ぎ度を選んでください。', errReply: '返信が必要かどうかを選んでください。', errEmail: 'メールアドレスの形を確認してください（例：name@example.jp）。', errBody: '内容を書いてください。', errAgree: '同意のチェックを入れてください。',
       sendFail: '送信できませんでした。時間をおいて、もう一度お試しください。', draft: '書きかけの内容は、このブラウザに一時保存されます。送信すると消えます。',
@@ -53,9 +53,9 @@ const T = ja
         { v: 'iken', t: 'Comments on the site', d: '"Here is another method" or "this is unclear"' },
       ],
       name: 'What should we call you?', nameHelp: 'A nickname is fine.', optional: 'optional', required: 'required',
-      email: 'Email for our reply', emailHelp: 'Leave empty if you do not need a reply.',
+      email: 'Email for our reply', emailHelp: 'Leave empty if you do not need a reply. Replies are not guaranteed, but if you leave an address, we may contact you when needed.',
       urgency: 'How urgent', urgencies: [{ v: 'kyu', t: 'I am stuck right now' }, { v: 'week', t: 'This week would help' }, { v: 'itsu', t: 'Any time' }, { v: 'nashi', t: 'Not urgent, no reply needed (comments, updates / just reflect it in the app or page)' }],
-      replyQ: 'Reply', replies: [{ v: 'yes', t: 'I would like a reply' }, { v: 'no', t: 'No reply needed (just read it)' }],
+      replyQ: 'Reply', replies: [{ v: 'yes', t: 'I would like a reply if possible (not guaranteed)' }, { v: 'no', t: 'No reply needed (just read it)' }],
       wakari: 'About the child: what seems related (as far as you know, choose any)', wakaris: ['Seeing (pictures, text, following with the eyes)', 'Hearing (voices, sounds)', 'Speaking and communicating', 'Moving the body or hands', 'Senses (sound, light, touch)', 'Knowing what comes next (schedules, steps)'],
       target: 'App or page name', targetHelp: 'e.g. KOTOMUSUBI / the "Pause before you support" page',
       role: 'You are', roles: ['A teacher or supporter', 'A learner', 'Family', 'Other'],
@@ -67,9 +67,9 @@ const T = ja
       privacy: 'Please do not write anything that identifies a student, such as names, school names, diagnoses or photos. Describe things generally, e.g. "a 4th grader who takes a long time to write".',
       voice: 'If typing is hard, press the microphone button on your keyboard to speak instead.',
       agree: 'I agree to how personal information is handled (Terms of use, "4. Personal information and privacy")', agreeLink: 'Read how personal information is handled', notRead: 'You have not opened the terms of use (especially section 4, personal information) yet. Please read it using the link below before agreeing.', errNotRead: 'Before sending, please open "Read how personal information is handled" and check it.',
-      reply: 'This site is run personally, outside the operator\'s working hours. Messages are read and answered when time allows without affecting the operator\'s main job, so replies may take a while. Thank you for your patience. We aim to reply within about a week. We cannot respond to emergencies. If someone\'s life or safety is at risk, please contact local emergency or support services.',
+      reply: 'This site is run personally, outside the operator\'s working hours. Every message is read and used to improve the site and apps. Because the site is run alongside the operator\'s main job, <strong>replies cannot be guaranteed</strong>. If a reply seems needed and you left an email address, we may contact you. Thank you for understanding. We cannot respond to emergencies. If someone\'s life or safety is at risk, please contact local emergency or support services.',
       toConfirm: 'Review', confirmTitle: '3. Check your message', edit: 'Go back and edit', send: 'Send', sending: 'Sending…',
-      doneTitle: 'Sent', done: 'Thank you for your message. We will read it and aim to reply within about a week.',
+      doneTitle: 'Sent', done: 'Thank you for your message. We will read it and use it to improve the site and apps.',
       again: 'Send another message',
       errTitle: 'Please check the form', errPurpose: 'Please choose at least one topic.', errUrgency: 'Please choose how urgent it is.', errReply: 'Please choose whether you need a reply.', errEmail: 'Please check your email address (e.g. name@example.com).', errBody: 'Please write your message.', errAgree: 'Please tick the agreement box.',
       sendFail: 'The message could not be sent. Please try again later.', draft: 'Your draft is kept in this browser for now and cleared when you send.',
@@ -189,7 +189,7 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
         <p class="cf-help"><a class="inline" id="cf-rules-link" href={`${base}/rules/#r4`} target="_blank" rel="noopener">{T.agreeLink}<span class="visually-hidden">{ja ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span></a></p>
       </div>
 
-      <p class="cf-reply">{T.reply}</p>
+      <p class="cf-reply" set:html={T.reply} />
       <p class="cf-draft">{T.draft}</p>
       <p><button type="submit" class="btn btn-solid cf-btn">{T.toConfirm}</button></p>
     </fieldset>
