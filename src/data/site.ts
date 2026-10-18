@@ -263,4 +263,4 @@ export function fmtDate(iso: string, lang: 'ja' | 'en' = 'ja') {
 
 // サイト用 GAS（お問い合わせ・閲覧数・運営者ページ）の URL。
 // backend/README.md の手順でデプロイしたあと、…/exec で終わる URL をここに入れる。空のあいだはフォームは「準備中」になる。
-export const BACKEND_URL = '';
+export const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyrIhqfasMF2cI3vdijHxFgzF95QABwl4FnOjSiLl_i6O6VKEnWm9UGXvvxKQ73AuqG/exec';

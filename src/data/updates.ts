@@ -2,6 +2,7 @@
 // トップ・支援する人の部屋の「お知らせ欄」と、/updates/ の履歴ページの両方に反映される。
 // date は YYYY-MM-DD。ja / en は、それぞれの言語の1文（です・ます調、短く）。
 // href を入れると、その文の後ろに「くわしく」のリンクが付く（サイト内は / から始める）。
+// 同じ日の更新は1件にまとめる（「○月○日更新分：」で始める）。休日の細かな修正は、その都度足さず、まとめて1件で出す。
 
 export type Update = { date: string; ja: string; en: string; href?: string; jaOnly?: boolean }; // jaOnly: 日本語版だけのページ（英語版からも日本語ページへ）
 
@@ -19,14 +20,8 @@ export const UPDATES: Update[] = [
   },
   {
     date: '2026-10-10',
-    ja: '「支援の前に、立ち止まる」を、結論と「明日からの手立て」が先に出る形にしました。Wordは図と表（A4 2枚）か、文字で短く（A4 1枚ほど）を選べます。表示設定に「説明の量」を追加しました。',
-    en: '“Pause before you support” now leads with the conclusion and concrete next steps. Word export comes in a chart-and-table version (2 pages) or a short text version. Added an “amount of explanation” display setting.',
-    href: '/tachidomaru/', jaOnly: true,
-  },
-  {
-    date: '2026-10-10',
-    ja: '「支援の前に、立ち止まる」を追加しました。子どもの「わかり方」と、支援する人の「伝え方」を見比べ、支援の方法を考えるチェックです。Word形式で保存して書き込めます。',
-    en: 'Added “Pause before you support”: a check that compares how a child best takes in information with how a supporter usually conveys it, and suggests ways to support (Japanese only for now).',
+    ja: '10月10日更新分：「支援の前に、立ち止まる」を追加しました。結論と「明日からの手立て」が先に出る形にし、Word形式で保存できるようにしました。表示設定に「説明の量」を加えました。',
+    en: 'Updates on 10 October: added “Pause before you support”, which leads with the conclusion and next steps and can be saved as a Word file. Added an “amount of explanation” display setting (Japanese only for now).',
     href: '/tachidomaru/', jaOnly: true,
   },
   {
@@ -37,26 +32,8 @@ export const UPDATES: Update[] = [
   },
   {
     date: '2026-09-30',
-    ja: '操作ボタンを「画面の最上部」にも固定できるようにしました。固定しても、本文や表示設定が隠れません。',
-    en: 'The action buttons can now be fixed to the top edge of the screen, without covering the text or the display settings.',
-    href: '/about/#mieyasusa',
-  },
-  {
-    date: '2026-09-30',
-    ja: 'せんせいアシスト v1.1.2（公開版）を更新しました。Gemini が混み合っているときの自動再試行と、エラー表示を改善しました。',
-    en: 'Updated Sensei Assist v1.1.2 (public version): automatic retry when Gemini is busy, and clearer error messages.',
-    href: '/kyozai/shien/',
-  },
-  {
-    date: '2026-09-30',
-    ja: '利用ルールを、使う直前の場所で一行お知らせするようにしました。',
-    en: 'A one-line note about the terms of use now appears right where you use materials.',
-    href: '/rules/',
-  },
-  {
-    date: '2026-09-30',
-    ja: '困りごと・立場のページに「印刷・保存する」を追加しました（印刷・PDF・Word）。',
-    en: 'Added “Print / Save” to the needs and role pages (print, PDF, Word).',
+    ja: '9月30日更新分：操作ボタンを「画面の最上部」にも固定できるようにしました。せんせいアシスト v1.1.2（公開版）を更新しました。利用ルールを、使う直前の場所で一行お知らせするようにしました。困りごと・立場のページに「印刷・保存する」を加えました。',
+    en: 'Updates on 30 September: the action buttons can be fixed to the top edge; Sensei Assist v1.1.2 (public) updated; a one-line note about the terms of use where you use materials; “Print / Save” added to the needs and role pages.',
   },
   {
     date: '2026-09-28',
