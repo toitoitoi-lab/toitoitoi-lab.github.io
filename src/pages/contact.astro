@@ -1,12 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
+import { FORM_VERSION } from '../data/site';
 import ContactForm from '../components/ContactForm.astro';
 ---
 <Base title="お問い合わせ" lang="ja" current="contact">
   <div class="wrap page prose contact-page">
     <Crumbs items={[{ label: 'トップ', href: '/' }, { label: 'お問い合わせ' }]} />
-    <h1>お問い合わせ</h1>
+    <h1>お問い合わせ <span class="h1-ver" title="フォームの版">v{FORM_VERSION}</span></h1>
     <p class="lead-text">このフォームは、サイトをよりよくするための窓口です。まちがいのご指摘、情報のご提供、ご感想・ご意見を歓迎します。公開しているアプリを、子どもに合わせて調整したいというご要望も受けつけます（自分で変える方法は<a class="inline" href="/tachiba/tsukuru/#kaeru">「つくりたい方へ」</a>にあります）。</p>
     <p>運営者が仕事の外で、個人で運営しているため、<strong>対応には時間がかかります</strong>。お返事もお約束できません。どうぞご了承ください。</p>
     <ContactForm lang="ja" />

@@ -1101,3 +1101,6 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 :root[data-theme='light'][data-accent='yellow'] { --accent-fill: #FFD23F; --accent-text: #6B4E00; --glow: rgba(255, 210, 63, 0.20); --il-lime: #B38600; --il-check: #6B4E00; }
 :root[data-theme='light'][data-accent='cyan'] { --accent-fill: #7FE3F2; --accent-text: #00576A; --glow: rgba(127, 227, 242, 0.20); --il-lime: #0090A8; --il-check: #00576A; }
 .logo-lab { font-weight: 400; opacity: 0.8; margin-left: 0.15em; }
+
+/* 見出しの横の小さな版表示（お問い合わせ） */
+.h1-ver { font-size: .8rem; font-weight: 500; color: var(--sub); margin-left: .5em; letter-spacing: .02em; vertical-align: middle; white-space: nowrap; }

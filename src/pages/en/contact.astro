@@ -1,12 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
+import { FORM_VERSION } from '../../data/site';
 import ContactForm from '../../components/ContactForm.astro';
 ---
 <Base title="Contact" lang="en" current="contact">
   <div class="wrap page prose contact-page">
     <Crumbs lang="en" items={[{ label: 'Home', href: '/en/' }, { label: 'Contact' }]} />
-    <h1>Contact</h1>
+    <h1>Contact <span class="h1-ver" title="Form version">v{FORM_VERSION}</span></h1>
     <p class="lead-text">This form is for making the site better. Corrections, information, comments and feedback are welcome. Requests to adjust a published app for a child are also accepted (see <a class="inline" href="/en/tachiba/tsukuru/#kaeru">“For builders”</a> for how to change it yourself).</p>
     <p>The site is run personally, outside the operator's working hours, so <strong>responses take time</strong> and replies cannot be guaranteed. Thank you for understanding.</p>
     <ContactForm lang="en" />
