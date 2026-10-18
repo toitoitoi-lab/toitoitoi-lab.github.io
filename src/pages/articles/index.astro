@@ -11,6 +11,7 @@ const fmt = (d: Date) => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate
   <div class="wrap page">
     <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '記事一覧' }]} />
     <h1>記事一覧</h1>
+    <p class="card-link-wrap"><a class="card card-row" href="/articles/sekai/"><span class="card-title">コーナー：世界の AT ノート</span><span class="card-sub">運営者が勉強のために集めている、海外の AT 活用の一例</span></a></p>
     {posts.length === 0 ? (
       <div class="notice"><p><strong>記事は準備中です。</strong>公開したものから、ここに新しい順に並びます。</p></div>
     ) : (

@@ -1,0 +1,41 @@
+---
+// 世界の AT ノート（記事の中の小さなコーナー）
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import { SEKAI } from '../../data/sekai';
+const fmt = (s: string) => { const [y, m, d] = s.split('-').map(Number); return `${y}年${m}月${d}日`; };
+const newTab = '（新しいタブで開きます）';
+---
+<Base title="世界の AT ノート" current="articles" description="運営者が勉強のために集めている、海外の AT（支援技術）活用の一例">
+  <div class="wrap page prose">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '記事一覧', href: '/articles/' }, { label: '世界の AT ノート' }]} />
+    <h1>世界の AT ノート</h1>
+    <p class="lead-text">運営者が自分の勉強のために集めている、海外の AT（支援技術）活用の一例です。障害の種類も、使い方もさまざまです。「こんな使い方もあるんだ」というヒントとして紹介しています。</p>
+    <p class="sekai-note-sub">紹介であって、おすすめしたり、効果を約束したりするものではありません。くわしくは、それぞれの出典（多くは英語）をご覧ください。海外の情報は変わりやすいので、確認した日付を添えています。</p>
+
+    <nav aria-label="このページの目次">
+      <ol class="sekai-toc">
+        {SEKAI.map((n) => <li><a class="inline" href={`#${n.id}`}>{n.title}</a></li>)}
+      </ol>
+    </nav>
+
+    {SEKAI.map((n) => (
+      <article class="sekai-item" id={n.id} aria-labelledby={`${n.id}-h`}>
+        <h2 id={`${n.id}-h`}>{n.title}</h2>
+        <dl class="sekai-meta">
+          <div><dt>国・地域</dt><dd>{n.country}</dd></div>
+          <div><dt>種類</dt><dd>{n.kind}</dd></div>
+          <div><dt>対象</dt><dd>{n.taisho}</dd></div>
+          <div><dt>わかり方</dt><dd>{n.wakari.join('・')}</dd></div>
+        </dl>
+        {n.body.map((p) => <p>{p}</p>)}
+        <h3>日本の教室で試すなら</h3>
+        <p>{n.nihon}</p>
+        {n.memo && <p class="sekai-memo"><strong>運営者メモ：</strong>{n.memo}</p>}
+        <p class="sekai-src">出典：{n.sources.map((s, i) => <>{i > 0 && '／'}<a class="inline" href={s.url} target="_blank" rel="noopener">{s.label}<span class="visually-hidden">{newTab}</span></a></>)}<br /><span class="sekai-date">確認した日：{fmt(n.checked)}</span></p>
+      </article>
+    ))}
+
+    <p class="sekai-note-sub">まちがいや、新しい情報があれば、<a class="inline" href="/contact/">お問い合わせ</a>の「まちがいの指摘・情報提供」から教えてください。</p>
+  </div>
+</Base>

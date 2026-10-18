@@ -198,6 +198,7 @@ export const SITEMAP_JA: MapGroup[] = [
     desc: '記事・研修の案内と、YouTube・note・GitHub へのリンク',
     links: [
       { label: '記事一覧', href: '/articles/', ready: true },
+      { label: '世界の AT ノート', note: '海外の AT 活用の一例', href: '/articles/sekai/', ready: true },
       { label: '研修について', href: '/talks/', ready: false },
       { label: 'YouTube', note: '外部サイト', href: LINKS.youtube, ready: true, external: true },
       { label: 'note', note: '外部サイト', href: LINKS.note, ready: true, external: true },
