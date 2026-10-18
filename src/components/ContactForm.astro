@@ -9,7 +9,7 @@ const base = ja ? '' : '/en';
 const T = ja
   ? {
       notReady: 'フォームは準備中です。準備ができしだい、ここから送れるようになります。',
-      step1: '1. 用件を選んでください（いくつでも）', step2: '2. 内容を書いてください',
+      step1: '1. 用件を選んでください（いくつでも）', step2: '2. 内容を書いてください', step3: '3. 返信について',
       purposes: [
         { v: 'soudan', t: '困りごとの相談', d: '支援や学びの場面での困りごと、道具の使い方' },
         { v: 'app', t: 'アプリの不具合・要望', d: '「動かない」「こうしてほしい」' },
@@ -19,9 +19,9 @@ const T = ja
         { v: 'iken', t: '感想・サイトへの意見', d: '「こんな方法もあるよ」「ここが分かりにくい」' },
       ],
       name: '呼び名', nameHelp: 'ニックネームでもかまいません。', optional: '任意', required: '必須',
-      email: '返信先のメールアドレス', emailHelp: '返信がいらないときは、空のままでかまいません。お返事はお約束できませんが、書いてあれば、必要なときにご連絡することがあります。',
-      urgency: '急ぎ度', urgencies: [{ v: 'kyu', t: '今まさに現場で困っている' }, { v: 'week', t: '今週中だと助かる' }, { v: 'itsu', t: 'いつでもよい' }, { v: 'nashi', t: '急ぎではない・返信もいらない（感想・ご報告、アプリやページに反映されればよい など）' }],
-      replyQ: '返信', replies: [{ v: 'yes', t: 'できれば返信がほしい（お約束はできません）' }, { v: 'no', t: '返信はいらない（読んでもらえればよい）' }],
+      email: '返信先のメールアドレス', emailHelp: 'お返事はお約束できませんが、必要と判断したときに、ここへご連絡します。',
+      kyu: '今まさに現場で困っている（できるだけ先に目を通します）', kyuLabel: '現場の状況',
+      replyQ: '返信', replies: [{ v: 'no', t: '返信はいらない', d: '読んでもらえればよい。感想・ご報告、アプリやページに反映されればよい など' }, { v: 'yes', t: 'できれば返信がほしい', d: 'お約束はできません。必要と判断したときにご連絡します' }],
       wakari: '対象の子どもについて、関係しそうなこと（分かる範囲で・いくつでも）', wakaris: ['見ること（絵・文字・目で追う）', '聞くこと（声・音）', '話すこと・伝えること', '体や手を動かすこと', '感覚（音・光・さわられる）', '見通し（予定・手順）'],
       target: 'アプリ・ページの名前', targetHelp: '例：ことむすび／「支援の前に、立ち止まる」のページ',
       role: 'あなたの立場', roles: ['先生・支援者', '本人', '家族', 'その他'],
@@ -34,16 +34,16 @@ const T = ja
       voice: '書くのが大変なときは、キーボードのマイクのボタンを押すと、話して入力できます。',
       agree: '個人情報の扱い（利用ルール「4. 個人情報とプライバシー」）に同意します', agreeLink: '個人情報の扱いを読む', notRead: '利用ルール（特に「4. 個人情報とプライバシー」）を、まだ開いていません。下のリンクで内容を確認してから、同意してください。', errNotRead: '送る前に、「個人情報の扱いを読む」から利用ルールを開いて、内容を確認してください。',
       reply: 'このサイトは、運営者が勤務時間の外に、個人の活動として運営しています。いただいた内容は、すべて読み、サイトやアプリづくりの参考にさせていただきます。本業に差し障らない範囲で運営しているため、<strong>お返事はお約束できません</strong>。返信が必要と判断したときに、メールアドレスがあればご連絡することがあります。どうぞご了承ください。緊急のご相談には対応できません。命や安全に関わるときは、お住まいの地域の相談窓口や、よりそいホットライン（0120-279-338・24時間）などにご連絡ください。',
-      toConfirm: '確認する', confirmTitle: '3. 送る内容を確認してください', edit: 'もどって直す', send: '送信する', sending: '送信しています…',
+      toConfirm: '確認する', confirmTitle: '4. 送る内容を確認してください', edit: 'もどって直す', send: '送信する', sending: '送信しています…',
       doneTitle: '送信しました', done: 'お問い合わせありがとうございました。読ませていただき、サイトやアプリづくりの参考にさせていただきます。',
       again: '別のお問い合わせをする',
-      errTitle: '入力を確認してください', errPurpose: '用件を1つ以上選んでください。', errUrgency: '急ぎ度を選んでください。', errReply: '返信が必要かどうかを選んでください。', errEmail: 'メールアドレスの形を確認してください（例：name@example.jp）。', errBody: '内容を書いてください。', errAgree: '同意のチェックを入れてください。',
+      errTitle: '入力を確認してください', errPurpose: '用件を1つ以上選んでください。', errReply: '返信がいるかどうかを選んでください。', errEmail: '返信がほしいときは、メールアドレスを書いてください（例：name@example.jp）。', errBody: '内容を書いてください。', errAgree: '同意のチェックを入れてください。',
       sendFail: '送信できませんでした。時間をおいて、もう一度お試しください。', draft: '書きかけの内容は、このブラウザに一時保存されます。送信すると消えます。',
       hp: 'この欄は空のままにしてください',
     }
   : {
       notReady: 'The form is being prepared. You will be able to send messages here soon.',
-      step1: '1. What is this about? (choose any)', step2: '2. Your message',
+      step1: '1. What is this about? (choose any)', step2: '2. Your message', step3: '3. About a reply',
       purposes: [
         { v: 'soudan', t: 'Ask about a difficulty', d: 'Support or learning situations, or using tools' },
         { v: 'app', t: 'App problem or request', d: '"It does not work" or "please add…"' },
@@ -53,9 +53,9 @@ const T = ja
         { v: 'iken', t: 'Comments on the site', d: '"Here is another method" or "this is unclear"' },
       ],
       name: 'What should we call you?', nameHelp: 'A nickname is fine.', optional: 'optional', required: 'required',
-      email: 'Email for our reply', emailHelp: 'Leave empty if you do not need a reply. Replies are not guaranteed, but if you leave an address, we may contact you when needed.',
-      urgency: 'How urgent', urgencies: [{ v: 'kyu', t: 'I am stuck right now' }, { v: 'week', t: 'This week would help' }, { v: 'itsu', t: 'Any time' }, { v: 'nashi', t: 'Not urgent, no reply needed (comments, updates / just reflect it in the app or page)' }],
-      replyQ: 'Reply', replies: [{ v: 'yes', t: 'I would like a reply if possible (not guaranteed)' }, { v: 'no', t: 'No reply needed (just read it)' }],
+      email: 'Email for our reply', emailHelp: 'Replies are not guaranteed, but we will write here if a reply seems needed.',
+      kyu: 'I am stuck right now (we will try to read it first)', kyuLabel: 'Situation',
+      replyQ: 'Reply', replies: [{ v: 'no', t: 'No reply needed', d: 'Just read it, e.g. comments, updates, or reflect it in the app or page' }, { v: 'yes', t: 'A reply if possible', d: 'Not guaranteed. We will write if a reply seems needed' }],
       wakari: 'About the child: what seems related (as far as you know, choose any)', wakaris: ['Seeing (pictures, text, following with the eyes)', 'Hearing (voices, sounds)', 'Speaking and communicating', 'Moving the body or hands', 'Senses (sound, light, touch)', 'Knowing what comes next (schedules, steps)'],
       target: 'App or page name', targetHelp: 'e.g. KOTOMUSUBI / the "Pause before you support" page',
       role: 'You are', roles: ['A teacher or supporter', 'A learner', 'Family', 'Other'],
@@ -68,10 +68,10 @@ const T = ja
       voice: 'If typing is hard, press the microphone button on your keyboard to speak instead.',
       agree: 'I agree to how personal information is handled (Terms of use, "4. Personal information and privacy")', agreeLink: 'Read how personal information is handled', notRead: 'You have not opened the terms of use (especially section 4, personal information) yet. Please read it using the link below before agreeing.', errNotRead: 'Before sending, please open "Read how personal information is handled" and check it.',
       reply: 'This site is run personally, outside the operator\'s working hours. Every message is read and used to improve the site and apps. Because the site is run alongside the operator\'s main job, <strong>replies cannot be guaranteed</strong>. If a reply seems needed and you left an email address, we may contact you. Thank you for understanding. We cannot respond to emergencies. If someone\'s life or safety is at risk, please contact local emergency or support services.',
-      toConfirm: 'Review', confirmTitle: '3. Check your message', edit: 'Go back and edit', send: 'Send', sending: 'Sending…',
+      toConfirm: 'Review', confirmTitle: '4. Check your message', edit: 'Go back and edit', send: 'Send', sending: 'Sending…',
       doneTitle: 'Sent', done: 'Thank you for your message. We will read it and use it to improve the site and apps.',
       again: 'Send another message',
-      errTitle: 'Please check the form', errPurpose: 'Please choose at least one topic.', errUrgency: 'Please choose how urgent it is.', errReply: 'Please choose whether you need a reply.', errEmail: 'Please check your email address (e.g. name@example.com).', errBody: 'Please write your message.', errAgree: 'Please tick the agreement box.',
+      errTitle: 'Please check the form', errPurpose: 'Please choose at least one topic.', errReply: 'Please choose whether you need a reply.', errEmail: 'If you would like a reply, please enter your email address (e.g. name@example.com).', errBody: 'Please write your message.', errAgree: 'Please tick the agreement box.',
       sendFail: 'The message could not be sent. Please try again later.', draft: 'Your draft is kept in this browser for now and cleared when you send.',
       hp: 'Leave this field empty',
     };
@@ -102,32 +102,6 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
 
     <fieldset class="cf-step" id="cf-step2">
       <legend><h2>{T.step2}</h2></legend>
-
-      <fieldset class="cf-field" id="cf-urgency">
-        <legend>{T.urgency}<span class="cf-tag cf-req">{T.required}</span></legend>
-        <div class="cf-chips">
-          {T.urgencies.map((u) => <label class="cf-chip"><input type="radio" name="urgency" value={u.v} /><span>{u.t}</span></label>)}
-        </div>
-      </fieldset>
-
-      <fieldset class="cf-field" id="cf-reply">
-        <legend>{T.replyQ}<span class="cf-tag cf-req">{T.required}</span></legend>
-        <div class="cf-chips">
-          {T.replies.map((u) => <label class="cf-chip"><input type="radio" name="reply" value={u.v} /><span>{u.t}</span></label>)}
-        </div>
-      </fieldset>
-
-      <div class="cf-field">
-        <label for="cf-name">{T.name}<span class="cf-tag">{T.optional}</span></label>
-        <p class="cf-help" id="cf-name-help">{T.nameHelp}</p>
-        <input id="cf-name" name="name" type="text" autocomplete="nickname" maxlength="60" aria-describedby="cf-name-help" />
-      </div>
-
-      <div class="cf-field">
-        <label for="cf-email">{T.email}<span class="cf-tag cf-req" id="cf-email-tag" data-req={T.required} data-opt={T.optional}>{T.required}</span></label>
-        <p class="cf-help" id="cf-email-help">{T.emailHelp}</p>
-        <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="200" aria-describedby="cf-email-help" />
-      </div>
 
       <fieldset class="cf-field">
         <legend>{T.role}<span class="cf-tag">{T.optional}</span></legend>
@@ -178,6 +152,41 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
         <p class="cf-count" id="cf-count" aria-live="polite">0 / 4000</p>
       </div>
 
+    </fieldset>
+
+    <fieldset class="cf-step" id="cf-step3">
+      <legend><h2>{T.step3}</h2></legend>
+      <p class="cf-reply" set:html={T.reply} />
+
+      <fieldset class="cf-field" id="cf-reply">
+        <legend>{T.replyQ}<span class="cf-tag cf-req">{T.required}</span></legend>
+        <div class="cf-purposes cf-replies">
+          {T.replies.map((u) => (
+            <label class="cf-purpose">
+              <input type="radio" name="reply" value={u.v} />
+              <span class="cf-p-title">{u.t}</span>
+              <span class="cf-p-desc">{u.d}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="cf-field cf-ifreply" hidden>
+        <label for="cf-email">{T.email}<span class="cf-tag cf-req">{T.required}</span></label>
+        <p class="cf-help" id="cf-email-help">{T.emailHelp}</p>
+        <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="200" aria-describedby="cf-email-help" aria-required="true" />
+      </div>
+
+      <div class="cf-field cf-ifreply" hidden>
+        <label class="cf-agree"><input type="checkbox" name="kyu" id="cf-kyu" /><span>{T.kyu}</span></label>
+      </div>
+
+      <div class="cf-field">
+        <label for="cf-name">{T.name}<span class="cf-tag">{T.optional}</span></label>
+        <p class="cf-help" id="cf-name-help">{T.nameHelp}</p>
+        <input id="cf-name" name="name" type="text" autocomplete="nickname" maxlength="60" aria-describedby="cf-name-help" />
+      </div>
+
       <div class="cf-hp" aria-hidden="true">
         <label for="cf-website">{T.hp}</label>
         <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" />
@@ -189,7 +198,6 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
         <p class="cf-help"><a class="inline" id="cf-rules-link" href={`${base}/rules/#r4`} target="_blank" rel="noopener">{T.agreeLink}<span class="visually-hidden">{ja ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span></a></p>
       </div>
 
-      <p class="cf-reply" set:html={T.reply} />
       <p class="cf-draft">{T.draft}</p>
       <p><button type="submit" class="btn btn-solid cf-btn">{T.toConfirm}</button></p>
     </fieldset>
@@ -211,7 +219,7 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
     <p><button type="button" class="btn" id="cf-again">{T.again}</button></p>
   </section>
 
-  <script type="application/json" id="cf-text" set:html={JSON.stringify({ errNotRead: T.errNotRead, errPurpose: T.errPurpose, errUrgency: T.errUrgency, errReply: T.errReply, errEmail: T.errEmail, urgencies: Object.fromEntries(T.urgencies.map((u) => [u.v, u.t])), replies: Object.fromEntries(T.replies.map((u) => [u.v, u.t])), wakari: Object.fromEntries(WAKARI_KEYS.map((k, i) => [k, T.wakaris[i]])), errBody: T.errBody, errAgree: T.errAgree, sendFail: T.sendFail, purposes: Object.fromEntries(T.purposes.map((p) => [p.v, p.t])), labels: { purpose: ja ? '用件' : 'About', urgency: T.urgency, reply: T.replyQ, name: T.name, email: T.email, role: T.role, komari: T.komari, wakari: T.wakari, target: T.target, event: T.event, pages: T.pages }, none: ja ? '（なし）' : '(none)' }).replace(/</g, '\\u003c')}></script>
+  <script type="application/json" id="cf-text" set:html={JSON.stringify({ errNotRead: T.errNotRead, errPurpose: T.errPurpose, errReply: T.errReply, errEmail: T.errEmail, kyu: T.kyu, replies: Object.fromEntries(T.replies.map((u) => [u.v, u.t])), wakari: Object.fromEntries(WAKARI_KEYS.map((k, i) => [k, T.wakaris[i]])), errBody: T.errBody, errAgree: T.errAgree, sendFail: T.sendFail, purposes: Object.fromEntries(T.purposes.map((p) => [p.v, p.t])), labels: { purpose: ja ? '用件' : 'About', kyu: T.kyuLabel, reply: T.replyQ, name: T.name, email: T.email, role: T.role, komari: T.komari, wakari: T.wakari, target: T.target, event: T.event, pages: T.pages }, none: ja ? '（なし）' : '(none)' }).replace(/</g, '\\u003c')}></script>
 </div>
 
 <script is:inline>
@@ -232,26 +240,22 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
   function radio(n) { var r = form.querySelector('input[name=' + n + ']:checked'); return r ? r.value : ''; }
   function replyV() { return radio('reply'); }
   function checks(n) { return Array.prototype.map.call(form.querySelectorAll('input[name=' + n + ']:checked'), function (c) { return c.value; }); }
-  // 「急ぎではない・返信もいらない」を選んだら、返信は「いらない」を自動で選ぶ（あとから変更できる）
-  form.querySelectorAll('input[name=urgency]').forEach(function (r) {
-    r.addEventListener('change', function () {
-      if (r.checked && r.value === 'nashi') { var no = form.querySelector('input[name=reply][value="no"]'); if (no) { no.checked = true; update(); } }
-    });
-  });
   function update() {
     var ps = purposes();
     form.querySelectorAll('.cf-only').forEach(function (el) { el.hidden = !el.dataset.for.split(' ').some(function (x) { return has(ps, x); }); });
-    var needMail = replyV() === 'yes', tag = document.getElementById('cf-email-tag');
-    tag.textContent = needMail ? tag.dataset.req : tag.dataset.opt; tag.classList.toggle('cf-req', needMail);
-    if (needMail) { f('email').setAttribute('aria-required', 'true'); } else { f('email').removeAttribute('aria-required'); }
+    // 返信がほしいときだけ、メールアドレスと「今まさに困っている」を出す
+    var wantReply = replyV() === 'yes';
+    form.querySelectorAll('.cf-ifreply').forEach(function (el) { el.hidden = !wantReply; });
     bodyLabel.textContent = (ps.length === 1 && labels[ps[0]]) || bodyLabel.dataset.default;
     var n = f('body').value.length; document.getElementById('cf-count').textContent = n + ' / 4000';
   }
   function collect() {
-    var ps = purposes();
+    var ps = purposes(), rp = radio('reply'), yes = rp === 'yes';
     return {
-      action: 'contact', lang: lang, purpose: ps[0] || '', purposes: ps, urgency: radio('urgency'), reply: radio('reply'),
-      name: f('name').value.trim(), email: f('email').value.trim(),
+      // urgency は GAS（v1.5）に合わせて自動で決める：返信いらない→nashi／返信ほしい→itsu（今まさに困っている→kyu）
+      action: 'contact', lang: lang, purpose: ps[0] || '', purposes: ps, reply: rp,
+      urgency: !rp ? '' : (!yes ? 'nashi' : (f('kyu').checked ? 'kyu' : 'itsu')),
+      name: f('name').value.trim(), email: yes ? f('email').value.trim() : '',
       role: radio('role'),
       komari: has(ps, 'soudan') ? checks('komari') : [],
       wakari: (has(ps, 'soudan') || has(ps, 'app')) ? checks('wakari') : [],
@@ -262,13 +266,14 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
     };
   }
   // 書きかけの保存（このブラウザだけ）
-  function saveDraft() { try { var d = collect(); delete d.website; delete d.agree; localStorage.setItem(DRAFT, JSON.stringify(d)); } catch (e) {} }
+  function saveDraft() { try { var d = collect(); d.email = f('email').value.trim(); delete d.website; delete d.agree; localStorage.setItem(DRAFT, JSON.stringify(d)); } catch (e) {} }
   function loadDraft() {
     var d = null; try { d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); } catch (e) {}
     if (!d) return;
     (d.purposes || (d.purpose ? [d.purpose] : [])).forEach(function (v) { var r = form.querySelector('input[name=purpose][value="' + v + '"]'); if (r) r.checked = true; });
     ['name', 'email', 'target', 'event', 'pages', 'body'].forEach(function (k) { if (d[k] && f(k)) f(k).value = d[k]; });
-    ['role', 'urgency', 'reply'].forEach(function (n) { if (d[n]) { var ro = form.querySelector('input[name=' + n + '][value="' + d[n] + '"]'); if (ro) ro.checked = true; } });
+    if (d.urgency === 'kyu') f('kyu').checked = true;
+    ['role', 'reply'].forEach(function (n) { if (d[n]) { var ro = form.querySelector('input[name=' + n + '][value="' + d[n] + '"]'); if (ro) ro.checked = true; } });
     ['komari', 'wakari'].forEach(function (n) { (d[n] || []).forEach(function (v) { form.querySelectorAll('input[name=' + n + ']').forEach(function (c) { if (c.value === v) c.checked = true; }); }); });
   }
   // 個人情報の扱い（利用ルール4）を開いたか。一度開けば、このブラウザでは覚えておく（利用ルールのページを開いたときも同じ）
@@ -282,9 +287,8 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
   function validate(d) {
     var errs = [];
     if (!d.purposes.length) errs.push([T.errPurpose, form.querySelector('input[name=purpose]')]);
-    if (!d.urgency) errs.push([T.errUrgency, form.querySelector('input[name=urgency]')]);
     if (!d.reply) errs.push([T.errReply, form.querySelector('input[name=reply]')]);
-    var needMail = d.reply === 'yes' || d.email !== '';
+    var needMail = d.reply === 'yes';
     var okMail = !needMail || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email); setInvalid(f('email'), !okMail); if (!okMail) errs.push([T.errEmail, f('email')]);
     setInvalid(f('body'), !d.body); if (!d.body) errs.push([T.errBody, f('body')]);
     if (!d.agree) errs.push([T.errAgree, f('agree')]);
@@ -315,14 +319,16 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
     var dl = document.getElementById('cf-dl'); dl.innerHTML = '';
     var sep = lang === 'ja' ? '、' : ', ';
     row(dl, T.labels.purpose, d.purposes.map(function (x) { return T.purposes[x]; }).join(sep));
-    row(dl, T.labels.urgency, T.urgencies[d.urgency]); row(dl, T.labels.reply, T.replies[d.reply]);
-    row(dl, T.labels.name, d.name); row(dl, T.labels.email, d.email); row(dl, T.labels.role, d.role);
+    row(dl, T.labels.role, d.role);
     if (has(d.purposes, 'soudan')) row(dl, T.labels.komari, d.komari.join(sep));
     if (has(d.purposes, 'soudan') || has(d.purposes, 'app')) row(dl, T.labels.wakari, d.wakari.map(function (k) { return T.wakari[k] || k; }).join(sep));
     if (has(d.purposes, 'app')) row(dl, T.labels.target, d.target);
     if (has(d.purposes, 'kenshu')) row(dl, T.labels.event, d.event);
     if (has(d.purposes, 'riyou')) row(dl, T.labels.pages, d.pages);
     row(dl, bodyLabel.textContent, d.body);
+    row(dl, T.labels.reply, T.replies[d.reply]);
+    if (d.reply === 'yes') { row(dl, T.labels.email, d.email); if (d.urgency === 'kyu') row(dl, T.labels.kyu, T.kyu); }
+    row(dl, T.labels.name, d.name);
     document.getElementById('cf-send-error').hidden = true;
     form.hidden = true; confirmBox.hidden = false; confirmBox.focus(); window.scrollTo(0, confirmBox.getBoundingClientRect().top + window.scrollY - 24);
   });
