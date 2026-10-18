@@ -143,9 +143,9 @@ export const TACHIBA: Tachiba[] = [
     ],
   },
   {
-    slug: 'tsukuru', ready: true, external: 'https://github.com/toitoitoi-lab', stage: 'violet', tag: 'builders', tagTone: 'accent',
-    ja: { title: 'つくりたい方へ', text: 'アプリのプレビューとコード（GitHub）' },
-    en: { title: 'For builders', text: 'App previews and code (GitHub)' },
+    slug: 'tsukuru', ready: true, stage: 'violet', tag: 'builders', tagTone: 'accent',
+    ja: { title: 'つくりたい方へ', text: 'アプリのコード（GitHub）と、子どもに合わせて変える方法' },
+    en: { title: 'For builders', text: 'App code (GitHub) and how to adapt it for a child' },
     shapes: [
       F('M10 20 H110 V102 H10 Z', 'sky'),
       F('M16 36 H104 V96 H16 Z', 'cream'),

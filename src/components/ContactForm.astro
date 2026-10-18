@@ -11,24 +11,27 @@ const T = ja
       notReady: 'フォームは準備中です。準備ができしだい、ここから送れるようになります。',
       step1: '1. 用件を選んでください（いくつでも）', step2: '2. 内容を書いてください', step3: '3. 返信について',
       purposes: [
-        { v: 'soudan', t: '困りごとの相談', d: '支援や学びの場面での困りごと、道具の使い方' },
-        { v: 'app', t: 'アプリの不具合・要望', d: '「動かない」「こうしてほしい」' },
-        { v: 'kenshu', t: '研修・講演の依頼', d: '校内研修・勉強会など（主にオンライン）' },
-        { v: 'riyou', t: '記事・教材を使いたい', d: '研修での配布・転載などの事前連絡' },
-        { v: 'renkei', t: '共有・取材・連携', d: '実践の共有、取材、いっしょに取り組みたいこと' },
+        { v: 'shiteki', t: 'まちがいの指摘・情報提供', d: '「ここがまちがっている」「新しい情報がある」' },
         { v: 'iken', t: '感想・サイトへの意見', d: '「こんな方法もあるよ」「ここが分かりにくい」' },
+        { v: 'app', t: 'アプリの不具合・要望', d: '「動かない」「こうしてほしい」' },
+        { v: 'chosei', t: 'アプリを子どもに合わせて調整したい', d: '公開しているアプリの微調整の相談（時間がかかります）' },
+        { v: 'riyou', t: '記事・教材を使いたい', d: '研修での配布・転載などの事前連絡' },
+        { v: 'kenshu', t: '研修・講演の依頼', d: '校内研修・勉強会など（主にオンライン）' },
+        { v: 'renkei', t: '共有・取材・連携', d: '実践の共有、取材、いっしょに取り組みたいこと' },
+        { v: 'soudan', t: '困りごとの相談', d: '支援や学びの場面での困りごと、道具の使い方（時間がかかります）' },
       ],
       name: '呼び名', nameHelp: 'ニックネームでもかまいません。', optional: '任意', required: '必須',
       email: '返信先のメールアドレス', emailHelp: 'お返事はお約束できませんが、必要と判断したときに、ここへご連絡します。',
       kyu: '今まさに現場で困っている（できるだけ先に目を通します）', kyuLabel: '現場の状況',
       replyQ: '返信', replies: [{ v: 'no', t: '返信はいらない', d: '読んでもらえればよい。感想・ご報告、アプリやページに反映されればよい など' }, { v: 'yes', t: 'できれば返信がほしい', d: 'お約束はできません。必要と判断したときにご連絡します' }],
       wakari: '対象の子どもについて、関係しそうなこと（分かる範囲で・いくつでも）', wakaris: ['見ること（絵・文字・目で追う）', '聞くこと（声・音）', '話すこと・伝えること', '体や手を動かすこと', '感覚（音・光・さわられる）', '見通し（予定・手順）'],
+      choseiNote: 'まずは「つくりたい方へ」のページをご覧ください。アプリのコードは公開していて、だれでも自由に変えられます（AI に頼んで直す方法もあります）。分からないときはご相談に乗りますが、<strong>時間がかかります</strong>。お引き受けできないこともあります。', choseiLink: '「つくりたい方へ」を開く',
       target: 'アプリ・ページの名前', targetHelp: '例：ことむすび／「支援の前に、立ち止まる」のページ',
       role: 'あなたの立場', roles: ['先生・支援者', '本人', '家族', 'その他'],
       komari: '近い困りごと（いくつでも）',
       event: '日程・対象・人数・形式', eventHelp: '例：11月ごろ／校内の教員30人／オンライン（Zoom・Teams など）',
       pages: '使いたいページ・使う場面・配り方', pagesHelp: '例：「読む」のページ／校内研修の資料として／印刷して20部配布',
-      body: { soudan: '相談したいこと', app: '起きていること・ほしい機能', kenshu: 'ご依頼の内容', riyou: '使い方について、ほかに伝えたいこと', renkei: 'ご相談の内容', iken: 'ご感想・ご意見' } as Record<string, string>,
+      body: { shiteki: 'まちがっているところ・提供したい情報（ページ名も）', chosei: '子どものようすと、どう変えたいか', soudan: '相談したいこと', app: '起きていること・ほしい機能', kenshu: 'ご依頼の内容', riyou: '使い方について、ほかに伝えたいこと', renkei: 'ご相談の内容', iken: 'ご感想・ご意見' } as Record<string, string>,
       bodyDefault: '内容',
       privacy: '児童生徒の名前・学校名・診断名・写真など、だれか分かることは書かないでください。「小学4年生、文字を書くのに時間がかかる」のように、ぼかして書いてください。',
       voice: '書くのが大変なときは、キーボードのマイクのボタンを押すと、話して入力できます。',
@@ -45,24 +48,27 @@ const T = ja
       notReady: 'The form is being prepared. You will be able to send messages here soon.',
       step1: '1. What is this about? (choose any)', step2: '2. Your message', step3: '3. About a reply',
       purposes: [
-        { v: 'soudan', t: 'Ask about a difficulty', d: 'Support or learning situations, or using tools' },
-        { v: 'app', t: 'App problem or request', d: '"It does not work" or "please add…"' },
-        { v: 'kenshu', t: 'Training or talks', d: 'In-school training or study groups (mainly online)' },
-        { v: 'riyou', t: 'Using articles or materials', d: 'Prior contact for handouts or republishing' },
-        { v: 'renkei', t: 'Sharing, interviews, collaboration', d: 'Share practice, interviews, or work together' },
+        { v: 'shiteki', t: 'Corrections or information', d: '"This is wrong" or "here is new information"' },
         { v: 'iken', t: 'Comments on the site', d: '"Here is another method" or "this is unclear"' },
+        { v: 'app', t: 'App problem or request', d: '"It does not work" or "please add…"' },
+        { v: 'chosei', t: 'Adjust an app for a child', d: 'Help adapting a published app (this takes time)' },
+        { v: 'riyou', t: 'Using articles or materials', d: 'Prior contact for handouts or republishing' },
+        { v: 'kenshu', t: 'Training or talks', d: 'In-school training or study groups (mainly online)' },
+        { v: 'renkei', t: 'Sharing, interviews, collaboration', d: 'Share practice, interviews, or work together' },
+        { v: 'soudan', t: 'Ask about a difficulty', d: 'Support or learning situations, or using tools (this takes time)' },
       ],
       name: 'What should we call you?', nameHelp: 'A nickname is fine.', optional: 'optional', required: 'required',
       email: 'Email for our reply', emailHelp: 'Replies are not guaranteed, but we will write here if a reply seems needed.',
       kyu: 'I am stuck right now (we will try to read it first)', kyuLabel: 'Situation',
       replyQ: 'Reply', replies: [{ v: 'no', t: 'No reply needed', d: 'Just read it, e.g. comments, updates, or reflect it in the app or page' }, { v: 'yes', t: 'A reply if possible', d: 'Not guaranteed. We will write if a reply seems needed' }],
       wakari: 'About the child: what seems related (as far as you know, choose any)', wakaris: ['Seeing (pictures, text, following with the eyes)', 'Hearing (voices, sounds)', 'Speaking and communicating', 'Moving the body or hands', 'Senses (sound, light, touch)', 'Knowing what comes next (schedules, steps)'],
+      choseiNote: 'Please see the "For builders" page first. The code of each app is public and anyone may change it (you can also ask an AI to help). If you are stuck we can help, but <strong>it takes time</strong>, and we may not be able to take it on.', choseiLink: 'Open "For builders"',
       target: 'App or page name', targetHelp: 'e.g. KOTOMUSUBI / the "Pause before you support" page',
       role: 'You are', roles: ['A teacher or supporter', 'A learner', 'Family', 'Other'],
       komari: 'Related needs (choose any)',
       event: 'Date, audience, number of people, format', eventHelp: 'e.g. around November / 30 teachers / online (Zoom, Teams, etc.)',
       pages: 'Which pages, where, and how they will be shared', pagesHelp: 'e.g. the "Reading" page / in-school training / 20 printed copies',
-      body: { soudan: 'Your question', app: 'What happens, or what you would like', kenshu: 'About your request', riyou: 'Anything else about how you will use it', renkei: 'About your idea', iken: 'Your comments' } as Record<string, string>,
+      body: { shiteki: 'What is wrong, or the information (and which page)', chosei: 'What the child needs, and how you would like it changed', soudan: 'Your question', app: 'What happens, or what you would like', kenshu: 'About your request', riyou: 'Anything else about how you will use it', renkei: 'About your idea', iken: 'Your comments' } as Record<string, string>,
       bodyDefault: 'Message',
       privacy: 'Please do not write anything that identifies a student, such as names, school names, diagnoses or photos. Describe things generally, e.g. "a 4th grader who takes a long time to write".',
       voice: 'If typing is hard, press the microphone button on your keyboard to speak instead.',
@@ -117,14 +123,18 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
         </div>
       </fieldset>
 
-      <fieldset class="cf-field cf-only" data-for="soudan app">
+      <fieldset class="cf-field cf-only" data-for="soudan app chosei">
         <legend>{T.wakari}<span class="cf-tag">{T.optional}</span></legend>
         <div class="cf-chips">
           {T.wakaris.map((w, i) => <label class="cf-chip"><input type="checkbox" name="wakari" value={WAKARI_KEYS[i]} /><span>{w}</span></label>)}
         </div>
       </fieldset>
 
-      <div class="cf-field cf-only" data-for="app">
+      <div class="cf-field cf-only" data-for="chosei">
+        <p class="cf-warn"><strong aria-hidden="true">!</strong> <span set:html={T.choseiNote} /> <a class="inline" href={`${base}/tachiba/tsukuru/#kaeru`} target="_blank" rel="noopener">{T.choseiLink}<span class="visually-hidden">{ja ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span></a></p>
+      </div>
+
+      <div class="cf-field cf-only" data-for="app chosei">
         <label for="cf-target">{T.target}<span class="cf-tag">{T.optional}</span></label>
         <p class="cf-help" id="cf-target-help">{T.targetHelp}</p>
         <input id="cf-target" name="target" type="text" maxlength="200" aria-describedby="cf-target-help" />
@@ -258,8 +268,8 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
       name: f('name').value.trim(), email: yes ? f('email').value.trim() : '',
       role: radio('role'),
       komari: has(ps, 'soudan') ? checks('komari') : [],
-      wakari: (has(ps, 'soudan') || has(ps, 'app')) ? checks('wakari') : [],
-      target: has(ps, 'app') ? f('target').value.trim() : '',
+      wakari: (has(ps, 'soudan') || has(ps, 'app') || has(ps, 'chosei')) ? checks('wakari') : [],
+      target: (has(ps, 'app') || has(ps, 'chosei')) ? f('target').value.trim() : '',
       event: has(ps, 'kenshu') ? f('event').value.trim() : '',
       pages: has(ps, 'riyou') ? f('pages').value.trim() : '',
       body: f('body').value.trim(), agree: f('agree').checked, website: f('website').value,
@@ -321,8 +331,8 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
     row(dl, T.labels.purpose, d.purposes.map(function (x) { return T.purposes[x]; }).join(sep));
     row(dl, T.labels.role, d.role);
     if (has(d.purposes, 'soudan')) row(dl, T.labels.komari, d.komari.join(sep));
-    if (has(d.purposes, 'soudan') || has(d.purposes, 'app')) row(dl, T.labels.wakari, d.wakari.map(function (k) { return T.wakari[k] || k; }).join(sep));
-    if (has(d.purposes, 'app')) row(dl, T.labels.target, d.target);
+    if (has(d.purposes, 'soudan') || has(d.purposes, 'app') || has(d.purposes, 'chosei')) row(dl, T.labels.wakari, d.wakari.map(function (k) { return T.wakari[k] || k; }).join(sep));
+    if (has(d.purposes, 'app') || has(d.purposes, 'chosei')) row(dl, T.labels.target, d.target);
     if (has(d.purposes, 'kenshu')) row(dl, T.labels.event, d.event);
     if (has(d.purposes, 'riyou')) row(dl, T.labels.pages, d.pages);
     row(dl, bodyLabel.textContent, d.body);

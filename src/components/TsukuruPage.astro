@@ -42,5 +42,42 @@ const newTab = ja ? '（新しいタブで開きます）' : ' (opens in a new t
         </li>
       ))}
     </ul>
+
+    <section class="tf-kaeru prose" aria-labelledby="kaeru">
+      <h2 id="kaeru">{ja ? 'アプリを子どもに合わせて変えたいとき' : 'Adapting an app for a child'}</h2>
+      {ja ? (
+        <>
+          <p>公開しているアプリは、目の前の子どもに合わせて変えて使ってかまいません。コードは MIT ライセンスで、だれでも自由に使い、変えることができます。</p>
+          <h3>1. 自分で変える</h3>
+          <ol>
+            <li>上の「コードを見る」から、アプリのコード（GitHub）を開きます。</li>
+            <li>コードをコピーするか、ダウンロードします（GitHub のアカウントがあれば「Fork」でまるごと写せます）。</li>
+            <li>文字の大きさ・ことば・ボタンの数など、変えたいところを直します。AI（Claude・Gemini・Copilot など）にコードを渡して「〇〇を△△にして」と頼む方法もあります。</li>
+            <li>自分の GitHub Pages などで公開するか、手元のパソコン・タブレットで開いて使います。</li>
+          </ol>
+          <p class="cf-warn"><strong aria-hidden="true">!</strong> 子どもの名前・写真・診断名など、だれか分かる情報は、アプリのコードにも AI にも入れないでください。</p>
+          <p>だれもが少しずつ道具を自分で直せる。そんなふうになっていくといいな、と思っています。</p>
+          <h3>2. 分からないときは相談する</h3>
+          <p>やり方が分からないときは、お問い合わせの「アプリを子どもに合わせて調整したい」からご相談ください。ご相談には乗りますが、運営者が仕事の外で個人で運営しているため、<strong>時間がかかります</strong>。お引き受けできないこともあります。</p>
+          <p><a class="btn" href="/contact/">お問い合わせへ</a></p>
+        </>
+      ) : (
+        <>
+          <p>You are welcome to adapt the published apps for the child in front of you. The code is MIT licensed, so anyone may use and change it freely.</p>
+          <h3>1. Change it yourself</h3>
+          <ol>
+            <li>Open the app's code on GitHub with "Code" above.</li>
+            <li>Copy or download the code (with a GitHub account, you can "Fork" the whole app).</li>
+            <li>Change what you need: text size, words, number of buttons, and so on. You can also give the code to an AI (Claude, Gemini, Copilot, etc.) and ask it to make the change.</li>
+            <li>Publish it on your own GitHub Pages, or open it on your own computer or tablet.</li>
+          </ol>
+          <p class="cf-warn"><strong aria-hidden="true">!</strong> Never put a child's name, photo, diagnosis or anything that identifies them into the code or into an AI.</p>
+          <p>We hope for a time when everyone can adjust their tools a little by themselves.</p>
+          <h3>2. Ask when you are stuck</h3>
+          <p>If you are not sure how, contact us and choose "Adjust an app for a child". We can help, but the site is run personally outside working hours, so <strong>it takes time</strong>, and we may not be able to take it on.</p>
+          <p><a class="btn" href="/en/contact/">Contact</a></p>
+        </>
+      )}
+    </section>
   </div>
 </Base>
