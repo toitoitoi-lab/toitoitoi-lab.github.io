@@ -6,11 +6,12 @@ import { SEKAI } from '../../data/sekai';
 const fmt = (s: string) => { const [y, m, d] = s.split('-').map(Number); return `${y}年${m}月${d}日`; };
 const newTab = '（新しいタブで開きます）';
 ---
-<Base title="世界の AT ノート" current="articles" description="運営者が勉強のために集めている、海外の AT（支援技術）活用の一例">
+<Base title="世界の AT ノート" current="articles" description="運営者が勉強のために集めている、海外の AT（支援技術）活用の一例と、支援に関わる AI の動き">
   <div class="wrap page prose">
     <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '記事一覧', href: '/articles/' }, { label: '世界の AT ノート' }]} />
     <h1>世界の AT ノート</h1>
     <p class="lead-text">運営者が自分の勉強のために集めている、海外の AT（支援技術）活用の一例です。障害の種類も、使い方もさまざまです。「こんな使い方もあるんだ」というヒントとして紹介しています。</p>
+    <p>軸は支援技術ですが、AI の進化は支援技術と切り離せません。そこで、AI そのものの新しい動きのうち、支援を変えそうなものも <span class="sekai-tag">AIの動き</span> の印を付けて、支援にどう効きそうかとあわせて紹介します。</p>
     <p class="sekai-note-sub">紹介であって、おすすめしたり、効果を約束したりするものではありません。くわしくは、それぞれの出典（多くは英語）をご覧ください。海外の情報は変わりやすいので、確認した日付を添えています。</p>
 
     <nav aria-label="このページの目次">
@@ -21,6 +22,7 @@ const newTab = '（新しいタブで開きます）';
 
     {SEKAI.map((n) => (
       <article class="sekai-item" id={n.id} aria-labelledby={`${n.id}-h`}>
+        {n.aiUgoki && <p class="sekai-tag-row"><span class="sekai-tag">AIの動き</span></p>}
         <h2 id={`${n.id}-h`}>{n.title}</h2>
         <dl class="sekai-meta">
           <div><dt>国・地域</dt><dd>{n.country}</dd></div>

@@ -1121,3 +1121,5 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .sekai-memo { border-left: 4px solid var(--accent-fill); padding: 8px 12px; background: var(--panel); border-radius: 0 8px 8px 0; }
 .sekai-src { font-size: .95rem; }
 .sekai-date { color: var(--sub); }
+.sekai-tag { display: inline-block; font-size: .85rem; font-weight: 700; padding: 1px 10px; border: 2px solid var(--accent-text); color: var(--accent-text); border-radius: 999px; white-space: nowrap; }
+.sekai-tag-row { margin: 0 0 -8px; }

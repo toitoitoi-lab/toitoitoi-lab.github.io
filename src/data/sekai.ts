@@ -1,4 +1,4 @@
-// 世界の AT ノート：運営者が勉強のために集めている、海外の AT 活用の一例
+// 世界の AT ノート：運営者が勉強のために集めている、海外の AT 活用の一例と、支援に関わる AI の動き
 // 載せるときのルール：元の文や画像は写さず、自分のことばで要約＋出典リンク。確認した日付を必ず入れる。
 // 週ごとの候補は Project の claude/world_AT_jirei_log.md。載せると決めたものだけ、ここに足す（新しいものを上に）。
 export interface SekaiNote {
@@ -13,6 +13,7 @@ export interface SekaiNote {
   memo?: string;              // 運営者メモ
   sources: { label: string; url: string }[];
   checked: string;            // 確認した日（YYYY-MM-DD）
+  aiUgoki?: boolean;          // 「AIの動き」枠（AI 技術そのものの進化で、支援を変えそうなもの）なら true
 }
 
 export const SEKAI: SekaiNote[] = [
