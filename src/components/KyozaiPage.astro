@@ -21,7 +21,7 @@ const SHOW_FILTER = list.length >= 6; // 数が増えたら絞りこみを出す
 const T = ja
   ? {
       home: 'トップ', open: '開く', code: 'コードを見る', guide: '使い方', updated: '最終更新', setup: '準備が必要',
-      copy: '住所をコピー', copied: 'コピーしました', none: '条件に合う教材はありません。', all: 'すべて', kind: '種類',
+      copy: 'リンクをコピー', copied: 'コピーしました', none: '条件に合う教材はありません。', all: 'すべて', kind: '種類',
       newTab: '（新しいタブで開きます）', rules: '利用ルール',
       count: (n: number) => `${n}件`,
       title: learner ? '教材の部屋' : '支援者の部屋',
@@ -33,8 +33,8 @@ const T = ja
       other: learner ? { label: '先生・支援者の方へ：支援者の部屋', href: `${base}/kyozai/shien/` } : { label: '児童生徒・家族向け：教材の部屋', href: `${base}/kyozai/` },
       adultTitle: learner ? '先生・保護者の方へ（リンクのしかた）' : 'ほかのサイトや学校からリンクするとき',
       link: [
-        '各教材の「住所をコピー」で、教材そのものの住所をコピーできます。この住所は変えないので、授業のページやお便りに貼っても、ずっと同じ最新の教材が開きます。',
-        '児童生徒に使ってもらうときは、この部屋ではなく、各教材の住所に直接リンクするのがおすすめです。',
+        '各教材の「リンクをコピー」で、教材そのもののリンク（URL）をコピーできます。リンクは変えないので、授業のページやお便りに貼っておけば、いつでも最新の教材が開きます。',
+        '児童生徒に使ってもらうときは、この部屋ではなく、各教材のリンクを直接配るのがおすすめです。',
         '授業や研修で使うときは、利用ルールと職場のルールに従ってください。',
       ],
     }
@@ -136,7 +136,7 @@ const crumbs = learner
 
 <script is:inline>
 (function () {
-  // 住所をコピー
+  // リンク（URL）をコピー
   document.querySelectorAll('.kz-copy').forEach(function (b) {
     var node = b.firstChild, label = node.textContent;
     b.addEventListener('click', function () {

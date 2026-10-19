@@ -2,7 +2,7 @@
 // for に 'honnin' があれば教材の部屋に、'sensei' があれば支援者の部屋に出る（両方に出すこともできる）。
 // 教材はここに1件ずつ書き足す。
 // 教材そのものは1か所（GitHub Pages など）にだけ置き、ここは「目次」。
-// url は変えない住所にする（学校などからも同じ住所にリンクしてもらうため）。
+// url は変えないリンク（URL）にする（学校などからも同じリンクで開いてもらうため）。
 export type KyozaiKind = 'app' | 'print' | 'slide' | 'video';
 export type KyozaiFor = 'sensei' | 'honnin';
 
@@ -12,7 +12,7 @@ export type Kyozai = {
   for: KyozaiFor[];        // だれ向けか
   kyoka?: string[];        // 関係する教科（manabi.ts の slug）
   komari?: string[];       // 関係する困りごと（site.ts の KOMARI の slug）
-  url: string;             // 教材の住所（開くリンク）
+  url: string;             // 教材のリンク（URL）
   code?: string;           // コードの場所（GitHub）
   guide?: string;          // 使い方・セットアップの説明
   updated: string;         // 最終更新（YYYY-MM-DD）
