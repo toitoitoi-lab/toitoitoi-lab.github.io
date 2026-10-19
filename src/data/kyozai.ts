@@ -18,8 +18,9 @@ export type Kyozai = {
   updated: string;         // 最終更新（YYYY-MM-DD）
   needsSetup?: boolean;    // 自分の Google アカウントでの準備が必要か
   ready?: boolean;         // false なら「準備中」として出す（開くボタンなし）
-  ja: { title: string; text: string; note?: string };
-  en: { title: string; text: string; note?: string };
+  // use：「教科と学び方」の教科の欄に出す、使いどころの紹介（kyoka があり、use がある教材だけ出る）
+  ja: { title: string; text: string; note?: string; use?: string; useTag?: string };
+  en: { title: string; text: string; note?: string; use?: string; useTag?: string };
 };
 
 export const KIND_LABEL = {
@@ -66,11 +67,15 @@ export const KYOZAI: Kyozai[] = [
       title: 'Sunlit Path（場面から英語で伝える）',
       text: '高校「論理・表現Ⅰ」の場面ごとに、お手本を聞いて、自分の文をつくって伝える練習をします。キーボード・声・手書きで答えられ、CEFR A1–A2 の辞書つきです。',
       note: 'ログインなしで使えます。この版では、答えはどこにも送られません。',
+      useTag: '中学校の英語の復習',
+      use: '中学校で習った文法（There is ～、受け身、助動詞、比べる言い方など）を、「自分の町を紹介する」のような場面の中で復習し、高校の表現へつなげます。中学校の英語をもう一度確かめたい高校生や、学び直したい人に。',
     },
     en: {
       title: 'Sunlit Path (say it in English, scene by scene)',
       text: 'Listen to a model, then build and say your own sentences for everyday scenes, based on the high-school course Logic and Expression I. Answer by keyboard, voice or handwriting, with a CEFR A1–A2 dictionary. (Japanese and English)',
       note: 'No login needed. In this version, answers are not sent anywhere.',
+      useTag: 'Review of junior-high English',
+      use: 'Go over junior-high grammar (there is, the passive, modal verbs, comparisons and more) inside everyday scenes such as introducing your town, then step up to high-school expressions. For high-school students who want to review junior-high English, and for anyone relearning it. (Japanese and English)',
     },
   },
 ];

@@ -5,6 +5,7 @@ import Crumbs from './Crumbs.astro';
 import Soon from './Soon.astro';
 import KotsuList from './KotsuList.astro';
 import { KYOKA, KYOKA_SYSTEM_EN } from '../data/manabi';
+import { KYOZAI } from '../data/kyozai';
 interface Props { lang?: 'ja' | 'en' }
 const { lang = 'ja' } = Astro.props;
 const ja = lang === 'ja';
@@ -15,13 +16,15 @@ const T = ja
       kyoka: '教科から探す', kyokaLead: '教科ごとに、学習を助けるアプリと、授業や家庭学習での使いどころを紹介します。',
       apps: 'アプリと使いどころ', soonApps: 'この教科のアプリは準備中です。',
       kotsu: '学び方のコツ', kotsuLead: '学びやすくなる、ちょっとした知識です。どの教科にも、大人の学び直しにも使えます。',
-      toKomari: '困りごとから探す' }
+      toKomari: '困りごとから探す', open: 'アプリを開く', newTab: '（新しいタブで開きます）', more: '教材の部屋でくわしく' }
   : { title: 'Subjects & ways of learning', home: 'Home',
       lead: 'Apps that help with each subject, and small pieces of knowledge that make learning easier. Tools for specific needs are under "Find by need"; here you will find where apps fit in each subject, and tips about learning itself.',
       kyoka: 'Find by subject', kyokaLead: 'Apps that support learning in each subject, and where they fit in lessons and study at home.',
       apps: 'Apps and how to use them', soonApps: 'Apps for this subject are coming soon.',
       kotsu: 'Ways of learning', kotsuLead: 'Small pieces of knowledge that make learning easier — for any subject, and for adults too.',
-      toKomari: 'Find by need' };
+      toKomari: 'Find by need', open: 'Open the app', newTab: ' (opens in a new tab)', more: 'More in the Materials room' };
+// 教科ごとのアプリ：教材の部屋（kyozai.ts）で kyoka にその教科があり、使いどころ（use）を書いたもの
+const appsFor = (slug: string) => KYOZAI.filter((m) => m.ready !== false && (m.kyoka ?? []).includes(slug) && (ja ? m.ja.use : m.en.use));
 ---
 <Base title={T.title} lang={lang} current="manabi" description={T.lead}>
   <div class="wrap page manabi-page">
@@ -47,6 +50,24 @@ const T = ja
               <h3>{ja ? k.ja.title : k.en.title}{!ja && k.en.local && <span class="kyoka-local" lang="ja-Latn">{k.en.local}</span>}</h3>
               <p>{ja ? k.ja.text : k.en.text}</p>
               {!ja && k.en.note && <p class="kyoka-note"><span class="kyoka-note-label">In Japan</span>{k.en.note}</p>}
+              {appsFor(k.slug).length > 0 && (
+                <ul class="kyoka-apps" aria-label={T.apps}>
+                  {appsFor(k.slug).map((m) => {
+                    const L = ja ? m.ja : m.en;
+                    return (
+                      <li>
+                        {L.useTag && <p class="kyoka-app-tag">{L.useTag}</p>}
+                        <h4>{L.title}</h4>
+                        <p>{L.use}</p>
+                        <p class="kyoka-app-links">
+                          <a class="btn btn-solid" href={m.url} target="_blank" rel="noopener">{T.open}<span class="visually-hidden">：{L.title}{T.newTab}</span></a>
+                          <a class="inline" href={`${base}/kyozai/#${m.slug}`}>{T.more}</a>
+                        </p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
               {!k.ready && <p class="kyoka-soon"><Soon lang={lang} /> <span>{T.soonApps}</span></p>}
             </div>
           </li>

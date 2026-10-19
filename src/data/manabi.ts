@@ -27,7 +27,7 @@ export const KYOKA: Kyoka[] = [
     ja: { title: '算数・数学', text: '数や形を、目と手で確かめるアプリ' },
     en: { title: 'Mathematics', local: 'sansū → sūgaku', text: 'See and touch numbers and shapes', glyph: '＋',
       note: 'In elementary school the subject is called sansū ("arithmetic"). From junior high school it becomes sūgaku ("mathematics"). This site treats them as one continuous line of learning.' } },
-  { slug: 'eigo', glyph: 'A', stage: 'coral', ready: false,
+  { slug: 'eigo', glyph: 'A', stage: 'coral', ready: true,
     ja: { title: '外国語（英語）', text: '音から入る・声で練習するアプリ' },
     en: { title: 'Foreign language (English)', local: 'gaikokugo', text: 'Start from sounds and practise aloud',
       note: 'English is learned as a foreign language rather than a second language, since it is rarely used outside the classroom. It starts as "foreign language activities" (listening and speaking) in grades 3–4, becomes the subject "foreign language" in grades 5–6, and continues as English in junior and senior high school. For children whose first language is not Japanese, schools teach Japanese as a second language separately.' } },

@@ -442,9 +442,14 @@ html[data-float='hide'] .floatbar.summoned { display: flex; }
 .kyoka-detail li { display: flex; gap: 18px; align-items: flex-start; padding: 18px; border: 2px solid var(--line); border-radius: 18px; scroll-margin-top: 90px; }
 .kyoka-detail h3 { margin: 0 0 4px; }
 .kyoka-detail p { margin: 0 0 6px; }
+.kyoka-apps { list-style: none; margin: 12px 0 4px; padding: 0; display: grid; gap: 10px; }
+.kyoka-detail .kyoka-apps li { display: block; scroll-margin-top: 0; padding: 14px 16px; border: 2px solid var(--line); border-radius: 14px; background: var(--panel); }
+.kyoka-detail .kyoka-app-tag { display: inline-block; margin: 0 0 8px; padding: 2px 10px; border: 1px solid var(--accent-text); border-radius: 999px; color: var(--accent-text); font-size: 0.85rem; font-weight: 700; }
+.kyoka-apps h4 { margin: 0 0 6px; font-size: 1.05rem; }
+.kyoka-detail .kyoka-app-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 10px 0 0; font-weight: 700; }
 .kyoka-soon { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; color: var(--sub); }
 @media (prefers-reduced-motion: reduce) { .kyoka-tile { transition: none; } .kyoka-tile:hover { transform: none; } }
-@media (forced-colors: active) { .kyoka-tile, .kotsu, .kyoka-detail li { border-color: CanvasText; } }
+@media (forced-colors: active) { .kyoka-tile, .kotsu, .kyoka-detail li, .kyoka-detail .kyoka-apps li { border-color: CanvasText; } }
 
 /* ── サイト開設にあたって（手紙のような文字組み：枠なし・署名つき） ── */
 .statement { flex: 1 1 340px; max-width: 440px; align-self: flex-end; display: flex; flex-direction: column; }
