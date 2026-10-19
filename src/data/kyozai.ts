@@ -56,4 +56,21 @@ export const KYOZAI: Kyozai[] = [
       note: 'Never enter real student data. The AI features need a free setup with your own Google account.',
     },
   },
+  {
+    slug: 'sunlit-path', kind: 'app', for: ['honnin'], kyoka: ['eigo'],
+    url: 'https://toitoitoi-lab.github.io/Sunlit-Path/',
+    code: 'https://github.com/toitoitoi-lab/Sunlit-Path',
+    guide: 'https://github.com/toitoitoi-lab/Sunlit-Path#readme',
+    updated: '2026-10-18',
+    ja: {
+      title: 'Sunlit Path（場面から英語で伝える）',
+      text: '高校「論理・表現Ⅰ」の場面ごとに、お手本を聞いて、自分の文をつくって伝える練習をします。キーボード・声・手書きで答えられ、CEFR A1–A2 の辞書つきです。',
+      note: 'ログインなしで使えます。この版では、答えはどこにも送られません。',
+    },
+    en: {
+      title: 'Sunlit Path (say it in English, scene by scene)',
+      text: 'Listen to a model, then build and say your own sentences for everyday scenes, based on the high-school course Logic and Expression I. Answer by keyboard, voice or handwriting, with a CEFR A1–A2 dictionary. (Japanese and English)',
+      note: 'No login needed. In this version, answers are not sent anywhere.',
+    },
+  },
 ];
