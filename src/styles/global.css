@@ -1125,3 +1125,20 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .sekai-tag-row { margin: 0 0 -8px; }
 .jirei-tag-row { margin: 0 0 4px; }
 .jirei-note, .jirei-src { color: var(--sub); font-size: .95rem; }
+
+/* お知らせ：見出しと本文（クリックでひらく） */
+.nw-head { margin: 0; }
+.nw-body { margin: 2px 0 0; }
+.nw-title { font-weight: 700; color: var(--fg); }
+.nw-d > summary { cursor: pointer; list-style: none; padding: 2px 0; }
+.nw-d > summary::-webkit-details-marker { display: none; }
+.nw-d > summary::before { content: '▸'; display: inline-block; width: 1.1em; color: var(--accent-text); }
+.nw-d[open] > summary::before { content: '▾'; }
+.nw-d > .nw-body { padding-left: 1.1em; }
+.nw-month { margin: 12px 0; border-top: 2px solid var(--line); }
+.nw-month > summary { cursor: pointer; list-style: none; padding: 10px 0; }
+.nw-month > summary::-webkit-details-marker { display: none; }
+.nw-month-h { display: inline; margin: 0; font-size: 1.2rem; }
+.nw-month > summary::before { content: '▸ '; color: var(--accent-text); }
+.nw-month[open] > summary::before { content: '▾ '; }
+.nw-count { font-weight: 400; color: var(--sub); font-size: 0.95rem; }

@@ -1,13 +1,16 @@
 ---
-// ページ最上部の「お知らせ欄」。閉じていても最新の1件は見える。ほかは、ボタンでひらく。
-// JS がなくても全件が読めるよう、最初から全部を出しておき、JS が動くときだけ畳む。
+// ページ最上部の「お知らせ欄」。
+// ひらいた1件（pin: true、なければ最新）は本文まで見える。ほかは見出しだけを並べ、クリックで本文がひらく（details）。
+// JS がなくても全件が読める。JS が動くときだけ「ほかN件」を畳む。
 import { UPDATES, SHOW_COUNT } from '../data/updates';
 interface Props { lang?: 'ja' | 'en' }
 const { lang = 'ja' } = Astro.props;
 const ja = lang === 'ja';
 const base = ja ? '' : '/en';
 const items = UPDATES.slice(0, SHOW_COUNT);
-const [first, ...rest] = items;
+const pinned = UPDATES.find((u) => u.pin);
+const first = pinned ?? items[0];
+const rest = items.filter((u) => u !== first);
 const today = Date.now();
 const isNew = (d: string) => today - new Date(d + 'T00:00:00+09:00').getTime() < 10 * 86400000;
 const label = (d: string) => {
@@ -23,12 +26,14 @@ const T = ja
   <div class="wrap">
     <div class="nw-row">
       <h2 class="nw-k" id="nw-h">{T.head}</h2>
-      <p class="nw-latest">
-        <time datetime={first.date}>{label(first.date)}</time>
-        {isNew(first.date) && <span class="nw-new">{T.fresh}</span>}
-        <span class="nw-t">{ja ? first.ja : first.en}</span>
-        {first.href && <a href={href(first)}>{T.detail}</a>}
-      </p>
+      <div class="nw-latest">
+        <p class="nw-head">
+          <time datetime={first.date}>{label(first.date)}</time>
+          {isNew(first.date) && <span class="nw-new">{T.fresh}</span>}
+          <strong class="nw-title">{ja ? first.title.ja : first.title.en}</strong>
+        </p>
+        <p class="nw-body"><span class="nw-t">{ja ? first.ja : first.en}</span>{first.href && <a href={href(first)}>{T.detail}</a>}</p>
+      </div>
       {rest.length > 0 && (
         <button type="button" class="nw-btn" id="nw-btn" aria-expanded="true" aria-controls="nw-more" hidden data-more={T.more(rest.length)} data-less={T.less}>{T.more(rest.length)}</button>
       )}
@@ -38,10 +43,14 @@ const T = ja
         <ul class="nw-list">
           {rest.map((u) => (
             <li>
-              <time datetime={u.date}>{label(u.date)}</time>
-              {isNew(u.date) && <span class="nw-new">{T.fresh}</span>}
-              <span class="nw-t">{ja ? u.ja : u.en}</span>
-              {u.href && <a href={href(u)}>{T.detail}</a>}
+              <details class="nw-d">
+                <summary>
+                  <time datetime={u.date}>{label(u.date)}</time>
+                  {isNew(u.date) && <span class="nw-new">{T.fresh}</span>}
+                  <span class="nw-title">{ja ? u.title.ja : u.title.en}</span>
+                </summary>
+                <p class="nw-body"><span class="nw-t">{ja ? u.ja : u.en}</span>{u.href && <a href={href(u)}>{T.detail}</a>}</p>
+              </details>
             </li>
           ))}
         </ul>

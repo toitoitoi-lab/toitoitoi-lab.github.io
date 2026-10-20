@@ -1,0 +1,41 @@
+---
+// 更新履歴（月ごとにまとめる）。いちばん新しい月はひらいた状態、それより前の月はクリックでひらく。
+// 各月の中では、見出しをクリックすると本文がひらく。いちばん新しい1件だけは最初からひらく。
+import { UPDATES } from '../data/updates';
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const base = ja ? '' : '/en';
+const label = (d: string) => {
+  const [y, m, dd] = d.split('-').map(Number);
+  return ja ? `${m}月${dd}日` : new Date(Date.UTC(y, m - 1, dd)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+};
+const monthName = (ym: string) => {
+  const [y, m] = ym.split('-').map(Number);
+  return ja ? `${y}年${m}月のお知らせ` : new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString('en-US', { year: 'numeric', month: 'long', timeZone: 'UTC' });
+};
+const groups: { ym: string; items: typeof UPDATES }[] = [];
+for (const u of UPDATES) {
+  const ym = u.date.slice(0, 7);
+  const g = groups.find((x) => x.ym === ym);
+  if (g) g.items.push(u); else groups.push({ ym, items: [u] });
+}
+const href = (u: { href?: string; jaOnly?: boolean }) => (u.href ? (u.jaOnly ? u.href : base + u.href) : undefined);
+---
+<div class="nw-hist-wrap">
+  {groups.map((g, gi) => (
+    <details class="nw-month" open={gi === 0}>
+      <summary><h2 class="nw-month-h">{monthName(g.ym)}<span class="nw-count">{ja ? `（${g.items.length}件）` : ` (${g.items.length})`}</span></h2></summary>
+      <ul class="nw-list nw-hist">
+        {g.items.map((u, i) => (
+          <li>
+            <details class="nw-d" open={gi === 0 && i === 0}>
+              <summary><time datetime={u.date}>{label(u.date)}</time><span class="nw-title">{ja ? u.title.ja : u.title.en}</span></summary>
+              <p class="nw-body"><span class="nw-t">{ja ? u.ja : u.en}</span>{u.href && <a class="inline" href={href(u)}>{ja ? 'くわしく' : 'Details'}</a>}</p>
+            </details>
+          </li>
+        ))}
+      </ul>
+    </details>
+  ))}
+</div>
