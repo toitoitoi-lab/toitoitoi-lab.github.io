@@ -3,10 +3,18 @@
 // date は YYYY-MM-DD。ja / en は、それぞれの言語の1文（です・ます調、短く）。
 // href を入れると、その文の後ろに「くわしく」のリンクが付く（サイト内は / から始める）。
 // 同じ日の更新は1件にまとめる（「○月○日更新分：」で始める）。休日の細かな修正は、その都度足さず、まとめて1件で出す。
+// 新しく増えたもの（アプリ・教材を GitHub で公開、記事やコーナーの追加、アプリの版の更新）も必ず書く。
+//   例：「〇〇（何をする道具か）を GitHub で公開しました。」「記事『〇〇』を追加しました。」。書く順は「増えたもの → 直したこと」。
 
 export type Update = { date: string; ja: string; en: string; href?: string; jaOnly?: boolean }; // jaOnly: 日本語版だけのページ（英語版からも日本語ページへ）
 
 export const UPDATES: Update[] = [
+  {
+    date: '2026-10-21',
+    ja: '10月21日更新分：中学校の英語の復習アプリ「Sunlit Path」を GitHub で公開し、教材の部屋に載せました。記事に「世界の AT ノート」（海外の支援技術と AI の新しい動き）を追加しました。困りごとの「聞く・見る」「読む」に、Chromebook を使った実践の紹介を加えました。「つくりたい方へ」に、アプリを子どもに合わせて変える方法を加え、お問い合わせを作り直しました。「支援の前に、立ち止まる」の説明を分かりやすくしました。',
+    en: 'Updates on 21 October: published “Sunlit Path”, an app for reviewing junior high school English, on GitHub and added it to the materials room. Added “World AT notes” (assistive technology and new AI developments from around the world). Added Chromebook practice examples to the “Listening & seeing” and “Reading” pages. “For builders” now explains how to adapt an app for a child, and the contact form was redesigned. Clearer wording in “Pause before you support”.',
+    href: '/articles/sekai/', jaOnly: true,
+  },
   {
     date: '2026-10-18',
     ja: 'サイト名を「toi toi toi lab」にしました。表示設定に「強調色」（ライム・イエロー・シアン）を加え、ライト・ダークのどちらでも選べるようにしました。',

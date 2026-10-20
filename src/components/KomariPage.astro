@@ -9,6 +9,7 @@ import MethodSearch from './MethodSearch.astro';
 import { KOMARI, TACHIBA, fmtDate, type Komari } from '../data/site';
 import { CONTENT, CHECKED, KIND_LABEL } from '../data/methods';
 import { CONTENT_EN, CHECKED_EN, KIND_LABEL_EN } from '../data/methods_en';
+import { JIREI } from '../data/jirei';
 interface Props { k: Komari; lang?: 'ja' | 'en' }
 const { k, lang = 'ja' } = Astro.props;
 const ja = lang === 'ja';
@@ -16,6 +17,7 @@ const base = ja ? '' : '/en';
 const c = (ja ? CONTENT : CONTENT_EN)[k.slug];
 const KL = ja ? KIND_LABEL : KIND_LABEL_EN;
 const L = (x: { ja: any; en: any }) => (ja ? x.ja : x.en);
+const jirei = JIREI[k.slug] ?? [];
 const kinds = (['os', 'tool', 'env'] as const).filter((kd) => c?.methods.some((m) => m.kind === kd));
 const tb = Object.fromEntries(TACHIBA.map((x) => [x.slug, x]));
 const others = KOMARI.filter((o) => o.slug !== k.slug);
@@ -67,6 +69,7 @@ const T = ja
                 <ul>{c.methods.filter((m) => m.kind === kd).map((m) => <li><a href={`#m-${m.id}`}>{m.title}</a></li>)}</ul>
               </li>
             ))}
+            {jirei.length > 0 && <li><a href="#jirei">{ja ? '実践の紹介' : 'Practice examples'}</a></li>}
             <li><a href="#points">{T.points}</a></li>
           </ul>
         </nav>
@@ -89,6 +92,21 @@ const T = ja
             ))}
           </section>
         ))}
+
+        {jirei.length > 0 && (
+          <section id="jirei" aria-labelledby="jirei-title">
+            <h2 id="jirei-title">{ja ? '実践の紹介' : 'Practice examples'}</h2>
+            {jirei.map((j) => (
+              <article class="method jirei" id={`j-${j.id}`} aria-labelledby={`jt-${j.id}`}>
+                <p class="jirei-tag-row"><span class="sekai-tag">{j.kind === 'own' ? (ja ? '運営者の実践' : 'Operator’s practice') : (ja ? '紹介' : 'Featured')}</span></p>
+                <h3 id={`jt-${j.id}`}>{L(j).title}</h3>
+                <p>{L(j).body}</p>
+                <p class="jirei-note">{L(j).note}</p>
+                <p class="jirei-src">{ja ? '出典：' : 'Source: '}<a class="inline" href={j.url} target="_blank" rel="noopener">{L(j).src}<span class="visually-hidden">{ja ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span></a>（{fmtDate(j.date, lang)}）</p>
+              </article>
+            ))}
+          </section>
+        )}
 
         <section id="points" aria-labelledby="points-title">
           <h2 id="points-title">{T.points}</h2>
