@@ -13,7 +13,7 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 export const UPDATES: Update[] = [
   {
     date: '2026-10-21',
-    title: { ja: 'Sunlit Path と「世界の AT ノート」を公開ほか', en: 'Sunlit Path, World AT notes and more' },
+    title: { ja: '英語アプリ「Sunlit Path」と記事「世界の AT ノート」を公開ほか', en: 'English app “Sunlit Path”, “World AT notes” and more' },
     ja: '10月21日更新分：中学校の英語の復習アプリ「Sunlit Path」を GitHub で公開し、教材の部屋に載せました。記事に「世界の AT ノート」（海外の支援技術と AI の新しい動き）を追加しました。困りごとの「聞く・見る」「読む」に、Chromebook を使った実践の紹介を加えました。「つくりたい方へ」に、アプリを子どもに合わせて変える方法を加え、お問い合わせを作り直しました。「支援の前に、立ち止まる」の説明を分かりやすくしました。',
     en: 'Updates on 21 October: published “Sunlit Path”, an app for reviewing junior high school English, on GitHub and added it to the materials room. Added “World AT notes” (assistive technology and new AI developments from around the world). Added Chromebook practice examples to the “Listening & seeing” and “Reading” pages. “For builders” now explains how to adapt an app for a child, and the contact form was redesigned. Clearer wording in “Pause before you support”.',
     href: '/articles/sekai/', jaOnly: true,
