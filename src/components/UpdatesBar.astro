@@ -1,6 +1,7 @@
 ---
 // ページ最上部の「お知らせ欄」。
-// ひらいた1件（pin: true、なければ最新）は本文まで見える。ほかは見出しだけを並べ、クリックで本文がひらく（details）。
+// 1件目（pin: true、なければ最新）の見出しを1行で出す。本文は、広い画面（1024px以上）では最初からひらき、スマホ・タブレットでは見出しを押すとひらく。
+// ほかの件は「ほかN件」で見出しだけを並べ、押すと本文がひらく（details）。
 // JS がなくても全件が読める。JS が動くときだけ「ほかN件」を畳む。
 import { UPDATES, SHOW_COUNT } from '../data/updates';
 interface Props { lang?: 'ja' | 'en' }
@@ -19,21 +20,21 @@ const label = (d: string) => {
 };
 const href = (u: { href?: string; jaOnly?: boolean }) => (u.href ? (u.jaOnly ? u.href : base + u.href) : undefined);
 const T = ja
-  ? { head: 'お知らせ', fresh: '新着', more: (n: number) => `ほか${n}件を見る`, less: 'とじる', all: '更新履歴をすべて見る', detail: 'くわしく' }
-  : { head: 'News', fresh: 'New', more: (n: number) => `Show ${n} more`, less: 'Hide', all: 'See all updates', detail: 'Details' };
+  ? { head: 'お知らせ', fresh: '新着', more: (n: number) => `ほか${n}件`, less: 'とじる', all: '更新履歴をすべて見る', detail: 'くわしく' }
+  : { head: 'News', fresh: 'New', more: (n: number) => `${n} more`, less: 'Hide', all: 'See all updates', detail: 'Details' };
 ---
 <section class="nw" id="nw" aria-labelledby="nw-h">
   <div class="wrap">
     <div class="nw-row">
       <h2 class="nw-k" id="nw-h">{T.head}</h2>
-      <div class="nw-latest">
-        <p class="nw-head">
+      <details class="nw-d nw-first" id="nw-first">
+        <summary>
           <time datetime={first.date}>{label(first.date)}</time>
           {isNew(first.date) && <span class="nw-new">{T.fresh}</span>}
           <strong class="nw-title">{ja ? first.title.ja : first.title.en}</strong>
-        </p>
+        </summary>
         <p class="nw-body"><span class="nw-t">{ja ? first.ja : first.en}</span>{first.href && <a href={href(first)}>{T.detail}</a>}</p>
-      </div>
+      </details>
       {rest.length > 0 && (
         <button type="button" class="nw-btn" id="nw-btn" aria-expanded="true" aria-controls="nw-more" hidden data-more={T.more(rest.length)} data-less={T.less}>{T.more(rest.length)}</button>
       )}
@@ -61,6 +62,8 @@ const T = ja
 </section>
 <script is:inline>
   (function () {
+    var f0 = document.getElementById('nw-first');
+    if (f0 && window.matchMedia('(min-width: 1024px)').matches) f0.open = true;
     var b = document.getElementById('nw-btn'), m = document.getElementById('nw-more');
     if (!b || !m) return;
     function set(open) { m.hidden = !open; b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.textContent = open ? b.dataset.less : b.dataset.more; }
