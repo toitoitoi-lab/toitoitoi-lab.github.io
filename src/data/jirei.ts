@@ -1,8 +1,9 @@
 // 困りごとページの「実践の紹介」。公開されている記事を、自分のことばで要約してリンクで紹介する（文や写真は写さない）。
-// kind：'own' は運営者自身の実践、'ref' はほかの学校などの実践（運営者が関わった場合は note に書く）。
+// kind：'own' は運営者自身の実践、'ref' はほかの学校などの実践（運営者が関わった場合は note に書く）、'app' は運営者の自作アプリ（links にデモとコード）。
 export interface Jirei {
   id: string;
-  kind: 'own' | 'ref';
+  kind: 'own' | 'ref' | 'app';
+  links?: { ja: string; en: string; href: string }[]; // app のとき：デモ・コードなど（src の代わりに出す）
   ja: { title: string; body: string; note: string; src: string };
   en: { title: string; body: string; note: string; src: string };
   url: string;
@@ -46,6 +47,29 @@ export const JIREI: Record<string, Jirei[]> = {
       },
       url: 'https://blog.google/intl/ja-jp/company-news/outreach-initiatives/global-accessibility-awareness-day/',
       date: '2026-05-21',
+    },
+  ],
+  mitoosu: [
+    {
+      id: 'techo', kind: 'app',
+      ja: {
+        title: '話すだけで予定が入る手帳：techo（大人・支える人向け）',
+        body: '予定をまとめて話すと、AI が1件ずつに分けて Google カレンダーに入れます。やることに A・B・C の順番を付け、終わらなかったものは翌日に持ち越せます。「何から手をつけるか」で止まりがちな大人や、いくつもの役割を抱える支援者が、自分の見通しを持つための手帳です。',
+        note: '自分の Google アカウントでセットアップして使います（約20分）。AI の無料枠では、入力した内容が Google の改善に使われることがあるため、人に知られたくない予定は入れないでください。',
+        src: '',
+      },
+      en: {
+        title: 'A planner you fill in by talking: techo (for adults and supporters)',
+        body: 'Say several plans at once, and AI splits them into separate events in Google Calendar. Tasks get an A/B/C priority, and unfinished ones carry over to the next day. It helps adults who get stuck on “where do I start?” and supporters juggling many roles to keep their own plans in view.',
+        note: 'You set it up with your own Google account (about 20 minutes). On the free AI tier, what you enter may be used to improve Google’s products, so do not enter plans you want to keep private. The app is in Japanese.',
+        src: '',
+      },
+      url: 'https://toitoitoi-lab.github.io/techo/',
+      links: [
+        { ja: 'デモを開く（架空のデータで試せます）', en: 'Open the demo (sample data)', href: 'https://toitoitoi-lab.github.io/techo/' },
+        { ja: 'コードを見る（GitHub）', en: 'View the code (GitHub)', href: 'https://github.com/toitoitoi-lab/techo' },
+      ],
+      date: '2026-09-27',
     },
   ],
 };

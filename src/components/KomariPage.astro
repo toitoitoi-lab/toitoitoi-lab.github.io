@@ -98,11 +98,15 @@ const T = ja
             <h2 id="jirei-title">{ja ? '実践の紹介' : 'Practice examples'}</h2>
             {jirei.map((j) => (
               <article class="method jirei" id={`j-${j.id}`} aria-labelledby={`jt-${j.id}`}>
-                <p class="jirei-tag-row"><span class="sekai-tag">{j.kind === 'own' ? (ja ? '運営者の実践' : 'Operator’s practice') : (ja ? '紹介' : 'Featured')}</span></p>
+                <p class="jirei-tag-row"><span class="sekai-tag">{j.kind === 'own' ? (ja ? '運営者の実践' : 'Operator’s practice') : j.kind === 'app' ? (ja ? '運営者の自作アプリ' : 'Operator’s own app') : (ja ? '紹介' : 'Featured')}</span></p>
                 <h3 id={`jt-${j.id}`}>{L(j).title}</h3>
                 <p>{L(j).body}</p>
                 <p class="jirei-note">{L(j).note}</p>
-                <p class="jirei-src">{ja ? '出典：' : 'Source: '}<a class="inline" href={j.url} target="_blank" rel="noopener">{L(j).src}<span class="visually-hidden">{ja ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span></a>（{fmtDate(j.date, lang)}）</p>
+                {j.links ? (
+                  <p class="jirei-src">{j.links.map((l, i) => <>{i > 0 && '／'}<a class="inline" href={l.href} target="_blank" rel="noopener">{ja ? l.ja : l.en}<span class="visually-hidden">{ja ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span></a></>)}</p>
+                ) : (
+                  <p class="jirei-src">{ja ? '出典：' : 'Source: '}<a class="inline" href={j.url} target="_blank" rel="noopener">{L(j).src}<span class="visually-hidden">{ja ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span></a>（{fmtDate(j.date, lang)}）</p>
+                )}
               </article>
             ))}
           </section>
