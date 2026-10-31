@@ -87,12 +87,12 @@ export const KYOZAI: Kyozai[] = [
     ja: {
       title: 'まなざしアトリエ（見つめて えがく）',
       text: '見つめたところに色が広がる、視線入力のお絵かきアプリです。見る → 色が出る、という因果関係の学びから、ふで・色・もようを本人が見つめて選んで描く表現まで、段階的に使えます。視線入力装置のほか、パソコンやタブレットのカメラ、マウス・タッチでも使えます。',
-      note: 'ログインなしで使えます。入力した内容とカメラの映像は、この端末の中だけで使います（サーバーには送りません）。カメラで使うときはインターネット接続が必要です。作品と記録を学校の Google ドライブに残す学校版は、自分の Google アカウントでの準備が必要です。',
+      note: 'ログインなしで使えます。入力した内容とカメラの映像は、使っている人のパソコンやタブレットの中だけで使い、サーバーには送りません。カメラで使うときはインターネット接続が必要です。作品と記録を学校の Google ドライブに残す学校版は、自分の Google アカウントでの準備が必要です。',
     },
     en: {
       title: 'Manazashi Atelier (draw with your eyes)',
       text: 'An eye-gaze drawing app: colour spreads wherever you look. Use it in stages, from learning cause and effect (look → colour appears) to choosing brushes, colours and patterns with your eyes and drawing on your own. Works with an eye-gaze device, a computer or tablet camera, or a mouse or touch. (Japanese)',
-      note: 'No login needed. What you enter and the camera image stay on this device and are not sent to a server. Camera mode needs an internet connection. The school version, which saves drawings and records to Google Drive, needs a setup with your own Google account.',
+      note: 'No login needed. What you enter and the camera image stay on the computer or tablet you are using and are never sent to a server. Camera mode needs an internet connection. The school version, which saves drawings and records to Google Drive, needs a setup with your own Google account.',
     },
   },
   {
@@ -104,12 +104,12 @@ export const KYOZAI: Kyozai[] = [
     ja: {
       title: 'ことむすび（ことばを えらんで つたえる）',
       text: '話すことが難しい人が、立場・場面・気持ちを選ぶだけで、自分のことばを読み上げて伝えられるアプリ（VOCA）です。50音やアルファベットで自分のことばをつくったり、よく使うことばを「ことば帖」にまとめて印刷したりできます。少ない大きなボタンだけの「かんたんボード」もあります。',
-      note: 'ログインなしで使えます。入力した内容は、この端末の中だけに保存されます。緊急通報サービスではありません。学校の端末で開けないときは、アプリの「せってい → このアプリについて」にある Google 版の入口を使ってください。',
+      note: 'ログインなしで使えます。入力した内容は、使っている人のスマホやタブレットの中だけに保存され、外には送りません。緊急通報サービスではありません。学校の端末で開けないときは、アプリの「せってい → このアプリについて」にある Google 版の入口を使ってください。',
     },
     en: {
       title: 'Kotomusubi (choose words, get them across)',
       text: 'A voice output communication aid (VOCA) web app: choose who you are, the scene and what you want to say, and it reads your words aloud. Build your own words from kana or the alphabet, keep favourites in a printable word book, or use the simple board with a few large buttons. (Japanese and English)',
-      note: 'No login needed. What you enter stays on this device. This is not an emergency service.',
+      note: 'No login needed. What you enter is saved only on the phone or tablet you are using and is never sent anywhere. This is not an emergency service.',
     },
   },
   {
