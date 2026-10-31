@@ -12,6 +12,13 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-10-31',
+    title: { ja: '視線入力のお絵かきアプリ「まなざしアトリエ」を公開', en: 'Eye-gaze drawing app “Manazashi Atelier” published' },
+    ja: '見つめたところに色が広がる、視線入力のお絵かきアプリ「まなざしアトリエ」を GitHub で公開し、教材の部屋と支援者の部屋に載せました。視線入力装置のほか、パソコンやタブレットのカメラ、マウス・タッチでも使えます。',
+    en: 'Published “Manazashi Atelier”, an eye-gaze drawing app where colour spreads wherever you look, on GitHub and added it to both materials rooms. It works with an eye-gaze device, a computer or tablet camera, or a mouse or touch (Japanese).',
+    href: '/kyozai/#manazashi-atelier',
+  },
+  {
     date: '2026-10-21',
     title: { ja: '英語アプリ「Sunlit Path」と記事「世界の AT ノート」を公開ほか', en: 'English app “Sunlit Path”, “World AT notes” and more' },
     ja: '10月21日更新分：中学校の英語の復習アプリ「Sunlit Path」を GitHub で公開し、教材の部屋に載せました。記事に「世界の AT ノート」（海外の支援技術と AI の新しい動き）を追加しました。困りごとの「聞く・見る」「読む」に、Chromebook を使った実践の紹介を加えました。「つくりたい方へ」に、アプリを子どもに合わせて変える方法を加え、お問い合わせを作り直しました。「支援の前に、立ち止まる」の説明を分かりやすくしました。',

@@ -78,4 +78,21 @@ export const KYOZAI: Kyozai[] = [
       use: 'Go over junior-high grammar (there is, the passive, modal verbs, comparisons and more) inside everyday scenes such as introducing your town, then step up to high-school expressions. For high-school students who want to review junior-high English, and for anyone relearning it. (Japanese and English)',
     },
   },
+  {
+    slug: 'manazashi-atelier', kind: 'app', for: ['honnin', 'sensei'], komari: ['sousa'],
+    url: 'https://toitoitoi-lab.github.io/manazashi-atelier/',
+    code: 'https://github.com/toitoitoi-lab/manazashi-atelier',
+    guide: 'https://github.com/toitoitoi-lab/manazashi-atelier#readme',
+    updated: '2026-10-31',
+    ja: {
+      title: 'まなざしアトリエ（見つめて えがく）',
+      text: '見つめたところに色が広がる、視線入力のお絵かきアプリです。見る → 色が出る、という因果関係の学びから、ふで・色・もようを本人が見つめて選んで描く表現まで、段階的に使えます。視線入力装置のほか、パソコンやタブレットのカメラ、マウス・タッチでも使えます。',
+      note: 'ログインなしで使えます。入力した内容とカメラの映像は、この端末の中だけで使います（サーバーには送りません）。カメラで使うときはインターネット接続が必要です。作品と記録を学校の Google ドライブに残す学校版は、自分の Google アカウントでの準備が必要です。',
+    },
+    en: {
+      title: 'Manazashi Atelier (draw with your eyes)',
+      text: 'An eye-gaze drawing app: colour spreads wherever you look. Use it in stages, from learning cause and effect (look → colour appears) to choosing brushes, colours and patterns with your eyes and drawing on your own. Works with an eye-gaze device, a computer or tablet camera, or a mouse or touch. (Japanese)',
+      note: 'No login needed. What you enter and the camera image stay on this device and are not sent to a server. Camera mode needs an internet connection. The school version, which saves drawings and records to Google Drive, needs a setup with your own Google account.',
+    },
+  },
 ];
