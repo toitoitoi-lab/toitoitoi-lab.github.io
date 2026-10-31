@@ -12,11 +12,18 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-11-01',
+    title: { ja: '「まなざしアトリエ」を v1.9.0 に更新', en: '“Manazashi Atelier” updated to v1.9.0' },
+    ja: '「まなざしアトリエ」を v1.9.0 に更新しました。iPad・iPhone の視線トラッキングに対応し、入力方法を選ぶとその子に合う設定にそろうようにしました。反応の速さを3段階とスライダーで選べ、設定画面の「ためし描き」で確かめられます。',
+    en: 'Updated “Manazashi Atelier” to v1.9.0. It now supports iPad/iPhone eye tracking, and choosing an input method sets matching defaults. Response speed has three presets plus a slider, with a test area in the settings.',
+    href: '/kyozai/#manazashi-atelier',
+  },
+  {
     date: '2026-10-31',
-    title: { ja: '視線入力のお絵かきアプリ「まなざしアトリエ」を公開・「QOL」を追加', en: 'Eye-gaze drawing app “Manazashi Atelier” and a new QOL room' },
-    ja: '10月31日更新分：見つめたところに色が広がる、視線入力のお絵かきアプリ「まなざしアトリエ」を GitHub で公開し、教材の部屋と支援者の部屋に載せました。くらしと仕事を楽にする道具を集めた「QOL」を上のメニューに加え、ことばを選んで伝えるアプリ「ことむすび」と、話すだけで予定が入る手帳「techo」を載せました。つくったアプリを画面つきで全部見られる GitHub のアプリ一覧への入口を、トップの「アプリと道具」に置きました。',
-    en: 'Updates on 31 October: published “Manazashi Atelier”, an eye-gaze drawing app where colour spreads wherever you look, on GitHub and added it to both materials rooms. Added a new “QOL” room to the menu for tools for everyday life, with “Kotomusubi” (choose words and have them read aloud) and “techo” (a planner you fill in by talking). The new “Apps and tools” section on the home page links to the full app list on GitHub.',
-    href: '/qol/',
+    title: { ja: '視線入力のお絵描きアプリ「まなざしアトリエ」を公開', en: 'Eye-gaze painting app “Manazashi Atelier”' },
+    ja: '視線入力でお絵描きできるアプリ「まなざしアトリエ」を GitHub で公開し、教材の部屋と支援者の部屋に載せました。視線入力装置のほか、パソコンやタブレットのカメラでも使え、作品と「見ていた記録」を残せます。',
+    en: 'Published “Manazashi Atelier”, an eye-gaze painting app, on GitHub and added it to both materials rooms. It works with eye trackers or a laptop or tablet camera, and keeps artwork along with a record of where the painter looked.',
+    href: '/kyozai/#manazashi-atelier',
   },
   {
     date: '2026-10-21',
