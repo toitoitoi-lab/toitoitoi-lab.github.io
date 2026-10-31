@@ -1,10 +1,10 @@
 // 教材の部屋（児童生徒・家族向け：/kyozai/）と、支援者の部屋（先生・支援者向け：/kyozai/shien/）の目次。
-// for に 'honnin' があれば教材の部屋に、'sensei' があれば支援者の部屋に出る（両方に出すこともできる）。
+// for に 'honnin' があれば教材の部屋に、'sensei' があれば支援者の部屋に、'qol' があれば QOL（/qol/：くらしと仕事を楽にする道具）に出る（いくつ出してもよい）。
 // 教材はここに1件ずつ書き足す。
 // 教材そのものは1か所（GitHub Pages など）にだけ置き、ここは「目次」。
 // url は変えないリンク（URL）にする（学校などからも同じリンクで開いてもらうため）。
 export type KyozaiKind = 'app' | 'print' | 'slide' | 'video';
-export type KyozaiFor = 'sensei' | 'honnin';
+export type KyozaiFor = 'sensei' | 'honnin' | 'qol';
 
 export type Kyozai = {
   slug: string;            // ページ内の目印（/kyozai/#slug）。変えない
@@ -28,8 +28,8 @@ export const KIND_LABEL = {
   en: { app: 'App', print: 'Printable', slide: 'Slides', video: 'Video' },
 };
 export const FOR_LABEL = {
-  ja: { sensei: '先生・支援者', honnin: '児童生徒・家族' },
-  en: { sensei: 'Teachers & supporters', honnin: 'Students & families' },
+  ja: { sensei: '先生・支援者', honnin: '児童生徒・家族', qol: 'くらし・QOL' },
+  en: { sensei: 'Teachers & supporters', honnin: 'Students & families', qol: 'Everyday life (QOL)' },
 };
 
 export const KYOZAI: Kyozai[] = [
@@ -93,6 +93,40 @@ export const KYOZAI: Kyozai[] = [
       title: 'Manazashi Atelier (draw with your eyes)',
       text: 'An eye-gaze drawing app: colour spreads wherever you look. Use it in stages, from learning cause and effect (look → colour appears) to choosing brushes, colours and patterns with your eyes and drawing on your own. Works with an eye-gaze device, a computer or tablet camera, or a mouse or touch. (Japanese)',
       note: 'No login needed. What you enter and the camera image stay on this device and are not sent to a server. Camera mode needs an internet connection. The school version, which saves drawings and records to Google Drive, needs a setup with your own Google account.',
+    },
+  },
+  {
+    slug: 'kotomusubi', kind: 'app', for: ['qol'], komari: ['tsutaeru'],
+    url: 'https://toitoitoi-lab.github.io/kotomusubi/',
+    code: 'https://github.com/toitoitoi-lab/kotomusubi',
+    guide: 'https://github.com/toitoitoi-lab/kotomusubi#readme',
+    updated: '2026-10-17',
+    ja: {
+      title: 'ことむすび（ことばを えらんで つたえる）',
+      text: '話すことが難しい人が、立場・場面・気持ちを選ぶだけで、自分のことばを読み上げて伝えられるアプリ（VOCA）です。50音やアルファベットで自分のことばをつくったり、よく使うことばを「ことば帖」にまとめて印刷したりできます。少ない大きなボタンだけの「かんたんボード」もあります。',
+      note: 'ログインなしで使えます。入力した内容は、この端末の中だけに保存されます。緊急通報サービスではありません。学校の端末で開けないときは、アプリの「せってい → このアプリについて」にある Google 版の入口を使ってください。',
+    },
+    en: {
+      title: 'Kotomusubi (choose words, get them across)',
+      text: 'A voice output communication aid (VOCA) web app: choose who you are, the scene and what you want to say, and it reads your words aloud. Build your own words from kana or the alphabet, keep favourites in a printable word book, or use the simple board with a few large buttons. (Japanese and English)',
+      note: 'No login needed. What you enter stays on this device. This is not an emergency service.',
+    },
+  },
+  {
+    slug: 'techo', kind: 'app', for: ['qol'], komari: ['mitoosu'],
+    url: 'https://toitoitoi-lab.github.io/techo/',
+    code: 'https://github.com/toitoitoi-lab/techo',
+    guide: 'https://github.com/toitoitoi-lab/techo#readme',
+    updated: '2026-09-27', needsSetup: true,
+    ja: {
+      title: 'techo（話すだけで予定が入る手帳）',
+      text: '予定やタスクをまとめて話すと、AI が1件ずつに分けて Google カレンダーに入れます。やることに A・B・C の順番を付け、終わらなかったものは翌日に持ち越せます。役割がいくつもある大人や支援者が、「今週いちばん大事なこと」を見渡すための手帳です。',
+      note: 'デモは架空のデータで画面だけ試せます。自分で使うには、自分の Google アカウントでの準備（20分ほど・無料）が必要です。AI の無料枠では入力した内容が Google の改善に使われることがあるので、人に知られたくない予定は入れないでください。',
+    },
+    en: {
+      title: 'techo (a planner you fill in by talking)',
+      text: 'Say your plans and tasks in one go, and AI splits them into single entries in Google Calendar. Rank tasks A, B or C and carry unfinished ones over to the next day. A planner for adults and supporters juggling many roles to see what matters most this week. (Japanese)',
+      note: 'The demo shows the screens with made-up data. To use it yourself, set it up with your own Google account (about 20 minutes, free). On the free AI tier, what you enter may be used to improve Google products, so leave out anything private.',
     },
   },
 ];

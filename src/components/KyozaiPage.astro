@@ -1,5 +1,5 @@
 ---
-// 教材の部屋（room="manabi"：児童生徒・家族向け）／支援者の部屋（room="shien"：先生・支援者向け）
+// 教材の部屋（room="manabi"：児童生徒・家族向け）／支援者の部屋（room="shien"：先生・支援者向け）／QOL（room="qol"：くらしと仕事を楽にする道具）
 import Base from '../layouts/Base.astro';
 import Crumbs from './Crumbs.astro';
 import Soon from './Soon.astro';
@@ -7,15 +7,17 @@ import RulesNote from './RulesNote.astro';
 import { KYOZAI, KIND_LABEL, FOR_LABEL } from '../data/kyozai';
 import { KYOKA } from '../data/manabi';
 import { KOMARI, fmtDate } from '../data/site';
-interface Props { lang?: 'ja' | 'en'; room?: 'manabi' | 'shien' }
+import GithubBand from './GithubBand.astro';
+interface Props { lang?: 'ja' | 'en'; room?: 'manabi' | 'shien' | 'qol' }
 const { lang = 'ja', room = 'manabi' } = Astro.props;
 const ja = lang === 'ja';
 const base = ja ? '' : '/en';
 const learner = room === 'manabi';
+const qol = room === 'qol';
 const KL = KIND_LABEL[lang], FL = FOR_LABEL[lang];
 const kyokaName = Object.fromEntries(KYOKA.map((k) => [k.slug, ja ? k.ja.title : k.en.title]));
 const komariName = Object.fromEntries(KOMARI.map((k) => [k.slug, ja ? k.ja.title : k.en.title]));
-const list = KYOZAI.filter((m) => m.for.includes(learner ? 'honnin' : 'sensei'))
+const list = KYOZAI.filter((m) => m.for.includes(learner ? 'honnin' : qol ? 'qol' : 'sensei'))
   .sort((a, b) => Number(b.ready !== false) - Number(a.ready !== false) || b.updated.localeCompare(a.updated));
 const SHOW_FILTER = list.length >= 6; // 数が増えたら絞りこみを出す
 const T = ja
@@ -24,13 +26,15 @@ const T = ja
       copy: 'リンクをコピー', copied: 'コピーしました', none: '条件に合う教材はありません。', all: 'すべて', kind: '種類',
       newTab: '（新しいタブで開きます）', rules: '利用ルール',
       count: (n: number) => `${n}件`,
-      title: learner ? '教材の部屋' : '支援者の部屋',
+      title: learner ? '教材の部屋' : qol ? 'QOL' : '支援者の部屋',
       lead: learner
         ? '学ぶための教材とアプリがあります。やってみたいものを開いてみてください。'
+        : qol
+        ? '学校の外の毎日や、大人と支える人のくらしを整えるための道具です。気持ちを伝える、予定を見渡すなど、学ぶための教材とは別にここに並べています。'
         : '先生・支援者の方が、支援を考えたり学んだりするための道具です。児童生徒向けの教材は「教材の部屋」にあります。',
       empty: learner ? '教材はいま準備中です。できたものから、ここに並べていきます。' : 'いま準備中です。',
       more: '教材は順次追加していきます。',
-      other: learner ? { label: '先生・支援者の方へ：支援者の部屋', href: `${base}/kyozai/shien/` } : { label: '児童生徒・家族向け：教材の部屋', href: `${base}/kyozai/` },
+      other: learner ? { label: '先生・支援者の方へ：支援者の部屋', href: `${base}/kyozai/shien/` } : { label: '学ぶための教材は：教材の部屋', href: `${base}/kyozai/` },
       adultTitle: learner ? '先生・保護者の方へ（リンクのしかた）' : 'ほかのサイトや学校からリンクするとき',
       link: [
         '各教材の「リンクをコピー」で、教材そのもののリンク（URL）をコピーできます。リンクは変えないので、授業のページやお便りに貼っておけば、いつでも最新の教材が開きます。',
@@ -43,13 +47,15 @@ const T = ja
       copy: 'Copy link', copied: 'Copied', none: 'No materials match.', all: 'All', kind: 'Type',
       newTab: ' (opens in a new tab)', rules: 'Terms of use',
       count: (n: number) => `${n} item${n === 1 ? '' : 's'}`,
-      title: learner ? 'Materials room' : "Supporters' room",
+      title: learner ? 'Materials room' : qol ? 'QOL' : "Supporters' room",
       lead: learner
         ? 'Materials and apps for learning. Open one you would like to try.'
+        : qol
+        ? 'Tools for everyday life outside school, for adults and the people who support them: getting your words across, seeing your week at a glance and more. They are kept here, apart from the learning materials.'
         : 'Tools for teachers and supporters to think about and learn about support. Materials for students are in the Materials room.',
       empty: learner ? 'Materials are being prepared. They will appear here as they are finished.' : 'Being prepared.',
       more: 'More materials will be added over time.',
-      other: learner ? { label: "For teachers and supporters: Supporters' room", href: `${base}/kyozai/shien/` } : { label: 'For students and families: Materials room', href: `${base}/kyozai/` },
+      other: learner ? { label: "For teachers and supporters: Supporters' room", href: `${base}/kyozai/shien/` } : { label: 'Materials for learning: Materials room', href: `${base}/kyozai/` },
       adultTitle: learner ? 'For teachers and parents (how to link)' : 'Linking from other sites or schools',
       link: [
         '"Copy link" copies the address of the material itself. It will not change, so it keeps opening the latest version wherever you paste it.',
@@ -57,11 +63,11 @@ const T = ja
         "When using materials in lessons or training, follow the terms of use and your workplace's rules.",
       ],
     };
-const crumbs = learner
+const crumbs = learner || qol
   ? [{ label: T.home, href: `${base}/` }, { label: T.title }]
   : [{ label: T.home, href: `${base}/` }, { label: ja ? '教材の部屋' : 'Materials room', href: `${base}/kyozai/` }, { label: T.title }];
 ---
-<Base title={T.title} lang={lang} current="kyozai" news={!learner} description={T.lead}>
+<Base title={T.title} lang={lang} current={qol ? 'qol' : 'kyozai'} news={!learner} description={T.lead}>
   <div class={`wrap page kyozai-page ${learner ? 'kz-learner' : 'kz-shien'}`}>
     <Crumbs lang={lang} items={crumbs} />
     <h1>{T.title}</h1>
@@ -130,7 +136,8 @@ const crumbs = learner
         <p><a class="inline" href={`${base}/rules/`}>{T.rules}</a></p>
       </section>
     )}
-    <p class="kz-other"><a class="inline" href={T.other.href}>{T.other.label}</a></p>
+    <GithubBand lang={lang} />
+    <p class="kz-other"><a class="inline" href={T.other.href}>{T.other.label}</a>{qol && <>　<a class="inline" href={`${base}/kyozai/shien/`}>{ja ? '先生・支援者の方へ：支援者の部屋' : "For teachers and supporters: Supporters' room"}</a></>}</p>
   </div>
 </Base>
 

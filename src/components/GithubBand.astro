@@ -1,0 +1,21 @@
+---
+// GitHub のアプリ一覧（toitoitoi-lab の組織ページ）への入口。トップの「アプリと道具」と、教材・支援者・QOL の各部屋の下に置く。
+// 学校のネットワークでは GitHub が開けないことがあるので、アプリそのものはサイトの各ページから開ける形を保ち、ここは「まとめて見たい人」向け。
+import { LINKS } from '../data/site';
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+const T = ja
+  ? { title: 'つくったアプリを、画面つきで全部見る', sub: 'GitHub のアプリ一覧です。どのアプリも、画面 → つくった理由 → 開く・コードを見る の順に並んでいます。', note: '学校のネットワークでは GitHub が開けないことがあります。アプリそのものは、このサイトの各ページから開けます。', newTab: '（新しいタブで開きます）' }
+  : { title: 'See all the apps, with screenshots', sub: 'The app list on GitHub. Each app shows its screen, why it was made, and links to open it and see the code. (Japanese)', note: 'Some school networks block GitHub. You can still open each app from the pages on this site.', newTab: ' (opens in a new tab)' };
+---
+<div class="gh-band">
+  <a class="gh-link" href={LINKS.github} target="_blank" rel="noopener">
+    <span class="gh-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></span>
+    <span class="gh-text">
+      <span class="gh-title">{T.title}<span class="gh-where">（<span lang="en">GitHub</span>）</span><span class="ext-ic" aria-hidden="true">↗</span><span class="visually-hidden">{T.newTab}</span></span>
+      <span class="gh-sub">{T.sub}</span>
+    </span>
+  </a>
+  <p class="gh-note">{T.note}</p>
+</div>

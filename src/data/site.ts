@@ -191,6 +191,7 @@ export const SITEMAP_JA: MapGroup[] = [
       { label: '学び方のコツ', note: '覚える・集中する・まとめる など', href: '/manabi/#kotsu', ready: false },
       { label: '教材の部屋', note: '児童生徒・家族向けの教材とアプリ', href: '/kyozai/', ready: true },
       { label: '支援者の部屋', note: '先生・支援者向けの道具', href: '/kyozai/shien/', ready: true },
+      { label: 'QOL', note: 'くらしと仕事を楽にする道具（ことむすび・techo など）', href: '/qol/', ready: true },
     ],
   },
   {
@@ -202,7 +203,7 @@ export const SITEMAP_JA: MapGroup[] = [
       { label: '研修について', href: '/talks/', ready: false },
       { label: 'YouTube', note: '外部サイト', href: LINKS.youtube, ready: true, external: true },
       { label: 'note', note: '外部サイト', href: LINKS.note, ready: true, external: true },
-      { label: 'GitHub', note: '外部サイト', href: LINKS.github, ready: true, external: true },
+      { label: 'GitHub（アプリ一覧）', note: '外部サイト・つくったアプリを画面つきで全部見る', href: LINKS.github, ready: true, external: true },
     ],
   },
 ];
@@ -239,6 +240,7 @@ export const SITEMAP_EN: MapGroup[] = [
       { label: 'Ways of learning', note: 'Remembering, focusing, organising and more', href: '/en/manabi/#kotsu', ready: false },
       { label: 'Materials room', note: 'Materials and apps for students and families', href: '/en/kyozai/', ready: true },
       { label: "Supporters' room", note: 'Tools for teachers and supporters', href: '/en/kyozai/shien/', ready: true },
+      { label: 'QOL', note: 'Tools for everyday life (Kotomusubi, techo and more)', href: '/en/qol/', ready: true },
     ],
   },
   {
@@ -249,7 +251,7 @@ export const SITEMAP_EN: MapGroup[] = [
       { label: 'Training', href: '/en/talks/', ready: false },
       { label: 'YouTube', note: 'External site', href: LINKS.youtube, ready: true, external: true },
       { label: 'note', note: 'External site (Japanese)', href: LINKS.note, ready: true, external: true },
-      { label: 'GitHub', note: 'External site', href: LINKS.github, ready: true, external: true },
+      { label: 'GitHub (app list)', note: 'External site: all the apps, with screenshots', href: LINKS.github, ready: true, external: true },
     ],
   },
 ];

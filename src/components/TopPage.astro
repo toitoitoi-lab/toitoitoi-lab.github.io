@@ -18,11 +18,25 @@ const GUIDE = ja
       { href: '#komari', title: '困りごとから探す', text: '読む・書く・伝えるなど、困っていることから方法を探します' },
       { href: '#tachiba', title: '立場から探す', text: '先生・本人や家族・つくりたい方、それぞれの入口から' },
       { href: '#manabi', title: '教科と学び方', text: '教科ごとのアプリと、学びやすくなるコツ' },
+      { href: '#dougu', title: 'アプリと道具', text: '学ぶための教材と、くらしを整える道具（QOL）' },
     ]
   : [
       { href: '#komari', title: 'Find by need', text: 'Start from what is hard — reading, writing, communicating' },
       { href: '#tachiba', title: 'Find by who you are', text: 'Entrances for teachers, learners and families, and builders' },
       { href: '#manabi', title: 'Subjects & learning', text: 'Apps for each subject, and tips that make learning easier' },
+      { href: '#dougu', title: 'Apps and tools', text: 'Materials for learning, and tools for everyday life (QOL)' },
+    ];
+import GithubBand from './GithubBand.astro';
+import { KYOZAI } from '../data/kyozai';
+const nFor = (f: 'honnin' | 'sensei' | 'qol') => KYOZAI.filter((m) => m.for.includes(f) && m.ready !== false).length;
+const DOUGU = ja
+  ? [
+      { href: '/kyozai/', kicker: '学ぶ', title: '教材', sub: '児童生徒・家族向けの教材とアプリ。先生・支援者向けの道具は「支援者の部屋」に。', count: `教材の部屋 ${nFor('honnin')}件・支援者の部屋 ${nFor('sensei')}件` },
+      { href: '/qol/', kicker: 'くらす', title: 'QOL', sub: '学校の外の毎日や、大人と支える人のくらしを整える道具。気持ちを伝える・予定を見渡す など。', count: `${nFor('qol')}件` },
+    ]
+  : [
+      { href: '/en/kyozai/', kicker: 'Learn', title: 'Materials', sub: "Materials and apps for students and families. Tools for teachers are in the Supporters' room.", count: `Materials room ${nFor('honnin')} · Supporters' room ${nFor('sensei')}` },
+      { href: '/en/qol/', kicker: 'Live', title: 'QOL', sub: 'Tools for everyday life outside school, for adults and the people who support them.', count: `${nFor('qol')} item${nFor('qol') === 1 ? '' : 's'}` },
     ];
 ---
 <div class="wrap">
@@ -117,6 +131,28 @@ const GUIDE = ja
     <h3 class="sub-head">{ja ? '学び方のコツ' : 'Ways of learning'}</h3>
     <KotsuList lang={lang} limit={3} headingLevel={4} />
     <p class="section-more"><a class="btn" href={`${base}/manabi/`}>{ja ? '教科と学び方をすべて見る' : 'See all subjects and tips'}</a> <a class="btn btn-accent" href={`${base}/kyozai/`}>{ja ? '教材の部屋へ' : 'Materials room'}</a></p>
+  </section>
+
+  <section class="section" id="dougu" aria-labelledby="h-dougu">
+    <div class="section-head">
+      <h2 id="h-dougu">{ja ? 'アプリと道具' : 'Apps and tools'}</h2>
+      <p>{ja ? '学ぶための教材と、くらしを整える道具に分けて置いています。' : 'Materials for learning, and tools for everyday life, kept in separate rooms.'}</p>
+    </div>
+    <ul class="dougu-grid">
+      {DOUGU.map((d) => (
+        <li>
+          <a class="card" href={d.href}>
+            <span class="card-body">
+              <span class="dougu-kicker">{d.kicker}</span>
+              <span class="card-title-row"><span class="card-title">{d.title}</span><span class="card-arrow" aria-hidden="true">→</span></span>
+              <span class="card-sub">{d.sub}</span>
+              <span class="dougu-count">{d.count}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <GithubBand lang={lang} />
   </section>
 
   <section class="guide" id="guide" aria-labelledby="h-guide">
