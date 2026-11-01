@@ -13,9 +13,9 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 export const UPDATES: Update[] = [
   {
     date: '2026-11-01',
-    title: { ja: '「まなざしアトリエ」を v1.11.0 に更新', en: '“Manazashi Atelier” updated to v1.11.0' },
-    ja: '「まなざしアトリエ」を v1.11.0 に更新しました。iPad・iPhone の視線トラッキングに対応し、入力方法を選ぶとその子に合う設定にそろうようにしました。反応の速さを3段階とスライダーで選べ、「ためし描き」で確かめられます。ボタンの場所と絵の紙をはっきり分け、作品を写真アプリに保存できるようにし、設定を4つのまとまりに整理しました。',
-    en: 'Updated “Manazashi Atelier” to v1.11.0. It now supports iPad/iPhone eye tracking, and choosing an input method sets matching defaults. Response speed has three presets plus a slider, with a test area. The button area and the drawing paper are now clearly separated, artwork can be saved to the Photos app, and settings are grouped into four sections.',
+    title: { ja: '「まなざしアトリエ」を v1.12.0 に更新', en: '“Manazashi Atelier” updated to v1.12.0' },
+    ja: '「まなざしアトリエ」を v1.12.0 に更新しました。iPad・iPhone の視線トラッキングに対応し、入力方法を選ぶとその子に合う設定にそろうようにしました。反応の速さを3段階とスライダーで選べ、「ためし描き」で確かめられます。ボタンの場所と絵の紙をはっきり分け、作品を写真アプリに保存できるようにし、設定を4つのまとまりに整理しました。',
+    en: 'Updated “Manazashi Atelier” to v1.12.0. It now supports iPad/iPhone eye tracking, and choosing an input method sets matching defaults. Response speed has three presets plus a slider, with a test area. The button area and the drawing paper are now clearly separated, artwork can be saved to the Photos app, and settings are grouped into four sections.',
     href: '/kyozai/#manazashi-atelier',
   },
   {
