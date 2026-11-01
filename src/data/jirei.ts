@@ -55,13 +55,13 @@ export const JIREI: Record<string, Jirei[]> = {
       ja: {
         title: '話すだけで予定が入る手帳：techo（大人・支える人向け）',
         body: '予定をまとめて話すと、AI が1件ずつに分けて Google カレンダーに入れます。やることに A・B・C の順番を付け、終わらなかったものは翌日に持ち越せます。「何から手をつけるか」で止まりがちな大人や、いくつもの役割を抱える支援者が、自分の見通しを持つための手帳です。',
-        note: '自分の Google アカウントでセットアップして使います（約20分）。AI の無料枠では、入力した内容が Google の改善に使われることがあるため、人に知られたくない予定は入れないでください。',
+        note: 'AI の機能に使う Gemini API は、Google の規約で18歳以上の人しか使えず、18歳未満の人が使うことが見込まれるアプリにも組み込めません。そのため techo は大人・支援者向けとし、児童生徒には使わないでください。自分の Google アカウントでセットアップして使います（約20分）。AI の無料枠では、入力した内容が Google の改善に使われることがあるため、人に知られたくない予定は入れないでください。',
         src: '',
       },
       en: {
         title: 'A planner you fill in by talking: techo (for adults and supporters)',
         body: 'Say several plans at once, and AI splits them into separate events in Google Calendar. Tasks get an A/B/C priority, and unfinished ones carry over to the next day. It helps adults who get stuck on “where do I start?” and supporters juggling many roles to keep their own plans in view.',
-        note: 'You set it up with your own Google account (about 20 minutes). On the free AI tier, what you enter may be used to improve Google’s products, so do not enter plans you want to keep private. The app is in Japanese.',
+        note: 'The Gemini API used for the AI features may only be used by people aged 18 or over under Google’s terms, and may not be built into services likely to be used by under-18s. techo is therefore for adults and supporters only; please do not use it with students. You set it up with your own Google account (about 20 minutes). On the free AI tier, what you enter may be used to improve Google’s products, so do not enter plans you want to keep private. The app is in Japanese.',
         src: '',
       },
       url: 'https://toitoitoi-lab.github.io/techo/',
