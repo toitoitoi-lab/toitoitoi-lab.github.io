@@ -39,15 +39,15 @@ export const KYOZAI: Kyozai[] = [
     url: 'https://toitoitoi-lab.github.io/manazashi-atelier/',
     code: 'https://github.com/toitoitoi-lab/manazashi-atelier',
     guide: 'https://github.com/toitoitoi-lab/manazashi-atelier#readme',
-    updated: '2026-11-01',
+    updated: '2026-11-02',
     ja: {
       title: 'まなざしアトリエ（見つめて えがく）',
-      text: '見つめたところに色が広がる、視線入力のお絵描きアプリです。じっと見るとしゃぼん玉や花がふくらみ、見つめて選ぶ大きなボタンで、いろ・ふで・もようを自分で切り替え、もどる・すすむ・けすもできます。視線入力装置のほか、iPad・iPhone の視線トラッキング、パソコンやタブレットのカメラ、マウス・タッチでも使え、反応の速さをその子に合わせられます。',
+      text: '見つめたところに色が広がる、視線入力のお絵描きアプリです。じっと見るとしゃぼん玉や花がふくらみ、見つめて選ぶ大きなボタンで、いろ・ふで・もようを自分で切り替え、もどる・すすむ・けすもできます。視線入力装置のほか、iPad・iPhone の視線トラッキング、パソコンやタブレットのカメラ、マウス・タッチでも使え、反応の速さをその子に合わせられます。とちゅうの絵を残して、次の時間に続きから描けます。',
       note: 'ログインなしで使えます。作品と記録は、使っている人のパソコンやタブレットの中だけに保存されます（学校の Google アカウントで設定すると、スプレッドシートに記録する学校版になります）。カメラの映像はどこにも送りません。',
     },
     en: {
       title: 'Manazashi Atelier (paint with your eyes)',
-      text: 'An eye-gaze painting app: color spreads where you look, and bubbles or flowers grow while you hold your gaze. Large dwell buttons let the painter change color, brush and pattern, and undo, redo or erase, on their own. Works with eye trackers, iPad/iPhone eye tracking, a laptop or tablet camera, a mouse or touch, with adjustable response speed. (Japanese)',
+      text: 'An eye-gaze painting app: color spreads where you look, and bubbles or flowers grow while you hold your gaze. Large dwell buttons let the painter change color, brush and pattern, and undo, redo or erase, on their own. Works with eye trackers, iPad/iPhone eye tracking, a laptop or tablet camera, a mouse or touch, with adjustable response speed. Unfinished pictures can be kept and continued next time. (Japanese)',
       note: 'No login needed. Artwork and records stay on the device you are using (set it up with a school Google account to record to a spreadsheet). Camera images are never sent anywhere.',
     },
   },
