@@ -64,7 +64,9 @@ const WHERE = { world: '世界', domestic: '国内' };
       </section>
     )}
 
-    {d.memo && <p class="sekai-memo"><strong>運営者のひとこと：</strong>{d.memo}</p>}
+    {d.memo && (Array.isArray(d.memo)
+      ? <div class="sekai-memo kp-memo"><p><strong>運営者のひとこと</strong></p>{d.memo.map((m) => <p>{m}</p>)}</div>
+      : <p class="sekai-memo"><strong>運営者のひとこと：</strong>{d.memo}</p>)}
 
     {d.related && (
       <p class="kp-related">関連するページ：{d.related.map((r, i) => <>{i > 0 && '／'}<a class="inline" href={r.href}>{r.label}</a></>)}</p>
