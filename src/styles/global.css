@@ -1184,3 +1184,20 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 
 /* 教材・QOL：アプリのバージョンと更新日（version.json から自動） */
 .kz-ver { margin: -2px 0 6px; font-size: 0.9rem; color: var(--sub); font-variant-numeric: tabular-nums; }
+
+/* 学び方のコツ：くわしいページ */
+.kotsu-more { font-weight: 700; color: var(--accent-text); text-underline-offset: .25em; }
+.kp-ippan { margin: 8px 0 18px; padding: 12px 16px; border: 1px dashed var(--line); border-radius: 12px; color: var(--sub); }
+.kp-ippan p { margin: 4px 0 0; }
+.kp-label { font-size: .9rem; margin: 0; color: var(--sub); letter-spacing: .06em; }
+.kp-toc-h { font-weight: 700; margin: 18px 0 4px; }
+.kp-src { list-style: none; padding: 0; margin: 8px 0 16px; display: grid; gap: 12px; }
+.kp-src li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; background: var(--panel); border-radius: 12px; }
+.kp-where { flex-shrink: 0; font-size: .8rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 2px solid currentColor; }
+.kp-world { color: var(--violet-text, var(--accent-text)); }
+.kp-domestic { color: var(--accent-text); }
+.kp-src-body { font-size: .97rem; }
+.kp-src-link { font-size: .9rem; color: var(--sub); }
+.kp-caution { border-left: 4px solid var(--violet-text, var(--sub)); padding: 8px 12px; background: var(--panel); border-radius: 0 8px 8px 0; }
+.kp-apps { padding-left: 1.2em; }
+.kp-related { margin-top: 20px; }

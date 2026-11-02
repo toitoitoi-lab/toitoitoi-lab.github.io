@@ -1,0 +1,74 @@
+---
+// 学び方のコツの「くわしいページ」。中身は src/data/kotsu.ts。
+import Base from '../../../layouts/Base.astro';
+import Crumbs from '../../../components/Crumbs.astro';
+import { KOTSU } from '../../../data/manabi';
+import { KOTSU_DETAIL } from '../../../data/kotsu';
+import { fmtDate } from '../../../data/site';
+export function getStaticPaths() {
+  return KOTSU_DETAIL.map((d) => ({ params: { slug: d.slug } }));
+}
+const { slug } = Astro.params;
+const d = KOTSU_DETAIL.find((x) => x.slug === slug)!;
+const k = KOTSU.find((x) => x.slug === slug)!;
+const nt = '（新しいタブで開きます）';
+const WHERE = { world: '世界', domestic: '国内' };
+---
+<Base title={`${k.ja.title}｜学び方のコツ`} current="manabi" description={`${k.ja.text} AT（支援技術）を使うなら、どう使うとよいかを、国内外の実践から考えます。`}>
+  <div class="wrap page prose kotsu-page">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '教科と学び方', href: '/manabi/' }, { label: '学び方のコツ', href: '/manabi/#kotsu' }, { label: k.ja.title }]} />
+    <p class="kotsu-tag">{k.tag.ja}</p>
+    <h1>{k.ja.title}</h1>
+
+    <section class="kp-ippan" aria-labelledby="kp-ippan-h">
+      <h2 id="kp-ippan-h" class="kp-label">一般には</h2>
+      <p>{d.ippan.text}{d.ippan.ref && <>（参考：<a class="inline" href={d.ippan.ref.url} target="_blank" rel="noopener">{d.ippan.ref.label}<span class="visually-hidden">{nt}</span></a>）</>}</p>
+    </section>
+
+    <p class="lead-text">{d.lead}</p>
+
+    <nav aria-label="このページの目次">
+      <p class="kp-toc-h">AT ならこう使える</p>
+      <ol class="sekai-toc">
+        {d.ideas.map((i) => <li><a class="inline" href={`#${i.id}`}>{i.title}</a></li>)}
+        {d.apps && <li><a class="inline" href="#apps">自作アプリで試す</a></li>}
+      </ol>
+    </nav>
+
+    {d.ideas.map((i, n) => (
+      <article class="sekai-item kp-idea" id={i.id} aria-labelledby={`${i.id}-h`}>
+        <p class="sekai-tag-row"><span class="sekai-tag">AT ならこう使える {n + 1}</span></p>
+        <h2 id={`${i.id}-h`}>{i.title}</h2>
+        <p>{i.body}</p>
+        <h3>国内外の実践・研究から</h3>
+        <ul class="kp-src">
+          {i.sources.map((s) => (
+            <li>
+              <span class={`kp-where kp-${s.where}`}>{WHERE[s.where]}</span>
+              <span class="kp-src-body">{s.note}<br /><span class="kp-src-link">出典：<a class="inline" href={s.url} target="_blank" rel="noopener">{s.label}<span class="visually-hidden">{nt}</span></a></span></span>
+            </li>
+          ))}
+        </ul>
+        <h3>この教室で試すなら</h3>
+        <p>{i.tryIt}</p>
+        {i.caution && <p class="kp-caution"><strong>気をつけること：</strong>{i.caution}</p>}
+      </article>
+    ))}
+
+    {d.apps && (
+      <section class="sekai-item" id="apps" aria-labelledby="apps-h">
+        <h2 id="apps-h">自作アプリで試す</h2>
+        <ul class="kp-apps">
+          {d.apps.map((a) => <li><a class="inline" href={a.href}>{a.label}</a>：{a.note}</li>)}
+        </ul>
+      </section>
+    )}
+
+    {d.memo && <p class="sekai-memo"><strong>運営者のひとこと：</strong>{d.memo}</p>}
+
+    {d.related && (
+      <p class="kp-related">関連するページ：{d.related.map((r, i) => <>{i > 0 && '／'}<a class="inline" href={r.href}>{r.label}</a></>)}</p>
+    )}
+    <p class="sekai-note-sub">紹介であって、効果を約束するものではありません。くわしくは、それぞれの出典をご覧ください。まちがいや新しい情報は、<a class="inline" href="/contact/">お問い合わせ</a>から教えてください。<br />最終更新：<time datetime={d.updated}>{fmtDate(d.updated, 'ja')}</time></p>
+  </div>
+</Base>

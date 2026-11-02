@@ -2,6 +2,8 @@
 // 学び方のコツのカード（トップと「教科と学び方」ページで共通）
 import Soon from './Soon.astro';
 import { KOTSU } from '../data/manabi';
+import { KOTSU_DETAIL } from '../data/kotsu';
+const hasDetail = new Set(KOTSU_DETAIL.map((d) => d.slug));
 interface Props { lang?: 'ja' | 'en'; limit?: number; headingLevel?: 3 | 4 }
 const { lang = 'ja', limit, headingLevel = 3 } = Astro.props;
 const ja = lang === 'ja';
@@ -15,9 +17,10 @@ const H = `h${headingLevel}`;
       <span class="kotsu-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
       <div class="kotsu-body">
         <span class="kotsu-tag">{ja ? k.tag.ja : k.tag.en}</span>
-        <H class="kotsu-title">{ja ? k.ja.title : k.en.title}</H>
+        <H class="kotsu-title">{hasDetail.has(k.slug) ? <a class="inline" href={`/manabi/kotsu/${k.slug}/`} lang={ja ? undefined : 'ja'}>{ja ? k.ja.title : k.en.title}</a> : (ja ? k.ja.title : k.en.title)}</H>
         <p class="kotsu-text">{ja ? k.ja.text : k.en.text}</p>
-        {!k.ready && <Soon lang={lang} label={ja ? 'くわしい話は準備中' : 'Full article coming soon'} />}
+        {hasDetail.has(k.slug) && <a class="kotsu-more" href={`/manabi/kotsu/${k.slug}/`}>{ja ? 'AT ならこう使える →' : 'With AT (Japanese) →'}</a>}
+        {!k.ready && !hasDetail.has(k.slug) && <Soon lang={lang} label={ja ? 'くわしい話は準備中' : 'Full article coming soon'} />}
       </div>
     </li>
   ))}
