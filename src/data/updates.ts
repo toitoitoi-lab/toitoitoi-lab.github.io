@@ -3,8 +3,7 @@
 // date は YYYY-MM-DD。ja / en は、それぞれの言語の1文（です・ます調、短く）。
 // href を入れると、その文の後ろに「くわしく」のリンクが付く（サイト内は / から始める）。
 // 同じ日の更新は1件にまとめる（「○月○日更新分：」で始める）。休日の細かな修正は、その都度足さず、まとめて1件で出す。
-// 新しく増えたもの（アプリ・教材を GitHub で公開、記事やコーナーの追加）は必ず書く。アプリの版の更新は、大きな更新（新しい機能が増えた・v1→v2 など）だけ書く。
-// 細かい版の更新（v1.16.4→v1.16.5 など）は書かない。教材・QOL のページに、各アプリの version.json から「バージョンと更新日」が自動で出るため。
+// 新しく増えたもの（アプリ・教材を GitHub で公開、記事やコーナーの追加、アプリの版の更新）も必ず書く。
 //   例：「〇〇（何をする道具か）を GitHub で公開しました。」「記事『〇〇』を追加しました。」。書く順は「増えたもの → 直したこと」。
 
 // title：見出し（短く）。お知らせ欄と履歴では、見出しだけを出し、クリックで本文がひらく。
@@ -14,9 +13,9 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 export const UPDATES: Update[] = [
   {
     date: '2026-11-02',
-    title: { ja: '「まなざしアトリエ」を v1.18.0 に更新', en: '“Manazashi Atelier” updated to v1.18.0' },
-    ja: '「まなざしアトリエ」を v1.18.0 に更新しました。カメラで使うとき、下を見たときの反応をよくし、上下左右それぞれの「動きの強さ」を合わせられるようにしました（目の動きにかたよりのある子のために）。',
-    en: 'Updated “Manazashi Atelier” to v1.18.0. With a camera, looking down now responds better, and the movement strength can be adjusted separately for up, down, left and right.',
+    title: { ja: '「まなざしアトリエ」を v1.19.1 に更新', en: '“Manazashi Atelier” updated to v1.19.1' },
+    ja: '「まなざしアトリエ」を v1.19.1 に更新しました。動くものを目で追いかける「ついてきて」と、見つめたふうせんがわれる「ふうせん」の2つのあそびを加え、入り口の「あそぶ」で選べるようにしました。カメラで使うときは、光るボタンが自動で順に進み、決めたいところで目をとじると決まる選び方を加えました。設定を「ひとつ前」や「はじめ」にもどせるようにしました。下を見たときの反応をよくし、上下左右それぞれの「動きの強さ」を合わせられるようにしました（目の動きにかたよりのある子のために）。',
+    en: 'Updated “Manazashi Atelier” to v1.19.1. Added two gaze games, “follow me” (follow a moving object with your eyes) and “balloons” (look at a balloon to pop it), chosen from the “play” button. With a camera, the highlight can now move through the buttons on its own, and closing your eyes selects. Settings can be undone or reset. Looking down responds better, and movement strength can be adjusted separately for up, down, left and right.',
     href: '/kyozai/#manazashi-atelier',
   },
   {
