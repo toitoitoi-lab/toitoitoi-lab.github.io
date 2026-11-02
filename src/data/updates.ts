@@ -12,6 +12,13 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-11-02',
+    title: { ja: '「まなざしアトリエ」を v1.18.0 に更新', en: '“Manazashi Atelier” updated to v1.18.0' },
+    ja: '「まなざしアトリエ」を v1.18.0 に更新しました。カメラで使うとき、下を見たときの反応をよくし、上下左右それぞれの「動きの強さ」を合わせられるようにしました（目の動きにかたよりのある子のために）。',
+    en: 'Updated “Manazashi Atelier” to v1.18.0. With a camera, looking down now responds better, and the movement strength can be adjusted separately for up, down, left and right.',
+    href: '/kyozai/#manazashi-atelier',
+  },
+  {
     date: '2026-11-01',
     title: { ja: '「まなざしアトリエ」を v1.17.2 に更新', en: '“Manazashi Atelier” updated to v1.17.2' },
     ja: '「まなざしアトリエ」を v1.17.2 に更新しました。見つめて見つけるあそび「あそぶ（みつけて）」と、音楽（ジングルベルなど）を加えました。とちゅうの絵を「のこす」で残し、次の時間に「つづきから」描けるようにしました（自動保存つき）。iPad・iPhone の視線トラッキングに対応し、入力方法を選ぶとその子に合う設定にそろうようにしました。反応の速さを3段階とスライダーで選べ、「ためし描き」で確かめられます。ボタンの場所と絵の紙をはっきり分け、作品を写真アプリに保存できるようにし、設定を4つのまとまりに整理しました。',
