@@ -13,6 +13,13 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-11-03',
+    title: { ja: '学び方のコツ「時間を区切る」「絵とことば」「人に説明」を公開', en: 'Three more learning tips with AT ideas' },
+    ja: '学び方のコツのうち、「時間を区切って、終わりを見せる」「絵とことばを、セットにする」「人に説明してみる」の3つのくわしいページを公開しました。タイマーや触図、VOCA、音声認識、AI などの AT（支援技術）をどう使うとよいかを、国内外の実践や研究から提案しています。',
+    en: 'Published full pages for three learning tips: show when it ends, pair pictures with words, and explain it to someone. Each suggests ways to use assistive technology such as timers, tactile graphics, voice output aids, speech recognition and AI, drawn from practice and research in Japan and abroad (Japanese only for now).',
+    href: '/manabi/#kotsu', jaOnly: true,
+  },
+  {
     date: '2026-11-02',
     title: { ja: '学び方のコツ「耳でも学べる」を公開・「まなざしアトリエ」を v1.19.1 に更新', en: 'Learning tip “You can learn by ear” and “Manazashi Atelier” v1.19.1' },
     ja: '11月2日更新分：学び方のコツ「耳でも学べる」のくわしいページを公開しました。読み上げや字幕、AI の声の説明などの AT（支援技術）をどう使うとよいかを、国内外の実践や研究から提案しています。「まなざしアトリエ」を v1.19.1 に更新しました。動くものを目で追いかける「ついてきて」と、見つめたふうせんがわれる「ふうせん」の2つのあそびを加え、入り口の「あそぶ」で選べるようにしました。カメラで使うときは、光るボタンが自動で順に進み、決めたいところで目をとじると決まる選び方を加えました。設定を「ひとつ前」や「はじめ」にもどせるようにしました。下を見たときの反応をよくし、上下左右それぞれの「動きの強さ」を合わせられるようにしました（目の動きにかたよりのある子のために）。',
