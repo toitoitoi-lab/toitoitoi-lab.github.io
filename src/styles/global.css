@@ -1181,3 +1181,6 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .dougu-kicker { font-size: 0.95rem; font-weight: 700; color: var(--accent-text); }
 .dougu-count { font-size: 0.92rem; color: var(--sub); }
 @media (max-width: 600px) { .gh-link { align-items: flex-start; padding: 16px; gap: 14px; } .gh-ic { width: 44px; height: 44px; } .gh-title { font-size: 1.15rem; } }
+
+/* 教材・QOL：アプリのバージョンと更新日（version.json から自動） */
+.kz-ver { margin: -2px 0 6px; font-size: 0.9rem; color: var(--sub); font-variant-numeric: tabular-nums; }

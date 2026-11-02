@@ -98,6 +98,7 @@ const crumbs = learner || qol
               {!learner && m.needsSetup && <span class="kz-setup">{T.setup}</span>}
             </div>
             <h2 class="kz-title">{L.title}</h2>
+            {ready && m.url.startsWith('https://toitoitoi-lab.github.io/') && <p class="kz-ver" data-app={m.url} hidden></p>}
             <p class="kz-text">{L.text}</p>
             {L.note && <p class="kz-note">{L.note}</p>}
             {ready ? (
@@ -142,6 +143,27 @@ const crumbs = learner || qol
 </Base>
 
 <script is:inline>
+(function () {
+  // アプリのバージョンと更新日を自動で出す。
+  // 各アプリの version.json（{"version","updated"}）を読む。アプリの index.html の VERSION がそれより新しければ、そちらと公開日（Last-Modified）を使う。
+  var vers = document.querySelectorAll('.kz-ver'); if (!vers.length) return;
+  var ja = document.documentElement.lang === 'ja';
+  function cmp(a, b) { var x = String(a).split('.'), y = String(b).split('.'); for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (parseInt(x[i], 10) || 0) - (parseInt(y[i], 10) || 0); if (d) return d; } return 0; }
+  function fmt(d) { var t = new Date(d); if (isNaN(t)) return ''; return ja ? t.getFullYear() + '年' + (t.getMonth() + 1) + '月' + t.getDate() + '日更新' : 'updated ' + t.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
+  vers.forEach(function (el) {
+    var base = el.dataset.app.replace(/[^/]*$/, '');
+    var j = fetch(base + 'version.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    var h = fetch(base, { cache: 'no-store' }).then(function (r) { if (!r.ok) return null; var lm = r.headers.get('last-modified'); return r.text().then(function (t) { var m = t.match(/(?:const|let|var)\s+(?:APP_)?VERSION\s*=\s*["']v?([0-9][0-9.]*)["']/); return m ? { version: m[1], updated: lm } : null; }); }).catch(function () { return null; });
+    Promise.all([j, h]).then(function (res) {
+      var v = res[0], x = res[1];
+      if (x && (!v || cmp(x.version, v.version) > 0)) v = x;
+      if (!v || !v.version) return;
+      var d = v.updated ? fmt(v.updated) : '';
+      el.textContent = 'v' + v.version + (d ? (ja ? '（' + d + '）' : ' (' + d + ')') : '');
+      el.hidden = false;
+    });
+  });
+})();
 (function () {
   // リンク（URL）をコピー
   document.querySelectorAll('.kz-copy').forEach(function (b) {
