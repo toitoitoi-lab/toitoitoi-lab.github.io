@@ -51,7 +51,7 @@ const WHERE = { world: '世界', domestic: '国内' };
         </ul>
         <h3>この教室で試すなら</h3>
         <p>{i.tryIt}</p>
-        {i.caution && <p class="kp-caution"><strong>気をつけること：</strong>{i.caution}</p>}
+        {i.caution && <p class="kp-caution"><strong>気をつけること：</strong>{i.caution}{i.cautionRef && <>（参考：<a class="inline" href={i.cautionRef.url} target="_blank" rel="noopener">{i.cautionRef.label}<span class="visually-hidden">{nt}</span></a>）</>}</p>}
       </article>
     ))}
 
