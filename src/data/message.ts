@@ -42,6 +42,7 @@ export const TOGETHER = {
     body: [
       'お困りのことがあれば、どうぞ気軽にご連絡ください。',
       '答えを一つに決めるのではなく、その人に合う方法をいっしょに考えていけたらと思っています。このサイトも、みなさんの声を受けながら、少しずつ育てていきます。',
+      'なお、このサイトは、運営者が勤務時間の外に、個人で運営しています。お返事が遅くなることがありますが、ご了承ください。',
     ],
     cta: 'お問い合わせ',
   },
@@ -50,6 +51,7 @@ export const TOGETHER = {
     body: [
       'If you are facing a difficulty, please feel free to get in touch.',
       'Rather than settling on one right answer, I hope we can work out together what suits each person. This site will also keep growing, little by little, with your voices.',
+      'Please note that the site is run personally, outside the operator\'s working hours, so replies may take some time. Thank you for understanding.',
     ],
     cta: 'Contact',
   },
