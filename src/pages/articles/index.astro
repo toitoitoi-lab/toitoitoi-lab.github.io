@@ -12,6 +12,7 @@ const fmt = (d: Date) => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate
     <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '記事一覧' }]} />
     <h1>記事一覧</h1>
     <p class="card-link-wrap"><a class="card card-row" href="/articles/sekai/"><span class="card-title">コーナー：世界の AT ノート</span><span class="card-sub">運営者が勉強のために集めている、海外の AT 活用の一例</span></a></p>
+    <p class="card-link-wrap"><a class="card card-row" href="/articles/ai-chosakuken/"><span class="card-title">生成 AI で教材を作るときの著作権</span><span class="card-sub">授業の中・家庭学習・公開で扱いがちがう。許可は一件ずつ</span></a></p>
     {posts.length === 0 ? (
       <div class="notice"><p><strong>記事は準備中です。</strong>公開したものから、ここに新しい順に並びます。</p></div>
     ) : (

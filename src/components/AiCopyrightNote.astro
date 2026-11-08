@@ -1,0 +1,13 @@
+---
+// 教材に関係するページ（教材・支援者の部屋・QOL、教科と学び方）に出す、生成 AI と著作権の短い案内。
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+const ja = lang === 'ja';
+---
+<aside class="ai-cr-note" aria-label={ja ? '生成 AI と著作権' : 'Generative AI and copyright'}>
+  <p class="ai-cr-h">{ja ? '生成 AI で教材を作るときは、著作権に気をつけて' : 'Making materials with generative AI? Mind copyright'}</p>
+  <p>{ja
+    ? 'キャラクターなど、ほかの人の作品を題材にした教材は、授業の中で使う・家庭学習で使う・だれでも見られる形で公開する、などの場面によって扱いがちがいます。許可は一件ずつです。'
+    : 'Materials based on other people’s works, such as characters, are treated differently in class, for home learning, and when published online. Permission is given case by case.'}
+    <a class="inline" href="/articles/ai-chosakuken/" lang={ja ? undefined : 'ja'}>{ja ? 'くわしくはこちら' : 'Read more (Japanese)'}</a></p>
+</aside>

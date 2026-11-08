@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Crumbs from './Crumbs.astro';
 import Soon from './Soon.astro';
 import KotsuList from './KotsuList.astro';
+import AiCopyrightNote from './AiCopyrightNote.astro';
 import { KYOKA, KYOKA_SYSTEM_EN } from '../data/manabi';
 import { KYOZAI } from '../data/kyozai';
 interface Props { lang?: 'ja' | 'en' }
@@ -80,6 +81,7 @@ const appsFor = (slug: string) => KYOZAI.filter((m) => m.ready !== false && (m.k
       <h2 id="h-kotsu">{T.kotsu}</h2>
       <p>{T.kotsuLead}</p>
       <KotsuList lang={lang} />
+      <AiCopyrightNote lang={lang} />
     </section>
   </div>
 </Base>

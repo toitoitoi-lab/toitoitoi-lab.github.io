@@ -8,6 +8,7 @@ import { KYOZAI, KIND_LABEL, FOR_LABEL } from '../data/kyozai';
 import { KYOKA } from '../data/manabi';
 import { KOMARI, fmtDate } from '../data/site';
 import GithubBand from './GithubBand.astro';
+import AiCopyrightNote from './AiCopyrightNote.astro';
 interface Props { lang?: 'ja' | 'en'; room?: 'manabi' | 'shien' | 'qol' }
 const { lang = 'ja', room = 'manabi' } = Astro.props;
 const ja = lang === 'ja';
@@ -137,6 +138,7 @@ const crumbs = learner || qol
         <p><a class="inline" href={`${base}/rules/`}>{T.rules}</a></p>
       </section>
     )}
+    <AiCopyrightNote lang={lang} />
     <GithubBand lang={lang} />
     <p class="kz-other"><a class="inline" href={T.other.href}>{T.other.label}</a>{qol && <>　<a class="inline" href={`${base}/kyozai/shien/`}>{ja ? '先生・支援者の方へ：支援者の部屋' : "For teachers and supporters: Supporters' room"}</a></>}</p>
   </div>

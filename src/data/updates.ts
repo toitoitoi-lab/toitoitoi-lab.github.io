@@ -13,6 +13,13 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-11-08',
+    title: { ja: '記事「生成 AI で教材を作るときの著作権」を公開', en: 'Article: copyright when making materials with generative AI' },
+    ja: '生成 AI で作る教材・教具の著作権について、文化庁などが公開している資料をもとに注意書きをまとめた記事を公開しました。授業の中・家庭学習・公開など場面ごとに扱いがちがうこと、許可は一件ずつであることを書いています。教材の部屋・支援者の部屋・QOL・教科と学び方・学び方のコツの各ページにも、この案内を入れました。',
+    en: 'Published an article on copyright when making teaching materials and tools with generative AI, based on guidance published by the Agency for Cultural Affairs and others: how use in class, for home learning and online publication differ, and why permission is case by case. A short notice now appears on every materials-related page (Japanese only for now).',
+    href: '/articles/ai-chosakuken/', jaOnly: true,
+  },
+  {
     date: '2026-11-03',
     title: { ja: '学び方のコツ「時間を区切る」「絵とことば」「人に説明」を公開', en: 'Three more learning tips with AT ideas' },
     ja: '学び方のコツのうち、「時間を区切って、終わりを見せる」「絵とことばを、セットにする」「人に説明してみる」の3つのくわしいページを公開しました。タイマーや触図、VOCA、音声認識、AI などの AT（支援技術）をどう使うとよいかを、国内外の実践や研究から提案しています。',

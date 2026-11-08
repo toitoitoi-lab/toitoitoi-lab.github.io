@@ -5,6 +5,8 @@ import Crumbs from '../../../components/Crumbs.astro';
 import { KOTSU } from '../../../data/manabi';
 import { KOTSU_DETAIL } from '../../../data/kotsu';
 import { fmtDate } from '../../../data/site';
+import AiCopyright from '../../../components/AiCopyright.astro';
+import AiCopyrightNote from '../../../components/AiCopyrightNote.astro';
 export function getStaticPaths() {
   return KOTSU_DETAIL.map((d) => ({ params: { slug: d.slug } }));
 }
@@ -31,6 +33,7 @@ const WHERE = { world: '世界', domestic: '国内' };
       <p class="kp-toc-h">AT ならこう使える</p>
       <ol class="sekai-toc">
         {d.ideas.map((i) => <li><a class="inline" href={`#${i.id}`}>{i.title}</a></li>)}
+        {d.aiCopyright && <li><a class="inline" href="#chosakuken">生成 AI で教材を作るときの著作権</a></li>}
         {d.apps && <li><a class="inline" href="#apps">自作アプリで試す</a></li>}
       </ol>
     </nav>
@@ -54,6 +57,8 @@ const WHERE = { world: '世界', domestic: '国内' };
         {i.caution && <p class="kp-caution"><strong>気をつけること：</strong>{i.caution}{i.cautionRef && <>（参考：<a class="inline" href={i.cautionRef.url} target="_blank" rel="noopener">{i.cautionRef.label}<span class="visually-hidden">{nt}</span></a>）</>}</p>}
       </article>
     ))}
+
+    {d.aiCopyright ? <AiCopyright /> : <AiCopyrightNote />}
 
     {d.apps && (
       <section class="sekai-item" id="apps" aria-labelledby="apps-h">

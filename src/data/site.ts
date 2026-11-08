@@ -200,6 +200,7 @@ export const SITEMAP_JA: MapGroup[] = [
     links: [
       { label: '記事一覧', href: '/articles/', ready: true },
       { label: '世界の AT ノート', note: '海外の AT 活用の一例', href: '/articles/sekai/', ready: true },
+      { label: '生成 AI で教材を作るときの著作権', note: '場面ごとの扱いと、許可は一件ずつ', href: '/articles/ai-chosakuken/', ready: true },
       { label: '研修について', href: '/talks/', ready: false },
       { label: 'YouTube', note: '外部サイト', href: LINKS.youtube, ready: true, external: true },
       { label: 'note', note: '外部サイト', href: LINKS.note, ready: true, external: true },

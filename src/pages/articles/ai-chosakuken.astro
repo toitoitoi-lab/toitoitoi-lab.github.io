@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import AiCopyright from '../../components/AiCopyright.astro';
+import { fmtDate } from '../../data/site';
+const updated = '2026-11-08';
+---
+<Base title="生成 AI で教材を作るときの著作権" current="articles" description="生成 AI で教材や教具を作るときに気をつけたい著作権のこと。授業の中・家庭学習・公開など、場面ごとに扱いがちがうことを、一般に公開されている資料をもとにまとめました。">
+  <div class="wrap page prose kotsu-page">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '記事', href: '/articles/' }, { label: '生成 AI で教材を作るときの著作権' }]} />
+    <h1>生成 AI で教材を作るときの著作権</h1>
+    <p class="lead-text">生成 AI を使った教材や教具づくりは、もう当たり前になってきました。好きなものを題材にした問題や絵を、だれでもすぐに作れます。一方で、使い方によっては著作権の侵害になることがあります。このページは、文化庁などが一般に公開している資料をもとに、先生が気をつけたいことをまとめた注意書きです。</p>
+    <nav aria-label="このページの目次">
+      <ol class="sekai-toc">
+        <li><a class="inline" href="#chosakuken">はじめに・AI が作ったものでも似ていれば同じ</a></li>
+        <li><a class="inline" href="#basho">場面ごとに、扱いがちがう</a></li>
+        <li><a class="inline" href="#ie">子どもが家でも使いたがったら</a></li>
+        <li><a class="inline" href="#ikken">許可は「一件ずつ」</a></li>
+        <li><a class="inline" href="#tejun">確かめるときの手順</a></li>
+      </ol>
+    </nav>
+    <AiCopyright page />
+    <p class="sekai-note-sub">最終更新：<time datetime={updated}>{fmtDate(updated, 'ja')}</time>。法律や資料が新しくなったら、このページも直します。まちがいに気付いたら、<a class="inline" href="/contact/">お問い合わせ</a>から教えてください。</p>
+  </div>
+</Base>

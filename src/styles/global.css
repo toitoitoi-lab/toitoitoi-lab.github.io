@@ -1202,3 +1202,13 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .kp-apps { padding-left: 1.2em; }
 .kp-related { margin-top: 20px; }
 .kp-memo p { margin: 0 0 .6em; } .kp-memo p:last-child { margin-bottom: 0; }
+/* 学び方のコツ：生成 AI と著作権 */
+.kp-scenes { display: grid; gap: 12px; margin: 8px 0 16px; }
+.kp-scene { padding: 12px 14px; background: var(--panel); border-radius: 12px; border-left: 4px solid var(--accent-text); }
+.kp-scene p { margin: 4px 0; }
+.kp-scene-h { font-weight: 700; }
+.kp-scene-ex { font-size: .92rem; color: var(--sub); }
+/* 生成 AI と著作権の短い案内 */
+.ai-cr-note { margin: 24px 0 8px; padding: 14px 16px; border: 2px dashed var(--accent-text); border-radius: 14px; }
+.ai-cr-note p { margin: 4px 0; }
+.ai-cr-h { font-weight: 700; }
