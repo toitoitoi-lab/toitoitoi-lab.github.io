@@ -1,0 +1,297 @@
+---
+// 「話して探す」：困っていることを自由に書く（話す）と、サイトの中の方法から組み合わせの候補を出す。
+// 1段目（このコンポーネント）：AI の API は使わない。書いた内容はどこにも送らない（使っている人のブラウザの中だけで探す）。
+//   さらに、学校が許可している生成 AI（学校のアカウントの Gemini など）に貼りつける「頼み方」の文章を作る。18歳未満も使える形。
+// 2段目（準備中）：18歳以上の支援者向けに、Gemini API（GAS 経由）でこのページの中で直接提案する。
+// 候補のもとは methods.ts（困りごとページの方法）と kotsu.ts（学び方のコツの提案・公開分だけ）。
+import { CONTENT, KIND_LABEL } from '../data/methods';
+import { KOTSU_DETAIL } from '../data/kotsu';
+import { KOMARI } from '../data/site';
+
+const titleOf = (s: string) => KOMARI.find((x) => x.slug === s)?.ja.title ?? s;
+const methods = Object.entries(CONTENT).flatMap(([page, pc]) => {
+  const lab = Object.fromEntries(pc.situations.map((s) => [s.id, s.label]));
+  return pc.methods.map((m) => ({
+    t: 'm', page, pageTitle: titleOf(page), id: m.id, kind: m.kind, title: m.title, summary: m.summary,
+    kws: m.keywords, sits: m.situations.map((id) => lab[id]).filter(Boolean),
+    hay: [m.title, m.summary, ...m.keywords, ...(m.tips ?? [])].join(' '),
+    href: `/komari/${page}/#m-${m.id}`,
+  }));
+});
+const ideas = KOTSU_DETAIL.flatMap((d) =>
+  d.ideas.map((i) => ({
+    t: 'k', id: `${d.slug}-${i.id}`, title: i.title, summary: i.tryIt, hay: [i.title, i.body, i.tryIt].join(' '),
+    href: `/manabi/kotsu/${d.slug}/#${i.id}`,
+  })),
+);
+const data = JSON.stringify({ methods, ideas, kindLabel: KIND_LABEL });
+
+// ぼかし方の例（すべて架空の人物・架空の学校）
+const EXAMPLES = [
+  {
+    who: 'Aさん（見えにくさ）',
+    ng: '〇〇盲学校中学部2年の山田太郎くん。網膜色素変性症で視野が狭い。昨日の体育で友だちとぶつかって、けんかになった。',
+    ok: 'Aさん、中学生。視野が狭く、目の前しか見えない。まわりの人の動きや表情に気づきにくく、ぶつかったり、話しかけられても気づかなかったりして、友だちとのトラブルになりやすい。',
+    honnin: 'Aさんは「ぶつかった」のではなく、「そこに人がいると分からなかった」。わざとではないので、責められても理由が分からない。',
+  },
+  {
+    who: 'Bさん（切りかえの難しさ）',
+    ng: '〇〇小学校3年の鈴木花子さん。ASD の診断。母子家庭で、朝はいつも機嫌が悪い。好きな電車の本を取り上げると、泣いて暴れる。',
+    ok: 'Bさん、小学校中学年。好きなことに集中すると、ほかの活動への切りかえが難しい。急に終わりにされると、大きく気持ちが乱れる。',
+    honnin: 'Bさんは「わがまま」なのではなく、「いつ終わるか分からないまま、急に取り上げられる」のがつらい。終わりが見えれば、切りかえられることがある。',
+  },
+  {
+    who: 'Cさん（書くことの難しさ）',
+    ng: '〇〇高校1年の田中一郎くん。LD の診断で、通級に通っている。テストで名前も書き終わらず、0点だった。',
+    ok: 'Cさん、高校生。文字を書くのにとても時間がかかり、板書を写しきれない。テストでも書く時間が足りず、分かっていても点にならない。',
+    honnin: 'Cさんは「やる気がない」のではなく、「分かっているのに、書くところで止まってしまう」。',
+  },
+];
+---
+<section class="hs" aria-labelledby="hs-form-h">
+  <fieldset class="hs-who">
+    <legend>使う人</legend>
+    <label class="check"><input type="radio" name="hs-mode" value="sensei" checked /><span>先生・支援者・家族<small>子どものことで困っている</small></span></label>
+    <label class="check"><input type="radio" name="hs-mode" value="honnin" /><span>自分のこと<small>児童生徒・本人</small></span></label>
+  </fieldset>
+
+  <!-- 先生・支援者向け -->
+  <div class="hs-sensei">
+    <section class="hs-box" aria-labelledby="hs-dare-h">
+      <h2 id="hs-dare-h">書く前に：だれが困っている？</h2>
+      <p>「授業中に立ち歩く」「指示を聞かない」は、多くの場合、<strong>先生や支援者が困っていること</strong>です。</p>
+      <p>本人にとって、その行動はほとんど反射のようなもので、困っていないことが多いです。うまくいかないと感じることはあっても、それすら感じていないこともあります。</p>
+      <p>だから、「何に困っているか」より、<strong>「どんな場面で、本人に何が起きているか」</strong>を書くと、合う提案が出やすくなります。</p>
+    </section>
+
+    <details class="hs-ex">
+      <summary>ぼかし方の例を見る（架空の Aさん・Bさん・Cさん）</summary>
+      <p class="hs-ex-lead">名前や学校が分かる書き方を、だれのことか分からない書き方に言いかえる例です。どれも架空の人物です。</p>
+      {EXAMPLES.map((e) => (
+        <div class="hs-ex-item">
+          <h3>{e.who}</h3>
+          <p class="hs-ng"><span class="hs-tag">そのまま書いた例（✕）</span>{e.ng}</p>
+          <p class="hs-ok"><span class="hs-tag">ぼかした例（○）</span>{e.ok}</p>
+          <p class="hs-hon"><span class="hs-tag">本人の側から言いかえると</span>{e.honnin}</p>
+        </div>
+      ))}
+      <h3>ぼかすときの決まり</h3>
+      <ul>
+        <li>名前 → Aさん・Bさん（アルファベット）</li>
+        <li>学校名・地域 → 書かない</li>
+        <li>学年 → 「小学校中学年」「中学生」「高校生」くらいまで</li>
+        <li>診断名 → 書かなくても提案はできます。「どんなときに、何が起きるか」を書くほうが、提案が具体的になります</li>
+        <li>家庭や医療の事情、日付、具体的な出来事 → 書かない</li>
+        <li>書いたあと、「これを読んで、知っている人が『あの子だ』と分かるか？」を確かめる</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- 本人向け -->
+  <div class="hs-honnin" hidden>
+    <section class="hs-box" aria-labelledby="hs-jibun-h">
+      <h2 id="hs-jibun-h">自分のことを書くときは</h2>
+      <ul>
+        <li>名前や学校の名前は、書かないでください。</li>
+        <li>「どんなときに、どうなるか」を書いてください。<br />例：「黒板の字を写すのが、みんなより遅くて、間に合わない」</li>
+        <li>うまく言えなくても大丈夫です。思いついたことを、そのまま書いてください。</li>
+      </ul>
+    </section>
+  </div>
+
+  <form id="hs-form" class="hs-form" autocomplete="off">
+    <h2 id="hs-form-h"><span class="hs-s">困っていることを書く（話す）</span><span class="hs-h" hidden>こまっていることを書く（話す）</span></h2>
+    <label for="hs-q" class="hs-label"><span class="hs-s">どんな場面で、本人に何が起きていますか</span><span class="hs-h" hidden>どんなときに、どうなりますか</span></label>
+    <p class="hint" id="hs-hint">キーボードのマイクのボタンを押すと、話して入力できます。書いた内容は、どこにも送りません（このページの中だけで探します）。</p>
+    <textarea id="hs-q" rows="6" maxlength="1500" aria-describedby="hs-hint hs-warn"></textarea>
+    <p id="hs-warn" class="hs-warn" role="status" hidden></p>
+    <div class="finder-actions">
+      <button class="btn btn-solid" type="submit">組み合わせを探す</button>
+      <button class="btn" type="reset">消す</button>
+    </div>
+  </form>
+
+  <div id="hs-out" class="hs-out" aria-live="polite"></div>
+
+  <section class="hs-box hs-next" aria-labelledby="hs-next-h">
+    <h2 id="hs-next-h">18歳以上の支援者の方へ（準備中）</h2>
+    <p>このページの中で、AI が直接組み合わせを提案する版を準備しています。AI に Gemini API を使うため、Google の規約により18歳以上の人だけが使えます。それまでは、上の「頼み方」を、学校が許可している生成 AI に貼りつけて使ってください。</p>
+  </section>
+</section>
+
+<script type="application/json" id="hs-data" set:html={data}></script>
+<script is:inline>
+(function () {
+  var D = JSON.parse(document.getElementById('hs-data').textContent);
+  var form = document.getElementById('hs-form'), q = document.getElementById('hs-q');
+  var out = document.getElementById('hs-out'), warn = document.getElementById('hs-warn');
+  function mode() { var r = document.querySelector('input[name="hs-mode"]:checked'); return r ? r.value : 'sensei'; }
+  function setMode() {
+    var h = mode() === 'honnin';
+    document.querySelector('.hs-sensei').hidden = h;
+    document.querySelector('.hs-honnin').hidden = !h;
+    Array.prototype.forEach.call(document.querySelectorAll('.hs-s'), function (e) { e.hidden = h; });
+    Array.prototype.forEach.call(document.querySelectorAll('.hs-h'), function (e) { e.hidden = !h; });
+    out.innerHTML = '';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="hs-mode"]'), function (r) { r.addEventListener('change', setMode); });
+
+  function norm(s) {
+    return String(s || '').normalize('NFKC').toLowerCase()
+      .replace(/[ァ-ヶ]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0x60); })
+      .replace(/[\s、。,.・「」『』（）()!?！？'’"ー-]/g, '');
+  }
+  function bigrams(s) { var a = []; for (var i = 0; i < s.length - 1; i++) a.push(s.slice(i, i + 2)); return a; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  D.methods.forEach(function (m) { m.nKws = m.kws.map(norm); m.nSits = m.sits.map(norm); m.nHay = norm(m.hay); });
+  D.ideas.forEach(function (i) { i.nHay = norm(i.hay); });
+
+  // 名前・学校名・診断名らしいことばに気づいてもらう（送信はしないが、生成 AI に貼る前に確かめてもらう）
+  function check(raw) {
+    var found = [];
+    var re = [
+      [/[一-龯]{1,4}(くん|君|ちゃん)/g, '名前'],
+      [/[一-龯ぁ-んァ-ヶ]{1,8}(小学校|中学校|高等学校|高校|支援学校|盲学校|聾学校|ろう学校|養護学校)/g, '学校名'],
+      [/(ASD|ADHD|LD|自閉|発達障害|学習障害|ダウン症|脳性まひ|脳性麻痺|網膜|緑内障|てんかん|診断)/gi, '診断名'],
+      [/\d{1,2}月\d{1,2}日|\d{4}年/g, '日付'],
+    ];
+    re.forEach(function (r) { var m = raw.match(r[0]); if (m) found.push(r[1] + '（' + Array.from(new Set(m)).slice(0, 3).join('、') + '）'); });
+    return found;
+  }
+
+  function score(m, nq, bg) {
+    var s = 0, why = [];
+    var kw = m.kws.filter(function (k, i) { var nk = m.nKws[i]; return nk.length >= 2 && nq.indexOf(nk) >= 0; });
+    if (kw.length) { s += kw.length * 2; why.push('ことば：' + kw.slice(0, 4).join('、')); }
+    m.sits.forEach(function (lab, i) {
+      var lb = bigrams(m.nSits[i]); if (!lb.length) return;
+      var hit = lb.filter(function (b) { return nq.indexOf(b) >= 0; }).length;
+      if (hit / lb.length >= 0.45) { s += 3; why.push('場面：' + lab); }
+    });
+    if (!s && bg.length) {
+      var sh = bg.filter(function (b) { return m.nHay.indexOf(b) >= 0; }).length;
+      if (sh >= Math.max(3, Math.ceil(bg.length * 0.25))) { s += 1; why.push('書いた内容に近い'); }
+    }
+    return { s: s, why: why };
+  }
+  function scoreIdea(i, bg) {
+    if (!bg.length) return 0;
+    var sh = bg.filter(function (b) { return i.nHay.indexOf(b) >= 0; }).length;
+    return sh >= Math.max(3, Math.ceil(bg.length * 0.2)) ? sh : 0;
+  }
+
+  function prompt(raw, hits, ids, honnin) {
+    var list = hits.slice(0, 8).map(function (x, n) { return (n + 1) + '. ' + x.m.title + '（' + D.kindLabel[x.m.kind] + '）：' + x.m.summary; });
+    ids.slice(0, 3).forEach(function (x) { list.push((list.length + 1) + '. ' + x.title + '（学び方のコツ）：' + x.summary); });
+    var cand = list.length ? '\n\n【候補にしてよい方法（toi toi toi lab で紹介しているもの）】\n' + list.join('\n') : '';
+    if (honnin) {
+      return 'わたしは、学校の勉強や生活で、次のことにこまっています。\n\n【こまっていること】\n' + raw.trim() + cand +
+        '\n\n【おねがい】\n・わたしが自分でためせる工夫を、2つか3つ、やさしいことばで教えてください。\n・タブレットやパソコンに最初から入っている機能や、まわりの人へのお願いのしかたも入れてください。\n・それぞれ「まず1回やってみること」を1つずつ書いてください。\n・わたしの名前や学校の名前は聞かないでください。';
+    }
+    return 'あなたは、特別支援教育と AT（支援技術）にくわしい相談相手です。次の様子の児童生徒について、支援の組み合わせを提案してください。\n\n【様子】（個人が特定できないように書いています）\n' + raw.trim() + cand +
+      '\n\n【おねがい】\n・まず、困っているのは本人なのか、まわりの大人なのかを分けて、本人の側から見ると何が起きていそうかを短く書いてください。\n・そのうえで、組み合わせを2〜3案出してください。1案は「端末に入っている機能や道具」と「環境や関わり方の工夫」を組み合わせてください。\n・各案に「明日1回だけ試すこと」「うまくいったかを見るポイント」「気をつけること」を書いてください。\n・候補の方法があれば、その中からなるべく選んでください。\n・診断名や個人を特定する情報は聞かないでください。\n・やさしい日本語で、結論から書いてください。';
+  }
+
+  function render() {
+    var raw = q.value, honnin = mode() === 'honnin';
+    var nq = norm(raw);
+    var w = check(raw);
+    warn.hidden = !w.length;
+    warn.textContent = w.length ? (honnin
+      ? '名前や学校の名前が入っていませんか？ ' + w.join('・') + '。生成 AI に貼る前に、消しておきましょう。'
+      : 'だれのことか分かることばが入っているかもしれません：' + w.join('・') + '。生成 AI に貼る前に、ぼかしてください（診断名は書かなくても提案できます）。') : '';
+    if (nq.length < 4) { out.innerHTML = '<p class="muted">もう少しくわしく書いてください。</p>'; return; }
+    var bg = bigrams(nq);
+    var hits = [];
+    D.methods.forEach(function (m) { var r = score(m, nq, bg); if (r.s > 0) hits.push({ m: m, s: r.s, why: r.why }); });
+    hits.sort(function (a, b) { return b.s - a.s; });
+    var ids = D.ideas.map(function (i) { return { i: i, s: scoreIdea(i, bg) }; }).filter(function (x) { return x.s; })
+      .sort(function (a, b) { return b.s - a.s; }).map(function (x) { return x.i; });
+
+    var html = '';
+    // 組み合わせの案：機能・道具 ＋ 関わり方
+    // 組み合わせには、手がかりがはっきりした候補（3点以上）だけを使い、関わり方は同じ困りごとのページのものを優先する
+    var dev = hits.filter(function (x) { return x.m.kind !== 'env' && x.s >= 3; });
+    var env = hits.filter(function (x) { return x.m.kind === 'env' && x.s >= 3; });
+    function a(x) { return '<a href="' + esc(x.m.href) + '">' + esc(x.m.title) + '</a>'; }
+    if (dev.length && env.length) {
+      html += '<section class="hs-res"><h2>' + (honnin ? 'こんな組み合わせはどうですか' : '組み合わせの案') + '</h2><ol class="hs-combo">';
+      for (var n = 0; n < Math.min(3, dev.length); n++) {
+        var d = dev[n];
+        var same = env.filter(function (x) { return x.m.page === d.m.page; });
+        var e = same.length ? same[n % same.length] : env[n % env.length];
+        html += '<li><span class="hs-pair"><span class="hs-k">' + (d.m.kind === 'os' ? '端末の機能' : '道具・アプリ') + '</span>' + a(d) + '</span><span class="hs-plus" aria-label="と">＋</span><span class="hs-pair"><span class="hs-k">関わり方の工夫</span>' + a(e) + '</span></li>';
+      }
+      html += '</ol><p class="muted">' + (honnin ? 'どれか1つを、まず1回ためしてみましょう。' : 'どれか1つを選んで、まず1回だけ試してみてください。合わなければ、下の候補と入れかえてください。') + '</p></section>';
+    }
+    if (hits.length) {
+      html += '<section class="hs-res"><h2>サイトの中の候補（' + Math.min(hits.length, 8) + '件）</h2><ol class="hits">' + hits.slice(0, 8).map(function (x) {
+        return '<li>' + a(x) + '<span class="why">' + esc(x.m.pageTitle + '｜' + D.kindLabel[x.m.kind]) + '</span><span class="why">' + esc(x.why.join(' / ')) + '</span></li>';
+      }).join('') + '</ol></section>';
+    }
+    if (ids.length) {
+      html += '<section class="hs-res"><h2>学び方のコツから（AT ならこう使える）</h2><ol class="hits">' + ids.slice(0, 3).map(function (i) {
+        return '<li><a href="' + esc(i.href) + '">' + esc(i.title) + '</a><span class="why">' + esc(i.summary) + '</span></li>';
+      }).join('') + '</ol></section>';
+    }
+    if (!hits.length && !ids.length) {
+      html += '<p class="muted">サイトの中では、ぴったりの候補が見つかりませんでした。下の「頼み方」を生成 AI に貼ると、いっしょに考えてくれます。</p>';
+    }
+    var p = prompt(raw, hits, ids, honnin);
+    html += '<section class="hs-res hs-ai"><h2>' + (honnin ? '学校の生成 AI に聞いてみる' : '学校の生成 AI に頼む') + '</h2>' +
+      '<p>' + (honnin
+        ? '下の文章をコピーして、学校や家の人が使ってよいと決めている生成 AI（学校のアカウントの Gemini など）に貼りつけてください。'
+        : '下の文章をコピーして、学校が使ってよいと決めている生成 AI（学校のアカウントの Gemini など）に貼りつけると、組み合わせを提案してくれます。18歳未満の児童生徒も、学校が許可していれば使えます。') + '</p>' +
+      '<label for="hs-p" class="hs-label">頼み方（このまま貼りつけられます）</label><textarea id="hs-p" rows="12" readonly>' + esc(p) + '</textarea>' +
+      '<div class="finder-actions"><button type="button" class="btn btn-solid" id="hs-copy">コピーする</button><span id="hs-copied" class="muted" role="status"></span></div>' +
+      '<p class="muted">貼る前に、もう一度だれのことか分かることばがないか確かめてください。AI の答えは、まちがうことがあります。試すかどうかは、本人や支援者が決めてください。</p></section>';
+    out.innerHTML = html;
+    document.getElementById('hs-copy').addEventListener('click', function () {
+      var t = document.getElementById('hs-p'), msg = document.getElementById('hs-copied');
+      function ok() { msg.textContent = 'コピーしました'; }
+      if (navigator.clipboard) navigator.clipboard.writeText(t.value).then(ok, function () { t.select(); document.execCommand('copy'); ok(); });
+      else { t.select(); document.execCommand('copy'); ok(); }
+    });
+  }
+  form.addEventListener('submit', function (e) { e.preventDefault(); render(); var h = out.querySelector('h2'); if (h) { h.tabIndex = -1; h.focus(); } });
+  form.addEventListener('reset', function () { setTimeout(function () { out.innerHTML = ''; warn.hidden = true; }, 0); });
+})();
+</script>
+
+<style is:global>
+  /* 結果は script で差し込むので、global にする（クラス名は hs- で始めて、ほかとぶつからないようにしている） */
+  .hs { margin: 24px 0 48px; }
+  .hs-who { border: 0; padding: 0; margin: 0 0 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .hs-who legend { font-weight: 700; margin-bottom: 8px; padding: 0; }
+  .hs-who small { display: block; color: var(--sub); font-size: 0.85rem; }
+  @media (max-width: 600px) { .hs-who { grid-template-columns: 1fr; } }
+  .hs-box { margin: 0 0 20px; padding: 20px 22px; background: var(--panel); border: 2px solid var(--line); border-radius: 16px; }
+  .hs-box h2 { margin: 0 0 8px; font-size: 1.25rem; }
+  .hs-box p { margin: 6px 0; }
+  .hs-ex { margin: 0 0 28px; padding: 6px 22px; border: 2px dashed var(--line); border-radius: 16px; }
+  .hs-ex summary { cursor: pointer; font-weight: 700; min-height: 48px; display: flex; align-items: center; color: var(--accent-text); }
+  .hs-ex-lead { color: var(--sub); }
+  .hs-ex-item { margin: 16px 0; }
+  .hs-ex h3 { font-size: 1.1rem; margin: 18px 0 6px; }
+  .hs-ng, .hs-ok, .hs-hon { margin: 6px 0; padding: 10px 14px; border-radius: 10px; border: 2px solid var(--line); }
+  .hs-ok { border-color: var(--accent-text); }
+  .hs-hon { border-style: dashed; }
+  .hs-tag { display: block; font-weight: 700; font-size: 0.9rem; color: var(--sub); }
+  .hs-ok .hs-tag { color: var(--accent-text); }
+  .hs-form { padding: 24px; background: var(--panel); border: 2px solid var(--accent-text); border-radius: 20px; }
+  .hs-form h2 { margin: 0 0 12px; }
+  .hs-label { display: block; font-weight: 700; margin-top: 8px; }
+  .hs textarea { width: 100%; box-sizing: border-box; padding: 10px 14px; font: inherit; line-height: 1.7; color: var(--fg); background: var(--bg); border: 2px solid var(--line); border-radius: 12px; }
+  .hs-warn { margin: 10px 0 0; padding: 10px 14px; border: 2px solid var(--accent-text); border-radius: 10px; }
+  .hs-out { margin-top: 8px; }
+  .hs-res { margin: 28px 0 0; }
+  .hs-res h2 { font-size: 1.25rem; margin: 0 0 10px; }
+  .hs-res a { color: var(--accent-text); font-weight: 700; text-decoration: underline; text-underline-offset: 0.25em; }
+  .hs-combo { padding-left: 1.5em; margin: 0 0 8px; }
+  .hs-combo li { margin: 12px 0; padding: 10px 14px; border: 2px solid var(--line); border-radius: 12px; }
+  .hs-pair { display: block; }
+  .hs-k { display: block; font-size: 0.85rem; color: var(--sub); }
+  .hs-plus { display: block; margin: 2px 0; font-weight: 700; color: var(--sub); }
+  .hs-ai textarea { margin-top: 6px; font-size: 0.95rem; }
+  .hs-next { margin-top: 40px; border-style: dashed; }
+</style>

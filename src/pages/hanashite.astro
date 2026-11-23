@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import HanashiteSagasu from '../components/HanashiteSagasu.astro';
+---
+<Base title="話して探す" lang="ja" current="komari" description="困っていることを書く（話す）と、サイトの中の方法から組み合わせの案を出し、学校の生成 AI に頼むための文章も作ります。">
+  <div class="wrap page prose">
+    <Crumbs items={[{ label: 'トップ', href: '/' }, { label: '話して探す' }]} />
+    <h1>話して探す</h1>
+    <p class="lead-text">困っていることを、そのまま書いてください（話して入力することもできます）。サイトの中の方法から「こんな組み合わせはどうですか」という案を出し、学校の生成 AI に相談するための「頼み方」の文章も作ります。</p>
+    <p>選ぶものが多くて、どこから見ればいいか分からないときの入口です。書いた内容は、どこにも送りません。</p>
+    <HanashiteSagasu />
+  </div>
+</Base>
