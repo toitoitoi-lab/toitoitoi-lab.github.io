@@ -101,6 +101,19 @@ const EXAMPLES = [
 
   <form id="hs-form" class="hs-form" autocomplete="off">
     <h2 id="hs-form-h"><span class="hs-s">困っていることを書く（話す）</span><span class="hs-h" hidden>こまっていることを書く（話す）</span></h2>
+    <div class="hs-must" role="note" aria-labelledby="hs-must-h">
+      <p id="hs-must-h" class="hs-must-h"><span class="hs-s">書く前に、必ず読んでください</span><span class="hs-h" hidden>書く前に、かならず読んでください</span></p>
+      <ul class="hs-s">
+        <li>名前・学校名・地域は書かない（名前は「Aさん」のように）。</li>
+        <li>学年は「中学生」「高校生」くらいまで。診断名・家庭や医療の事情・日付や具体的な出来事は書かない。</li>
+        <li>「何に困っているか」より、「どんな場面で、本人に何が起きているか」を書く。</li>
+      </ul>
+      <ul class="hs-h" hidden>
+        <li>名前や学校の名前は、書かない。</li>
+        <li>「どんなときに、どうなるか」を書く。</li>
+      </ul>
+      <p class="hs-s"><button type="button" class="hs-link" id="hs-open-ex">ぼかし方の例（Aさん・Bさん・Cさん）を見る</button></p>
+    </div>
     <label for="hs-q" class="hs-label"><span class="hs-s">どんな場面で、本人に何が起きていますか</span><span class="hs-h" hidden>どんなときに、どうなりますか</span></label>
     <p class="hint" id="hs-hint">キーボードのマイクのボタンを押すと、話して入力できます。書いた内容は、どこにも送りません（このページの中だけで探します）。</p>
     <textarea id="hs-q" rows="6" maxlength="1500" aria-describedby="hs-hint hs-warn"></textarea>
@@ -135,6 +148,7 @@ const EXAMPLES = [
     out.innerHTML = '';
   }
   Array.prototype.forEach.call(document.querySelectorAll('input[name="hs-mode"]'), function (r) { r.addEventListener('change', setMode); });
+  document.getElementById('hs-open-ex').addEventListener('click', function () { var d = document.querySelector('.hs-ex'); d.open = true; d.scrollIntoView({ block: 'start' }); d.querySelector('summary').focus(); });
 
   function norm(s) {
     return String(s || '').normalize('NFKC').toLowerCase()
@@ -242,10 +256,12 @@ const EXAMPLES = [
       '<p>' + (honnin
         ? '下の文章をコピーして、学校や家の人が使ってよいと決めている生成 AI（学校のアカウントの Gemini など）に貼りつけてください。'
         : '下の文章をコピーして、学校が使ってよいと決めている生成 AI（学校のアカウントの Gemini など）に貼りつけると、組み合わせを提案してくれます。18歳未満の児童生徒も、学校が許可していれば使えます。') + '</p>' +
-      '<label for="hs-p" class="hs-label">頼み方（このまま貼りつけられます）</label><textarea id="hs-p" rows="12" readonly>' + esc(p) + '</textarea>' +
-      '<div class="finder-actions"><button type="button" class="btn btn-solid" id="hs-copy">コピーする</button><span id="hs-copied" class="muted" role="status"></span></div>' +
+      '<label class="check hs-agree"><input type="checkbox" id="hs-agree" /><span>' + (honnin ? '名前や学校の名前を書いていないことを、たしかめました' : '名前・学校名・診断名など、だれのことか分かることを書いていないことを確かめました') + '</span></label>' +
+      '<div id="hs-pbox" hidden><label for="hs-p" class="hs-label">頼み方（このまま貼りつけられます）</label><textarea id="hs-p" rows="12" readonly>' + esc(p) + '</textarea>' +
+      '<div class="finder-actions"><button type="button" class="btn btn-solid" id="hs-copy">コピーする</button><span id="hs-copied" class="muted" role="status"></span></div></div>' +
       '<p class="muted">貼る前に、もう一度だれのことか分かることばがないか確かめてください。AI の答えは、まちがうことがあります。試すかどうかは、本人や支援者が決めてください。</p></section>';
     out.innerHTML = html;
+    document.getElementById('hs-agree').addEventListener('change', function (e) { document.getElementById('hs-pbox').hidden = !e.target.checked; });
     document.getElementById('hs-copy').addEventListener('click', function () {
       var t = document.getElementById('hs-p'), msg = document.getElementById('hs-copied');
       function ok() { msg.textContent = 'コピーしました'; }
@@ -293,5 +309,11 @@ const EXAMPLES = [
   .hs-k { display: block; font-size: 0.85rem; color: var(--sub); }
   .hs-plus { display: block; margin: 2px 0; font-weight: 700; color: var(--sub); }
   .hs-ai textarea { margin-top: 6px; font-size: 0.95rem; }
+  .hs-must { margin: 0 0 18px; padding: 14px 18px; border: 3px solid var(--accent-text); border-radius: 14px; background: var(--bg); }
+  .hs-must-h { margin: 0 0 6px; font-weight: 700; color: var(--accent-text); }
+  .hs-must ul { margin: 0 0 6px; padding-left: 1.3em; }
+  .hs-must li { margin: 4px 0; }
+  .hs-link { background: none; border: 0; padding: 4px 0; min-height: 44px; font: inherit; font-weight: 700; color: var(--accent-text); text-decoration: underline; text-underline-offset: 0.25em; cursor: pointer; }
+  .hs-agree { margin: 12px 0; }
   .hs-next { margin-top: 40px; border-style: dashed; }
 </style>
