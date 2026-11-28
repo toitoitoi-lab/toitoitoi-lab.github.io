@@ -3,3 +3,4 @@ dist/
 .astro/
 .DS_Store
 _to_delete/
+i18n-missing.json

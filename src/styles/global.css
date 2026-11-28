@@ -68,6 +68,11 @@ h1, h2, h3 { line-height: 1.3; margin: 0; }
 :root[data-theme='contrast'] .fx { display: none; }
 
 /* ===== ヘッダー ===== */
+/* 言語の切りかえ（全ページのいちばん上） */
+.langbar { position: relative; z-index: 46; border-bottom: 1px solid var(--line); background: var(--panel); }
+.langbar ul { list-style: none; margin: 0 auto; padding: 0 clamp(16px, 4vw, 56px); max-width: 1280px; display: flex; justify-content: flex-end; gap: 4px; flex-wrap: wrap; }
+.langbar a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--fg); text-decoration: underline; text-underline-offset: 0.25em; font-weight: 700; }
+.langbar a[aria-current="page"] { text-decoration: none; color: var(--accent-text); border-bottom: 3px solid var(--accent-text); }
 .site-header { position: relative; z-index: 45; border-bottom: 1px solid var(--line); }
 .site-header .wrap { min-height: 96px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-top: 12px; padding-bottom: 12px; }
 .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
@@ -147,7 +152,8 @@ main { position: relative; z-index: 1; display: block; }
 .tone-accent { color: var(--accent-text); }
 .tone-violet { color: var(--violet-text); }
 
-.soon { display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border: 2px solid var(--sub); border-radius: 999px; font-size: 0.9rem; font-weight: 700; color: var(--sub); letter-spacing: 0.08em; white-space: nowrap; }
+.soon { display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border: 2px solid var(--sub); border-radius: 999px; font-size: 0.9rem; font-weight: 700; color: var(--sub); letter-spacing: 0.08em; white-space: nowrap; max-width: 100%; }
+.kotsu .soon { white-space: normal; }
 
 .stage-violet { background: var(--st-violet); }
 .stage-sky { background: var(--st-sky); }
@@ -430,10 +436,10 @@ html[data-float='hide'] .floatbar.summoned { display: flex; }
 .kyoka-body { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
 .kyoka-title { font-size: 1.2rem; font-weight: 700; }
 .kyoka-text { font-size: 0.95rem; color: var(--sub); }
-.kotsu-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.kotsu-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); }
 .kotsu { display: flex; gap: 16px; padding: 20px; border: 2px solid var(--line); border-radius: 18px; }
 .kotsu-num { font-size: 1.8rem; font-weight: 700; color: var(--accent-text); line-height: 1; min-width: 1.6em; }
-.kotsu-body { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.kotsu-body { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; min-width: 0; }
 .kotsu-tag { font-size: 0.85rem; font-weight: 700; color: var(--violet-text, var(--sub)); letter-spacing: .06em; }
 .kotsu-title { margin: 0; font-size: 1.15rem; line-height: 1.5; }
 .kotsu-text { margin: 0; color: var(--sub); }
@@ -1212,3 +1218,13 @@ html[data-fold='folded'] .floatbar .fb-fold { border: 0; border-radius: 14px; }
 .ai-cr-note { margin: 24px 0 8px; padding: 14px 16px; border: 2px dashed var(--accent-text); border-radius: 14px; }
 .ai-cr-note p { margin: 4px 0; }
 .ai-cr-h { font-weight: 700; }
+
+/* ドイツ語版：長い複合語で画面からはみ出さないように、自動のハイフンと折り返しを使う */
+html[lang="de"] body { -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }
+html[lang="de"] .header-tools { flex-wrap: wrap; }
+html[lang="de"] .header-tools .btn { white-space: normal; }
+html[lang="de"] .updated { white-space: normal; }
+html[lang="de"] .kyoka-tile { min-width: 0; }
+html[lang="de"] .kyoka-tile > * { min-width: 0; }
+html[lang="de"] .kyoka-detail li > * { min-width: 0; }
+html[lang="de"] .kyoka-detail { grid-template-columns: minmax(0, 1fr); }

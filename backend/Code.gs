@@ -150,7 +150,7 @@ function handleContact(d) {
     new Date(), STATUS_OPEN, pri, plist.map((k) => PURPOSES[k]).join('、'), URGENCY[urgency], reply ? '要' : '不要',
     clip(d.name, 60), email, clip(d.role, 40),
     clip(Array.isArray(d.komari) ? d.komari.join('、') : '', 200), wakari.join('、'),
-    clip(d.target, 200), body, clip(d.event, 1000), clip(d.pages, 1000), d.lang === 'en' ? 'en' : 'ja',
+    clip(d.target, 200), body, clip(d.event, 1000), clip(d.pages, 1000), (d.lang === 'en' || d.lang === 'de') ? d.lang : 'ja', // de：ドイツ語版（/de/contact/）から
   ].map(safeCell);
 
   const lock = LockService.getScriptLock(); lock.waitLock(10000);

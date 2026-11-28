@@ -229,7 +229,7 @@ const WAKARI_KEYS = ['見る', '聞く', '話す', '動く', '感じる', '見�
     <p><button type="button" class="btn" id="cf-again">{T.again}</button></p>
   </section>
 
-  <script type="application/json" id="cf-text" set:html={JSON.stringify({ errNotRead: T.errNotRead, errPurpose: T.errPurpose, errReply: T.errReply, errEmail: T.errEmail, kyu: T.kyu, replies: Object.fromEntries(T.replies.map((u) => [u.v, u.t])), wakari: Object.fromEntries(WAKARI_KEYS.map((k, i) => [k, T.wakaris[i]])), errBody: T.errBody, errAgree: T.errAgree, sendFail: T.sendFail, purposes: Object.fromEntries(T.purposes.map((p) => [p.v, p.t])), labels: { purpose: ja ? '用件' : 'About', kyu: T.kyuLabel, reply: T.replyQ, name: T.name, email: T.email, role: T.role, komari: T.komari, wakari: T.wakari, target: T.target, event: T.event, pages: T.pages }, none: ja ? '（なし）' : '(none)' }).replace(/</g, '\\u003c')}></script>
+  <script type="application/json" id="cf-text" set:html={JSON.stringify({ errNotRead: T.errNotRead, errPurpose: T.errPurpose, errReply: T.errReply, errEmail: T.errEmail, kyu: T.kyu, replies: Object.fromEntries(T.replies.map((u) => [u.v, u.t])), wakari: Object.fromEntries(WAKARI_KEYS.map((k, i) => [k, T.wakaris[i]])), errBody: T.errBody, errAgree: T.errAgree, sendFail: T.sendFail, purposes: Object.fromEntries(T.purposes.map((p) => [p.v, p.t])), labels: { purpose: ja ? '用件' : 'Topic', kyu: T.kyuLabel, reply: T.replyQ, name: T.name, email: T.email, role: T.role, komari: T.komari, wakari: T.wakari, target: T.target, event: T.event, pages: T.pages }, none: ja ? '（なし）' : '(none)' }).replace(/</g, '\\u003c')}></script>
 </div>
 
 <script is:inline>

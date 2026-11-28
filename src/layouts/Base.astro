@@ -57,6 +57,14 @@ const t = ja
       other: '日本語', otherHref: '/', otherLang: 'ja', rules: 'Terms of use', runBy: '/ Run by',
       disclaimer: 'Run personally by a public school teacher. Views here are not those of any employer.' };
 const sitemapHref = ja ? '/sitemap/' : '/en/sitemap/';
+// 言語の切りかえ（全ページのいちばん上）。ドイツ語版 /de/ は、ビルドのあとで英語版から作る（scripts/i18n-de.mjs）。
+// 行き先のページがない言語（日本語だけのページなど）は、ビルドのあとでその言語のトップに直す。
+const basePath = Astro.url.pathname.replace(/^\/(en|de)(\/|$)/, '/');
+const langLinks = [
+  { l: 'ja', label: '日本語', href: basePath },
+  { l: 'en', label: 'English', href: '/en' + basePath },
+  { l: 'de', label: 'Deutsch', href: '/de' + basePath },
+];
 const groups = [
   { name: 'theme', legend: t.theme, opts: [['dark', t.dark], ['light', t.light], ['contrast', t.contrast]] },
   { name: 'accent', legend: t.accent, hint: t.aHint, opts: [['lime', t.aLime], ['yellow', t.aYellow], ['cyan', t.aCyan]] },
@@ -77,8 +85,9 @@ const groups = [
   <meta name="description" content={desc} />
   {noindex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="alternate" hreflang="ja" href={`${SITE.url}/`} />
-  <link rel="alternate" hreflang="en" href={`${SITE.url}/en/`} />
+  <link rel="alternate" hreflang="ja" href={`${SITE.url}${basePath}`} />
+  <link rel="alternate" hreflang="en" href={`${SITE.url}/en${basePath}`} />
+  <link rel="alternate" hreflang="de" href={`${SITE.url}/de${basePath}`} />
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={desc} />
   <meta property="og:type" content="website" />
@@ -106,6 +115,12 @@ const groups = [
   <a class="skip" href="#floatbar" id="skip-bar" aria-keyshortcuts="Alt+Shift+M">{t.skipBar}</a>
   <div class="fx" aria-hidden="true"></div>
 
+  <nav class="langbar" aria-label="Language / 言語 / Sprache">
+    <ul>
+      {langLinks.map((x) => <li><a href={x.href} lang={x.l} hreflang={x.l} data-langsw={x.l} aria-current={x.l === lang ? 'page' : undefined}>{x.label}</a></li>)}
+    </ul>
+  </nav>
+
   <header class="site-header">
     <div class="wrap">
       <a class="logo" href={home}>
@@ -115,7 +130,6 @@ const groups = [
       <nav class="main-nav" aria-label={ja ? 'メイン' : 'Main'}>
         <ul>
           {nav.map((n) => <li><a href={n.href} aria-current={current === n.key ? 'page' : undefined}>{n.label}</a></li>)}
-          <li><a href={t.otherHref} lang={t.otherLang} hreflang={t.otherLang}>{t.other}</a></li>
         </ul>
       </nav>
       <div class="header-tools">
@@ -276,7 +290,7 @@ const groups = [
         var sameSite = document.referrer && document.referrer.indexOf(location.origin) === 0;
         if (sameSite && history.length > 1) { history.back(); return; }
         var crumbs = document.querySelectorAll('.breadcrumb a');
-        location.href = crumbs.length ? crumbs[crumbs.length - 1].href : (document.documentElement.lang === 'en' ? '/en/' : '/');
+        location.href = crumbs.length ? crumbs[crumbs.length - 1].href : (document.documentElement.lang === 'ja' ? '/' : '/' + document.documentElement.lang + '/');
       });
       document.getElementById('fb-settings').addEventListener('click', function () { open(true); });
 

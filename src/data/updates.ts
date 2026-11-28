@@ -13,6 +13,12 @@ export type Update = { date: string; title: { ja: string; en: string }; ja: stri
 
 export const UPDATES: Update[] = [
   {
+    date: '2026-11-28',
+    title: { ja: 'ドイツ語版（Deutsch）を公開', en: 'German version (Deutsch) published' },
+    ja: 'ドイツ語版を公開しました。英語版と同じページを、ドイツ語で読めます。各ページのいちばん上に「日本語・English・Deutsch」の切りかえを置き、お問い合わせもドイツ語で使えるようにしました。',
+    en: 'Published a German version of the site, with the same pages as the English version. A language switch (日本語・English・Deutsch) now sits at the top of every page, and the contact form works in German too.',
+  },
+  {
     date: '2026-11-08',
     title: { ja: '記事「生成 AI で教材を作るときの著作権」を公開', en: 'Article: copyright when making materials with generative AI' },
     ja: '生成 AI で作る教材・教具の著作権について、文化庁などが公開している資料をもとに注意書きをまとめた記事を公開しました。授業の中・家庭学習・公開など場面ごとに扱いがちがうこと、許可は一件ずつであることを書いています。教材の部屋・支援者の部屋・QOL・教科と学び方・学び方のコツの各ページにも、この案内を入れました。',
